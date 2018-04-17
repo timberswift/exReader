@@ -1,1 +1,44 @@
-﻿
+﻿<Page
+    x:Class="exReader.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:exReader"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+    <NavigationView 
+        Name="NavigationView"  
+        SelectionChanged="NavigationView_OnSelectionChanged"
+        CompactModeThresholdWidth="100"
+        ExpandedModeThresholdWidth="1500">
+
+        <NavigationView.MenuItems>
+            <NavigationViewItem Tag="ReaderPage" Name="readerPageHome" Content="exReader" Icon="Home">
+
+            </NavigationViewItem>
+
+            <NavigationViewItem Tag="PassagePage" Name="myPassageItem" Content="Passages">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE7BC;"></FontIcon>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+            <NavigationViewItem Tag="WordsListPage" Name="myWordsListItem" Content="WordsList">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE82D;"></FontIcon>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+        </NavigationView.MenuItems>
+        <NavigationView.Content>
+            <Frame Name="MyFrame"></Frame>
+        </NavigationView.Content>
+        <NavigationView.AutoSuggestBox>
+            <AutoSuggestBox QueryIcon="Find"></AutoSuggestBox>
+        </NavigationView.AutoSuggestBox>
+        <NavigationView.Header>
+            exReader
+        </NavigationView.Header>
+    </NavigationView>
+</Page>
