@@ -37,17 +37,17 @@ namespace exReader
             if (myPassageItem.IsSelected)
             {
                 MyFrame.Navigate(typeof(MyPassage));
-                NavigationView.Header = "My Passage";
+                NavigationView.Header = "我的文章";
             }
             else if (myWordsListItem.IsSelected)
             {
                 MyFrame.Navigate(typeof(MyWordsList));
-                NavigationView.Header = "My Word List";
+                NavigationView.Header = "我的生词本";
             }
             else if (readerPageHome.IsSelected)
             {
                 MyFrame.Navigate(typeof(MainReader));
-                NavigationView.Header = "exReader";
+                NavigationView.Header = "Header of this passage";
             }
         }
     }

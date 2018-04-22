@@ -116,6 +116,14 @@
     <None Include="exReader_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\all.png" />
+    <Content Include="Assets\all2.png" />
+    <Content Include="Assets\cet4.png" />
+    <Content Include="Assets\cet6.png" />
+    <Content Include="Assets\GRE.jpg" />
+    <Content Include="Assets\ielts.jpg" />
+    <Content Include="Assets\kaoyan.png" />
+    <Content Include="Assets\toefl.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

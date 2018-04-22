@@ -15,20 +15,21 @@
 
         <NavigationView.MenuItems>
             <NavigationViewItem Tag="ReaderPage" Name="readerPageHome" Content="exReader" Icon="Home">
-
             </NavigationViewItem>
 
-            <NavigationViewItem Tag="PassagePage" Name="myPassageItem" Content="Passages">
+            <NavigationViewItem Tag="WordsListPage" Name="myWordsListItem" Content="我的生词本">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE82D;"></FontIcon>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            
+            <NavigationViewItem Tag="PassagePage" Name="myPassageItem" Content="我的文章">
                 <NavigationViewItem.Icon>
                     <FontIcon Glyph="&#xE7BC;"></FontIcon>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
 
-            <NavigationViewItem Tag="WordsListPage" Name="myWordsListItem" Content="WordsList">
-                <NavigationViewItem.Icon>
-                    <FontIcon Glyph="&#xE82D;"></FontIcon>
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
+         
 
         </NavigationView.MenuItems>
         <NavigationView.Content>
