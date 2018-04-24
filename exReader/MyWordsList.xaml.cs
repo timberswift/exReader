@@ -38,8 +38,8 @@ namespace exReader
         {
             //await GetWordsBook(1);
             WordsManager.Vocabulary v = new WordsManager.Vocabulary();
-            v.Word = "lala";
-            v.Translation = "拉拉";
+            v.Word = "new";
+            v.Translation = "新的";
             v.Classification = 1;
             booklists.Add(v);
 
@@ -80,7 +80,7 @@ namespace exReader
         {
             switch (type)
             {
-                case 0:  booklists = WordsManager.WordBook.GetBooks(); break;
+                case 0: booklists = WordsManager.WordBook.GetBooks(); break;
                 case 1: booklists = WordsManager.WordBook.GetBooks(); break;
                 case 2: booklists = WordsManager.WordBook.GetBooks(); break;
                 case 3: booklists = WordsManager.WordBook.GetBooks(); break;
