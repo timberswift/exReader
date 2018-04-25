@@ -9,32 +9,46 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4.*"/>
-                <ColumnDefinition Width="1.*"/>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="9*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Width="Auto" Height="Auto" 
-                        FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"
-                        TextAlignment="Center">Header of this page</TextBlock>
-        <RelativePanel Grid.Row="1" Grid.Column="0" Margin="15,0,15,0">
-            <TextBlock Text="Tool Bar" FontSize="18"/>
-            <Button Name="text_smaller_button" 
+        <Border Background="Black" Margin="15,5,15,0">
+            <RelativePanel Grid.Row="0" Grid.Column="0" Height="auto"  Background="White" Margin="2,2,2,2">
+                <Button Name="export_file"                
+                        Width="auto"
+                        Height="auto"
+                        FontSize="20"
+                        Content="&#xE8DE;"
+                        Background="White"
+                        FontFamily="Segoe MDL2 Assets"
+                        Margin="5,0,0,0"/>
+                <Button Name="save_file"                
+                        Width="auto"
+                        Height="auto"
+                        FontSize="20"
+                        Content="&#xE74E;"
+                        Background="White"
+                        FontFamily="Segoe MDL2 Assets"
+                        RelativePanel.RightOf="export_file"
+                        Margin="5,0,0,0"/>
+                <Button Name="text_smaller_button" 
                     Width="auto"
                     Height="auto"
                     Content="&#xE949;"
                     FontFamily="Segoe MDL2 Assets"
                     RelativePanel.AlignRightWithPanel="True"/>
-            <Button Name="text_bigger_button" 
+                <Button Name="text_bigger_button" 
                     Width="auto"
                     Height="auto"
                     Content="&#xE948;"
                     FontFamily="Segoe MDL2 Assets"
                     RelativePanel.LeftOf="text_smaller_button" HorizontalAlignment="Right"/>
-            <TextBlock 
+                <TextBlock 
                 FontFamily="Segoe MDL2 Assets" Text="&#xE8E9;"
                 Width="auto" Height="auto"
                 RelativePanel.LeftOf="text_bigger_button"
@@ -42,26 +56,16 @@
                 Margin="0,0,5,0"
                 FontSize="24" VerticalAlignment="Top"
                 />
-        </RelativePanel>
-        <Border Background="Beige" Grid.Column="0" Grid.Row="2" Margin="15,3,15,10">
-            <TextBox 
-                FontSize="18"
-                Width="Auto" Height="Auto"
-                PlaceholderText="Paste your passage here..."
-                Background="Beige"
-                TextWrapping="Wrap"
-                AcceptsReturn="True"
-                IsSpellCheckEnabled="False"
-                IsTextPredictionEnabled="True"
-                DesiredCandidateWindowAlignment="Default">
-            </TextBox>
+            </RelativePanel>
         </Border>
-            
-        <StackPanel Grid.Column="1" Grid.RowSpan="2"
-                    Orientation="Vertical"
-                    >
-            <Border Background="Beige" Margin="0,5,5,0">
-                <Grid Height="auto">
+        <Border Background="Beige" Grid.Column="0" Grid.Row="1"  Grid.RowSpan="2" Margin="15,3,15,10">
+            <RichEditBox x:Name="editor" Height="auto" Width="auto"/>
+        </Border>
+        <StackPanel Grid.Column="1" Grid.RowSpan="3"
+                    Orientation="Vertical">
+            <ToggleSwitch OffContent="自定义" OnContent="全选" IsOn="True" />
+                <Border  Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Background="Black" Margin="0,5,5,0">
+                <Grid Height="auto" Background="Beige" Margin="2,2,2,2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
@@ -80,18 +84,22 @@
                     <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" FontSize="14"  Width="auto" Background="Beige">雅思IELTS</Button>
                 </Grid>
             </Border>
-        </StackPanel>
+        
 
         <StackPanel Grid.Column="1" Grid.Row="2" Margin="0,10,5,0">
-            <TextBlock Text="实时提取词汇" Height="auto" HorizontalAlignment="Center" FontSize="24" Margin="0,5,0,5">
-            </TextBlock>
-            <ListBox Name="words_view" >
+            <Border Background="Black" Margin="0,5,0,5">
+                <TextBlock Text="实时提取词汇" Height="auto" Foreground="White" HorizontalAlignment="Center" FontSize="20" Padding="2,2,2,2" Margin="2,2,2,2" >
+                </TextBlock>
+            </Border>
+            <Border Background="Black"> 
+            <ListBox Name="words_view" Background="White" Margin="2,2,2,2">
                 <ListBoxItem Name="item1" Content="word1"/>
                 <ListBoxItem Name="item2" Content="word2"/>
                 <ListBoxItem Name="item3" Content="word3"/>
             </ListBox>
+            </Border>
 
         </StackPanel>
-
+        </StackPanel>
     </Grid>
 </Page>
