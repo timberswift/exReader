@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseManager\WordManage.cs" />
+    <Compile Include="FileManager\FileManage.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -108,7 +109,9 @@
     <Compile Include="MyWordsList.xaml.cs">
       <DependentUpon>MyWordsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PassageManager\PassageManage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReaderManager\ReaderManage.cs" />
     <Compile Include="WordsManager\WordBook.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -168,10 +171,7 @@
       <Version>6.0.8</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PassageManager\" />
-    <Folder Include="ReaderManager\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -1,9 +1,8 @@
 ﻿<Page
     x:Class="exReader.MainReader"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:exReader"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -17,8 +16,8 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Background="Black" Margin="15,5,15,0">
-            <RelativePanel Grid.Row="0" Grid.Column="0" Height="auto"  Background="White" Margin="2,2,2,2">
+        <Border Background="Black" Margin="15,2,15,1">
+            <RelativePanel Grid.Row="0" Grid.Column="0" Height="auto"  Background="White" Margin="2,1,2,1">
                 <Button Name="export_file"                
                         Width="auto"
                         Height="auto"
@@ -26,6 +25,7 @@
                         Content="&#xE8DE;"
                         Background="White"
                         FontFamily="Segoe MDL2 Assets"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
                         Margin="5,0,0,0"/>
                 <Button Name="save_file"                
                         Width="auto"
@@ -35,7 +35,19 @@
                         Background="White"
                         FontFamily="Segoe MDL2 Assets"
                         RelativePanel.RightOf="export_file"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
                         Margin="5,0,0,0"/>
+                <TextBlock Name="hightlight_lable"
+                           Text="提词高亮"
+                           Margin="5,0,0,0"
+                           RelativePanel.RightOf="save_file"
+                           RelativePanel.AlignVerticalCenterWithPanel="True">
+                </TextBlock>
+                <ToggleSwitch Name="off_on_highlight"                
+                              IsOn="True" 
+                              Margin="5,0,0,0" 
+                              RelativePanel.RightOf="hightlight_lable"
+                              RelativePanel.AlignVerticalCenterWithPanel="True" />
                 <Button Name="text_smaller_button" 
                     Width="auto"
                     Height="auto"
@@ -58,7 +70,7 @@
                 />
             </RelativePanel>
         </Border>
-        <Border Background="Beige" Grid.Column="0" Grid.Row="1"  Grid.RowSpan="2" Margin="15,3,15,10">
+        <Border Background="Beige" Grid.Column="0" Grid.Row="1"  Grid.RowSpan="2" Margin="15,2,15,10">
             <RichEditBox x:Name="editor" Height="auto" Width="auto"/>
         </Border>
         <StackPanel Grid.Column="1" Grid.RowSpan="3"
@@ -92,14 +104,17 @@
                 </TextBlock>
             </Border>
             <Border Background="Black"> 
-            <ListBox Name="words_view" Background="White" Margin="2,2,2,2">
-                <ListBoxItem Name="item1" Content="word1"/>
-                <ListBoxItem Name="item2" Content="word2"/>
-                <ListBoxItem Name="item3" Content="word3"/>
-            </ListBox>
+            <ListView Name="words_view" Background="White" Margin="2,2,2,2" 
+                      IsItemClickEnabled="True" 
+                      ItemClick="words_view_ItemClick">
+                <ListViewItem Name="item1" Content="word1"/>
+                <ListViewItem Name="item2" Content="word2"/>
+                <ListViewItem Name="item3" Content="word3"/>
+            </ListView>
             </Border>
+                <Button Content="移除" FontSize="20" Click="Button_Click" />
 
-        </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

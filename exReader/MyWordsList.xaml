@@ -23,13 +23,39 @@
                            HorizontalAlignment="Center"
                            RelativePanel.RightOf="word_text"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                <Button Name="{x:Bind Classification}" 
+                <Button Name="RemoveButton" 
                         FontFamily="Segoe MDL2 Assets" 
                         Content="&#xF0AF;" 
                         FontSize="20"  
                         HorizontalContentAlignment="Center"
                         RelativePanel.AlignRightWithPanel="True"
+                        Click="WordRemoveButton_Click"
                          />
+            </RelativePanel>
+        </DataTemplate>
+        
+        <DataTemplate x:DataType="data:Vocabulary" x:Key="AllBookDataTemplate">
+            <RelativePanel Width="300" Height="auto">
+                <TextBlock Name="word_text"      
+                           FontSize="14"  
+                           Text="{x:Bind Word}" 
+                           Margin="0,0,5,0" 
+                           HorizontalAlignment="Center"
+                           RelativePanel.AlignLeftWithPanel="True"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <TextBlock Name="trans_text"
+                           FontSize="14" 
+                           Text="{x:Bind Translation}" 
+                           HorizontalAlignment="Center"
+                           RelativePanel.RightOf="word_text"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <Border Width="20" 
+                        Height="20" 
+                        Background="{x:Bind StateColor}"
+                        RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
+                        Margin="0,0,10,0">
+                </Border>
             </RelativePanel>
         </DataTemplate>
     </Page.Resources>
@@ -44,7 +70,7 @@
                 <DataTemplate>
                     <Button Name="allBook_button" 
                             Background="Wheat"
-                            Click="allBook_button_Click">
+                            Click="AllBook_button_Click">
                         <Button.Content >
                             <Rectangle Height="240" Width="230">
                                 <Rectangle.Fill>
@@ -57,9 +83,10 @@
             </HubSection>
             <HubSection Header="CET4" >
                 <DataTemplate>
-                    <Button Name="cet4Button"
+                    <Button 
+                        Name="cet4Button"
                         Background="Green"
-                        Click="cet4Button_Click" >
+                        Click="Cet4Button_Click" >
                         <Button.Content >
                             <Rectangle Height="240" Width="230">
                                 <Rectangle.Fill>
@@ -72,9 +99,10 @@
             </HubSection>
             <HubSection Header="CET6" >
                 <DataTemplate>
-                    <Button Name="cet6Button"
+                    <Button 
+                        Name="cet6Button"
                         Background="#cc0000"
-                        Click="cet6Button_Click">
+                        Click="Cet6Button_Click">
                         <Button.Content >
                             <Rectangle Height="240" Width="230">
                                 <Rectangle.Fill>
@@ -87,9 +115,10 @@
             </HubSection>
             <HubSection Header="考研英语" >
                 <DataTemplate>
-                    <Button Name="kyButton"
+                    <Button 
+                        Name="kyButton"
                         Background="Pink"
-                        Click="kyButton_Click">
+                        Click="KyButton_Click">
                         <Button.Content >
                             <Rectangle Height="240" Width="230">
                                 <Rectangle.Fill>
@@ -104,7 +133,7 @@
                 <DataTemplate>
                     <Button Name="toeflButton"
                             Background="White"
-                            Click="toeflButton_Click">
+                            Click="ToeflButton_Click">
                         <Button.Content >
                             <Rectangle Width="400" Height="260">
                                 <Rectangle.Fill>
@@ -118,7 +147,7 @@
             <HubSection Header="IELTS" >
                 <DataTemplate>
                     <Button Name="ieltsButton"
-                            Click="ieltsButton_Click"
+                            Click="IeltsButton_Click"
                             Background="White">
                         <Button.Content >
                             <Rectangle Width="400" Height="260">
@@ -133,7 +162,7 @@
             <HubSection Header="GRE" >
                 <DataTemplate>
                     <Button Name="greButton"
-                            Click="greButton_Click"
+                            Click="GreButton_Click"
                             Background="White">
                         <Button.Content >
                             <Rectangle Width="500" Height="260">
@@ -165,37 +194,38 @@
             </Border>
             <Border  Grid.Row="1" Grid.Column="0" Background="Wheat">
                 <ListView 
-                      Name="allwords_listview"
+                      Name="Allwords_listview"
                       Background="White"
                       Margin="5,0,5,0"
                       IsItemClickEnabled="True" 
-                      ItemsSource="{x:Bind booklists}"
-                      ItemTemplate="{StaticResource BookDataTemplate}"
-                      ItemClick="allwords_listview_ItemClick" 
-                      SelectionChanged="allwords_listview_SelectionChanged">
+                      ItemsSource="{x:Bind booklists ,Mode=TwoWay}"
+                    
+                      ItemTemplate="{StaticResource AllBookDataTemplate}"
+                      ItemClick="Allwords_listview_ItemClick" 
+                      SelectionChanged="Allwords_listview_SelectionChanged">
                 </ListView>
             </Border>
 
                     <Border Grid.Row="0" Grid.Column="1" Background="Green">
                 
                     <TextBlock Name="nowords_label"  
-                       Text="未掌握词汇"
+                       Text="未掌握词汇(学习中)"
                        HorizontalAlignment="Center"
                            Foreground="White"
                        VerticalAlignment="Center"/>
             </Border>
             <Border Grid.Row="1" Grid.Column="1" Background="Wheat">
-                <ListView Name="nowords_listview" 
+                <ListView Name="Nowords_listview" 
                         Background="White" 
                         Margin="5,0,5,0"
                         IsItemClickEnabled="True" 
-                        ItemsSource="{x:Bind booklists}"
+                        ItemsSource="{x:Bind nobooklists ,Mode=TwoWay}"
                         ItemTemplate="{StaticResource BookDataTemplate}">
                 </ListView>
             </Border>
             <Border Grid.Row="0" Grid.Column="2" Background="Gray">
                 <TextBlock Name="yeswords_label"
-                       Text="已掌握词汇"
+                       Text="已掌握词汇(复习中)"
                        HorizontalAlignment="Center"
                        Foreground="White"
                        VerticalAlignment="Center"/>
@@ -206,7 +236,7 @@
                     Background="White" 
                     Margin="5,0,5,0"
                     IsItemClickEnabled="True" 
-                    ItemsSource="{x:Bind booklists}"
+                    ItemsSource="{x:Bind yesbooklists,Mode=TwoWay}"
                     ItemTemplate="{StaticResource BookDataTemplate}">
                 </ListView>
             </Border>

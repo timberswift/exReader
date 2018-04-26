@@ -25,6 +25,23 @@ namespace exReader
         public MainReader()
         {
             this.InitializeComponent();
+         
+        }
+
+        private void words_view_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            foreach (ListViewItem eachItem in words_view.SelectedItems)
+            {
+                words_view.Items.Remove(eachItem);
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ListViewItem eachItem in words_view.SelectedItems)
+            {
+                words_view.Items.Remove(eachItem);
+            }
         }
     }
-}
+} 
