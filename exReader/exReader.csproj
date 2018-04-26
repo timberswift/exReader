@@ -115,6 +115,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="db\dic.db" />
     <None Include="exReader_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +158,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SQLite">
+      <Version>2.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite.Core">
       <Version>2.0.1</Version>
     </PackageReference>
