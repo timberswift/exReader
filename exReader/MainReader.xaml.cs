@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,8 +23,14 @@ namespace exReader
     /// </summary>
     public sealed partial class MainReader : Page
     {
+        ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
         public MainReader()
         {
+            this.InitializeComponent();
+            fonts.Add(new FontFamily("Arial"));
+            fonts.Add(new FontFamily("Courier New"));
+            fonts.Add(new FontFamily("Times New Roman"));
+            this.InitializeComponent();
             this.InitializeComponent();
          
         }
