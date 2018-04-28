@@ -19,18 +19,46 @@ namespace exReader.WordsManager
 
     public class Vocabulary
     {
-
-        public string Word { get; set; }            //单词
-        public string Translation { get; set; }     //单词释义
+        //private Tuple<string, string, int, int, string> Word;
+        private string word;           //单词
+        private string translation;//单词释义
         // public Type Classification { get; set; }     //单词分类
-        public int Classification { get; set; }     //单词分类
-        public int YesorNo { get; set; }            //单词掌握情况
-        public string StateColor { get; set; }
+        private int classification;    //单词分类
+        private int yesorNo;         //单词掌握情况
+        private string stateColor;
 
+        public string Word
+        {
+            get { return word; }
+            set { word = value; }
+            
+        }
+        public string Translation
+        {
+            get { return translation; }
+            set { translation = value; }
+
+        }
+        public int Classification
+        {
+            get { return classification; }
+            set { classification = value; }
+        }
+        public int YesorNo
+        {
+            get { return yesorNo; }
+            set { yesorNo = value; }
+        }
+        public string StateColor
+        {
+            get { return stateColor; }
+            set { stateColor = value; }
+        }
     }
 
     public class WordBook
     {
+        private List<Vocabulary> reader_Book;
         public List<Vocabulary> CET4_Book = GetBooks(1);
         // public List<Vocabulary> CET { get { return CET4_Book; } set { value = GetBooks(2); } }
         public List<Vocabulary> CET6_Book = GetBooks(2); // { get; set; }
@@ -39,13 +67,29 @@ namespace exReader.WordsManager
         public List<Vocabulary> IELTS_Book = GetBooks(2); //{ get; set; }
         public List<Vocabulary> GRE_Book = GetBooks(3); //{ get; set; }
 
-
-        public static List<Vocabulary> GetBooks(int type)
+        public List<Vocabulary> Reader_Book
         {
-            var books = new List<Vocabulary>();
+            get { return reader_Book; }
+            set { reader_Book = value; }
+        }
+
+        public static List<Vocabulary> GetBooks(int type)  //1.提取reader_Book的各类单词  2.累加历史单词本  3.然后去重复
+        {
+            var books = new List<Vocabulary>();           
+            /*
+            foreach (var word in Reader_Book)
+            {
+                if (word.Classification == type) books.Add(word);
+                    
+            }
+
+            //去重复
+            return books;
+             */
             switch (type)
             {
                 case 1:
+                    
                     books.Add(new Vocabulary { Word = "hello", Translation = "n. 你好", Classification = type, YesorNo = 1 });
                     books.Add(new Vocabulary { Word = "word", Translation = "n. 话", Classification = type, YesorNo = 1 });
                     books.Add(new Vocabulary { Word = "class", Translation = "n. 班级，分类", Classification = type, YesorNo = 1 });
