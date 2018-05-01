@@ -5,7 +5,33 @@
     xmlns:local="using:exReader"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:exReader.PassageManager"
     mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="data:Passage" x:Key="PassageDataTemplate">
+            <Border Background="Beige" Width="auto">
+            <StackPanel Orientation="Vertical" Width="auto" Margin="10,10,10,0">
+                <TextBlock Name="passage_name"
+                           TextWrapping="Wrap"
+                           Text="{x:Bind HeadName}"
+                           Width="auto"   
+                           Height="auto"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="30"/>
+                <TextBlock Name="passage_content_button"                       
+                           Margin="5,10,0,0"
+                           MaxWidth="400"
+                           TextWrapping="Wrap"
+                           Text="{x:Bind Content}"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Stretch"
+                        />
+            </StackPanel>
+            </Border>
+        </DataTemplate>
+       
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -13,11 +39,47 @@
             <RowDefinition Height="8*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Hub Grid.Row="1" Header="阅读历史">
-            <HubSection>
-            </HubSection>
-            <HubSection>
-            </HubSection>
-        </Hub>
+        <RelativePanel Grid.Row="0">
+            <TextBlock 
+                       Name="Header"
+                       Text="阅读历史"
+                       FontSize="28"
+                       HorizontalAlignment="Left"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       VerticalAlignment="Center"
+                      />
+            <Button Name="refreshPassage_button"
+                    Content="刷新"
+                    Background="White"
+                    FontSize="20"
+                    Margin="0,0,30,0"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Click="refreshPassage_button_Click">
+            </Button>
+        </RelativePanel>
+
+        <ListView Grid.Row="1" 
+                  Name="Passage_list"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollMode="Enabled"                  
+                  ScrollViewer.VerticalScrollMode="Disabled"  
+                  ItemsSource="{x:Bind passagelists ,Mode=TwoWay}"  
+                  IsItemClickEnabled="True"
+                  ItemClick="Passage_list_ItemClick"
+                  ItemTemplate="{StaticResource PassageDataTemplate}" FontFamily="Segoe UI">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Background="Transparent" Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
 </Page>

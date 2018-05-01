@@ -66,10 +66,9 @@ namespace exReader
         {
 
             await SwitchWordsBook(1);
-            //booklists = WordsManager.WordBook.GetBooks();
-            //booklists = new ObservableCollection<Vocabulary>(WordBook.GetBooks());
-            //nobooklists = new ObservableCollection<Vocabulary>(WordBook.GetNoWordBook(WordBook.GetBooks()));
-            //yesbooklists = new ObservableCollection<Vocabulary>(WordBook.GetYesWordBook(WordBook.GetBooks()));
+            // booklists = new WordsManager.WordBook.GetBooks(2);
+           // booklists.Clear();
+           // ObservableCollection<Vocabulary> newBooklists = new ObservableCollection<Vocabulary>(WordBook.GetBooks(2));
         }
 
         private async void Cet6Button_Click(object sender, RoutedEventArgs e)
@@ -135,11 +134,13 @@ namespace exReader
             {
                 booklists.Add(each);
             }
+
             nbooklist = WordBook.GetNoWordBook(booklists);
             foreach (var each in nbooklist)
             {
                 nobooklists.Add(each);
             }
+
             ybooklist = WordBook.GetYesWordBook(booklists);
             foreach (var each in ybooklist)
             {
@@ -206,5 +207,7 @@ namespace exReader
                 Debug.WriteLine(i.Word);
             }
         }
+
+      
     }
 }

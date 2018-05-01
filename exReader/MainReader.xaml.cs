@@ -1,8 +1,11 @@
-﻿using exReader.ReaderManager;
+﻿using exReader.FileManager;
+using exReader.PassageManager;
+using exReader.ReaderManager;
 using exReader.WordsManager;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -12,6 +15,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
@@ -27,7 +31,8 @@ namespace exReader
     public sealed partial class MainReader : Page
     {
         private ReaderManage reader = new ReaderManage();
-        private ObservableCollection<Vocabulary> readerWordLists;
+        private FileManage fileManage = new FileManage();
+        private ObservableCollection<Vocabulary> readerWordLists;   //提词列表ListView绑定的数据
 
         ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
         public MainReader()
@@ -38,7 +43,6 @@ namespace exReader
             fonts.Add(new FontFamily("Times New Roman"));
             readerWordLists = new ObservableCollection<Vocabulary>(reader.readerWordLists);
         }
-
         private void words_view_ItemClick(object sender, ItemClickEventArgs e)
         {
 
@@ -55,6 +59,64 @@ namespace exReader
 
         }
 
+        private void export_file_Click(object sender, RoutedEventArgs e)
+        {
+            fileManage.SerializeFile(reader);
+            
+        }
 
+        private  void save_file_Click(object sender, RoutedEventArgs e)
+        {
+            //reader = await fileManage.DeSerializeFile();
+        }
+
+        private async void open_file_Click(object sender, RoutedEventArgs e)
+        {
+            
+            reader = await fileManage.DeSerializeFile();
+            if(reader!=null) UpdateBindingData(reader.readerWordLists);
+            //MainPage.MyNavigationView.Header = "Header of this passage";
+        }
+
+        private void PrintList(ObservableCollection<Vocabulary> list)
+        {
+            if (list != null)
+            {
+                foreach (var item in list)
+                {
+                    Debug.WriteLine(item.Word);
+                }
+            }
+            else
+            {
+                Debug.WriteLine("list is empty!");
+            }
+        }
+
+        public void UpdateBindingData(ObservableCollection<Vocabulary> newlists)
+        {
+            readerWordLists.Clear();
+            foreach (var item in newlists)
+            {
+                readerWordLists.Add(item);
+            }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            Passage choose_passage = (Passage)e.Parameter;
+
+
+           // Debug.WriteLine(choose_passage.HeadName);
+            //editor.Document.Add(new Paragraph(new Run(parameters.Content)));
+
+
+            // parameters.Name
+            // parameters.Text
+            // ...
+        }
+   
     }
 } 

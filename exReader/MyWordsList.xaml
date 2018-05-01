@@ -9,17 +9,20 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
-            <RelativePanel Width="300" Height="auto">
+            <RelativePanel Width="auto" Height="auto">
                 <TextBlock Name="word_text"      
-                           FontSize="14"  
                            Text="{x:Bind Word}" 
-                           Margin="0,0,5,0" 
+                           Margin="5,0,10,0" 
+                           FontSize="18"  
+                           FontWeight="Bold" 
+                           FontFamily="Arial Black"
                            HorizontalAlignment="Center"
                            RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <TextBlock Name="trans_text"
                            FontSize="14" 
                            Text="{x:Bind Translation}" 
+                           ToolTipService.ToolTip="{x:Bind Translation}"
                            HorizontalAlignment="Center"
                            RelativePanel.RightOf="word_text"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
@@ -35,17 +38,26 @@
         </DataTemplate>
         
         <DataTemplate x:DataType="data:Vocabulary" x:Key="AllBookDataTemplate">
-            <RelativePanel Width="300" Height="auto">
-                <TextBlock Name="word_text"      
-                           FontSize="14"  
-                           Text="{x:Bind Word}" 
-                           Margin="0,0,5,0" 
+            <RelativePanel Width="auto" Height="auto">
+                <TextBlock Name="type_tag"
+                           Text="{x:Bind Classification}"
+                           Margin="5,0,10,0" 
                            HorizontalAlignment="Center"
                            RelativePanel.AlignLeftWithPanel="True"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <TextBlock Name="word_text"      
+                           FontSize="18"  
+                           FontWeight="Bold" 
+                           FontFamily="Arial Black"
+                           Text="{x:Bind Word}" 
+                           Margin="5,0,10,0" 
+                           HorizontalAlignment="Center"
+                           RelativePanel.RightOf="type_tag"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <TextBlock Name="trans_text"
                            FontSize="14" 
                            Text="{x:Bind Translation}" 
+                           ToolTipService.ToolTip="{x:Bind Translation}"
                            HorizontalAlignment="Center"
                            RelativePanel.RightOf="word_text"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
@@ -195,14 +207,19 @@
             <Border  Grid.Row="1" Grid.Column="0" Background="Wheat">
                 <ListView 
                       Name="Allwords_listview"
+                      HorizontalAlignment="Stretch"
                       Background="White"
                       Margin="5,0,5,0"
                       IsItemClickEnabled="True" 
-                      ItemsSource="{x:Bind booklists ,Mode=TwoWay}"
-                    
+                      ItemsSource="{x:Bind booklists ,Mode=TwoWay}"                 
                       ItemTemplate="{StaticResource AllBookDataTemplate}"
                       ItemClick="Allwords_listview_ItemClick" 
                       SelectionChanged="Allwords_listview_SelectionChanged">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </Border>
 
@@ -214,13 +231,19 @@
                            Foreground="White"
                        VerticalAlignment="Center"/>
             </Border>
-            <Border Grid.Row="1" Grid.Column="1" Background="Wheat">
+            <Border Grid.Row="1" Grid.Column="1" Background="Wheat" >
                 <ListView Name="Nowords_listview" 
                         Background="White" 
+                        HorizontalContentAlignment="Stretch"
                         Margin="5,0,5,0"
-                        IsItemClickEnabled="True" 
+                        IsItemClickEnabled="True"     
                         ItemsSource="{x:Bind nobooklists ,Mode=TwoWay}"
                         ItemTemplate="{StaticResource BookDataTemplate}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </Border>
             <Border Grid.Row="0" Grid.Column="2" Background="Gray">
@@ -238,6 +261,11 @@
                     IsItemClickEnabled="True" 
                     ItemsSource="{x:Bind yesbooklists,Mode=TwoWay}"
                     ItemTemplate="{StaticResource BookDataTemplate}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </Border>
         </Grid>
