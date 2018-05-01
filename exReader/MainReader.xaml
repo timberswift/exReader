@@ -4,8 +4,42 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:exReader.WordsManager"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
+            <RelativePanel Width="300" Height="auto">
+                <TextBlock Name="class_tag"
+                           FontSize="10"
+                           Margin="0,0,5,0" 
+                           Text="{x:Bind Classification }"
+                           HorizontalAlignment="Center"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"
+                           RelativePanel.AlignLeftWithPanel="True"/>
+                <TextBlock Name="word_text"      
+                           FontSize="14"  
+                           Text="{x:Bind Word}" 
+                           Margin="0,0,5,0" 
+                           HorizontalAlignment="Center"
+                           RelativePanel.RightOf="class_tag"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <TextBlock Name="trans_text"
+                           FontSize="14" 
+                           Text="{x:Bind Translation}" 
+                           HorizontalAlignment="Center"
+                           RelativePanel.RightOf="word_text"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <Button Name="YesButton" 
+                        FontFamily="Segoe MDL2 Assets" 
+                        Content="&#xF0AF;" 
+                        FontSize="14"  
+                        HorizontalContentAlignment="Center"
+                        RelativePanel.AlignRightWithPanel="True"
+                        Click="YesButton_Click"
+                         />
+            </RelativePanel>
+        </DataTemplate>
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="11*"/>
@@ -49,29 +83,49 @@
                               RelativePanel.RightOf="hightlight_lable"
                               RelativePanel.AlignVerticalCenterWithPanel="True" />
                 <Button Name="text_smaller_button" 
-                    Width="auto"
-                    Height="auto"
-                    Content="&#xE949;"
-                    FontFamily="Segoe MDL2 Assets"
-                    RelativePanel.AlignRightWithPanel="True"/>
+                        Width="auto"
+                        Height="auto"
+                        Content="&#xE949;"
+                        FontFamily="Segoe MDL2 Assets"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
+                        RelativePanel.AlignRightWithPanel="True"/>
                 <Button Name="text_bigger_button" 
-                    Width="auto"
-                    Height="auto"
-                    Content="&#xE948;"
-                    FontFamily="Segoe MDL2 Assets"
-                    RelativePanel.LeftOf="text_smaller_button" HorizontalAlignment="Right"/>
-                <TextBlock 
-                FontFamily="Segoe MDL2 Assets" Text="&#xE8E9;"
-                Width="auto" Height="auto"
-                RelativePanel.LeftOf="text_bigger_button"
-                TextAlignment="Center" 
-                Margin="0,0,5,0"
-                FontSize="24" VerticalAlignment="Top"
+                        Width="auto"
+                        Height="auto"
+                        Margin="5,0,0,0"
+                        Content="&#xE948;"
+                        FontFamily="Segoe MDL2 Assets"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
+                        RelativePanel.LeftOf="text_smaller_button" HorizontalAlignment="Right"/>
+               
+                <ComboBox Name="font_family"
+                          Width="100" Height="27"
+                          RelativePanel.LeftOf="text_bigger_button"
+                          PlaceholderText="FontFamily"
+                          FontSize="13"
+                          Margin="5,0,0,0"
+                          ItemsSource="{x:Bind fonts}"
+                          RelativePanel.AlignVerticalCenterWithPanel="True"
+                          DisplayMemberPath="Source"
+                 />
+                <TextBlock Name="style_icon"
+                           FontFamily="Segoe MDL2 Assets" Text="&#xE8C1;"
+                           Width="auto" Height="auto"
+                           Margin="5,0,5,0"
+                           RelativePanel.LeftOf="font_family"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"
+                           FontSize="24" VerticalAlignment="Top"
                 />
             </RelativePanel>
         </Border>
-        <Border Background="Beige" Grid.Column="0" Grid.Row="1"  Grid.RowSpan="2" Margin="15,2,15,10">
-            <RichEditBox x:Name="editor" Height="auto" Width="auto"/>
+        <Border Background="Beige" 
+                Grid.Column="0" Grid.Row="1"  
+                Grid.RowSpan="2" 
+                Margin="15,3,15,10">
+            <RichEditBox x:Name="editor" 
+                           Height="auto" Width="auto"
+                           SelectionHighlightColor="Green" >
+            </RichEditBox>
         </Border>
         <StackPanel Grid.Column="1" Grid.RowSpan="3"
                     Orientation="Vertical">
@@ -103,17 +157,15 @@
                 <TextBlock Text="实时提取词汇" Height="auto" Foreground="White" HorizontalAlignment="Center" FontSize="20" Padding="2,2,2,2" Margin="2,2,2,2" >
                 </TextBlock>
             </Border>
-            <Border Background="Black"> 
-            <ListView Name="words_view" Background="White" Margin="2,2,2,2" 
+                <Border Background="Black">
+                    <ListView Name="words_view" Background="White" Margin="2,2,2,2" 
+                      ItemClick="words_view_ItemClick"
                       IsItemClickEnabled="True" 
-                      ItemClick="words_view_ItemClick">
-                <ListViewItem Name="item1" Content="word1"/>
-                <ListViewItem Name="item2" Content="word2"/>
-                <ListViewItem Name="item3" Content="word3"/>
-            </ListView>
-            </Border>
-                <Button Content="移除" FontSize="20" Click="Button_Click" />
+                      ItemsSource="{x:Bind readerWordLists ,Mode=TwoWay}"
+                      ItemTemplate="{StaticResource BookDataTemplate}">
 
+                    </ListView>
+                </Border>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -40,4 +40,5 @@ namespace exReader.DatabaseManager
             String a = reader.GetString(0);
         }
     }
+
 }

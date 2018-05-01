@@ -1,5 +1,8 @@
-﻿using System;
+﻿using exReader.ReaderManager;
+using exReader.WordsManager;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -20,28 +23,38 @@ namespace exReader
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
+    /// 
     public sealed partial class MainReader : Page
     {
+        private ReaderManage reader = new ReaderManage();
+        private ObservableCollection<Vocabulary> readerWordLists;
+
+        ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
         public MainReader()
         {
             this.InitializeComponent();
-         
+            fonts.Add(new FontFamily("Arial"));
+            fonts.Add(new FontFamily("Courier New"));
+            fonts.Add(new FontFamily("Times New Roman"));
+            readerWordLists = new ObservableCollection<Vocabulary>(reader.readerWordLists);
         }
 
         private void words_view_ItemClick(object sender, ItemClickEventArgs e)
         {
-            foreach (ListViewItem eachItem in words_view.SelectedItems)
-            {
-                words_view.Items.Remove(eachItem);
-            }
+
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void getReaderList()
         {
-            foreach (ListViewItem eachItem in words_view.SelectedItems)
-            {
-                words_view.Items.Remove(eachItem);
-            }
+            readerWordLists = new ObservableCollection<Vocabulary>(reader.readerWordLists);
         }
+
+        private void YesButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
     }
 } 
