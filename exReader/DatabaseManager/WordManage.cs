@@ -37,11 +37,30 @@ namespace exReader.DatabaseManager
             dbfile.Open();
             //数据库读入内存
             dbfile.BackupDatabase(db, "main", "main", -1, null, 0);
-            //建立查询缓存
+            //建立查询缓存单词表
             var command = new SQLiteCommand();
             command.Connection = db;
             command.CommandText = "CREATE TABLE zk AS SELECT word FROM stardict WHERE tag LIKE \'%zk%\'";
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE gk AS SELECT word FROM stardict WHERE tag LIKE \'%gk%\'";
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE cet4 AS SELECT word FROM stardict WHERE tag LIKE \'%cet4%\'";
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE cet6 AS SELECT word FROM stardict WHERE tag LIKE \'%cet6%\'";
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE toefl AS SELECT word FROM stardict WHERE tag LIKE \'%toefl%\'";
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE gre AS SELECT word FROM stardict WHERE tag LIKE \'%gre%\'";
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE ielts AS SELECT word FROM stardict WHERE tag LIKE \'%ielts%\'";
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE ky AS SELECT word FROM stardict WHERE tag LIKE \'%ky%\'";
             command.ExecuteNonQuery();
+            //建立查询文章表
+            command.CommandText = "CREATE TABLE wordset AS SELECT word FROM stardict WHERE \'1\' = \'2\'";
+            command.ExecuteNonQuery();
+            //ttt
+            //QueryWord("have if base go usage able technology","cet4");
         }
         public List<Vocabulary> QueryWord(String text, String Type)
         {
@@ -53,24 +72,30 @@ namespace exReader.DatabaseManager
             }
             String[] splitedtext = text.Split(new char[] {' ', ',', '.', '?', '!', '\'', '\"', '='});
             List<Vocabulary> vocabularies = new List<Vocabulary>();
-            /*
-            foreach(String aword in splitedtext)
+            //开始添词
+            SQLiteCommand command = new SQLiteCommand();
+            command.Connection = db;
+            foreach (String aword in splitedtext)
             {
-                SqliteCommand command = new SqliteCommand();
-                command.CommandText = "SELECT * FROM stardict WHERE word = '"+aword+"'";
-                command.Connection = db;
-                var reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    Vocabulary aunit = new Vocabulary();
-                    aunit.Word = aword;
-                    aunit.Translation = ;
-                    aunit.Classification = ;
-                    aunit.YesorNo = ;
-                    String a = reader;
-                }
+                command.CommandText = "INSERT INTO wordset VALUES (\'"+aword+"\')";
+                command.ExecuteNonQuery();
             }
-            */
+            //词语连接
+            command.CommandText = 
+                "SELECT wordset.word,stardict.translation FROM wordset,stardict WHERE wordset.word = stardict.word AND stardict.tag LIKE \'%"+Type+"%\'";
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Vocabulary v = new Vocabulary();
+                v.Word = reader.GetString(0);
+                v.Translation = reader.GetString(1);
+                v.Classification = 1;
+                v.YesorNo = 1;
+                vocabularies.Add(v);
+            }
+            reader.Close();
+            //最后删词
+            command.CommandText = "DELETE FROM wordset WHERE \'1\'=\'1\'";
             return vocabularies;
         }
     }
