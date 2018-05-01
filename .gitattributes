@@ -1,2 +1,0 @@
-exReader/db/dic/db filter=lfs diff=lfs merge=lfs -text
-exReader/db/dic.db filter=lfs diff=lfs merge=lfs -text
