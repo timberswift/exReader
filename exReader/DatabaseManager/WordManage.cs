@@ -3,11 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
 using exReader.WordsManager;
-//using Microsoft.Data.Sqlite;
-using Windows.Storage;
 
 namespace exReader.DatabaseManager
 {
@@ -31,12 +27,23 @@ namespace exReader.DatabaseManager
         SQLiteConnection db;
         public WordManage()
         {
+            //in memory
+            string str = "Data Source=:memory:;Version=3;New=True;";
+            db = new SQLiteConnection(str);
+            db.Open();
             //dictionary file sqlite
             string path = Path.GetFullPath("db/dic.db");
-            db = new SQLiteConnection("Filename="+path);
-            db.Open();
+            dbfile = new SQLiteConnection("Data Source="+path+";");
+            dbfile.Open();
+            //数据库读入内存
+            dbfile.BackupDatabase(db, "main", "main", -1, null, 0);
+            //建立查询缓存
+            var command = new SQLiteCommand();
+            command.Connection = db;
+            command.CommandText = "CREATE TABLE zk AS SELECT word FROM stardict WHERE tag LIKE \'%zk%\'";
+            command.ExecuteNonQuery();
         }
-        public List<Vocabulary> QuiryWord(String text, String Type)
+        public List<Vocabulary> QueryWord(String text, String Type)
         {
             //Type can be   zk gk cet4 cet6 toefl gre ielts ky
             //如果查询的类别不是这些考试类别之一则报错
