@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
+using exReader.WordsManager;
+//using Microsoft.Data.Sqlite;
 using Windows.Storage;
 
 namespace exReader.DatabaseManager
@@ -22,22 +24,47 @@ namespace exReader.DatabaseManager
     public int YesorNo { get; set; }            // "1"
  
     */
-
     class WordManage
     {
         public static WordManage instance;
-        SqliteConnection db;
+        SQLiteConnection dbfile;
+        SQLiteConnection db;
         public WordManage()
         {
+            //dictionary file sqlite
             string path = Path.GetFullPath("db/dic.db");
-            db = new SqliteConnection("Filename="+path);
+            db = new SQLiteConnection("Filename="+path);
             db.Open();
-            SqliteCommand command = new SqliteCommand();
-            command.CommandText = "SELECT sw FROM stardict WHERE sw = 'age'";
-            command.Connection = db;
-            var reader = command.ExecuteReader();
-            reader.Read();
-            String a = reader.GetString(0);
+        }
+        public List<Vocabulary> QuiryWord(String text, String Type)
+        {
+            //Type can be   zk gk cet4 cet6 toefl gre ielts ky
+            //如果查询的类别不是这些考试类别之一则报错
+            if(Type!="zk"&& Type !="gk" && Type !="cet4" && Type !="cet6" && Type !="toefl" && Type !="gre" && Type !="ielts" && Type != "ky")
+            {
+                throw new Exception("Test type "+Type+" not supported.");
+            }
+            String[] splitedtext = text.Split(new char[] {' ', ',', '.', '?', '!', '\'', '\"', '='});
+            List<Vocabulary> vocabularies = new List<Vocabulary>();
+            /*
+            foreach(String aword in splitedtext)
+            {
+                SqliteCommand command = new SqliteCommand();
+                command.CommandText = "SELECT * FROM stardict WHERE word = '"+aword+"'";
+                command.Connection = db;
+                var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    Vocabulary aunit = new Vocabulary();
+                    aunit.Word = aword;
+                    aunit.Translation = ;
+                    aunit.Classification = ;
+                    aunit.YesorNo = ;
+                    String a = reader;
+                }
+            }
+            */
+            return vocabularies;
         }
     }
 
