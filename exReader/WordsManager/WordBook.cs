@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace exReader.WordsManager
 {
@@ -54,6 +55,8 @@ namespace exReader.WordsManager
             get { return stateColor; }
             set { stateColor = value; }
         }
+
+        
     }
 
     public class WordBook
@@ -94,7 +97,7 @@ namespace exReader.WordsManager
                     books.Add(new Vocabulary { Word = "word", Translation = "n. 话", Classification = type, YesorNo = 1 });
                     books.Add(new Vocabulary { Word = "class", Translation = "n. 班级，分类", Classification = type, YesorNo = 1 });
                     books.Add(new Vocabulary { Word = "translate", Translation = "v. 翻译", Classification = type, YesorNo = 0 });
-                    books.Add(new Vocabulary { Word = "book", Translation = "n. 书", Classification = type, YesorNo = 1 });
+                    books.Add(new Vocabulary { Word = "book", Translation = "n. 书  v.预订 v.测试长度1 a.测试长度2", Classification = type, YesorNo = 1 });
                     books.Add(new Vocabulary { Word = "static", Translation = "a. 静态的", Classification = type, YesorNo = 0 });
                     books.Add(new Vocabulary { Word = "head", Translation = "n. 头", Classification = type, YesorNo = 1 });
 

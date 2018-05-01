@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Loaded="Page_Loaded">
     <NavigationView 
-        Name="NavigationView"  
+        Name="MyNavigationView"  
         SelectionChanged="NavigationView_OnSelectionChanged"
         CompactModeThresholdWidth="100"
         ExpandedModeThresholdWidth="1500">
