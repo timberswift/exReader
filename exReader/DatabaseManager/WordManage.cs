@@ -59,8 +59,10 @@ namespace exReader.DatabaseManager
             //建立查询文章表
             command.CommandText = "CREATE TABLE wordset AS SELECT word FROM stardict WHERE \'1\' = \'2\'";
             command.ExecuteNonQuery();
+            command.CommandText = "CREATE UNIQUE INDEX word ON wordset(word)";
+            command.ExecuteNonQuery();
             //ttt
-            //QueryWord("have if base go usage able technology","cet4");
+            //QueryWord("have have have if if base base base go usage able technology","cet4");
         }
         public List<Vocabulary> QueryWord(String text, String Type)
         {
@@ -77,7 +79,7 @@ namespace exReader.DatabaseManager
             command.Connection = db;
             foreach (String aword in splitedtext)
             {
-                command.CommandText = "INSERT INTO wordset VALUES (\'"+aword+"\')";
+                command.CommandText = "INSERT OR IGNORE INTO wordset VALUES (\'"+aword+"\')";
                 command.ExecuteNonQuery();
             }
             //词语连接
@@ -96,6 +98,7 @@ namespace exReader.DatabaseManager
             reader.Close();
             //最后删词
             command.CommandText = "DELETE FROM wordset WHERE \'1\'=\'1\'";
+            command.ExecuteNonQuery();
             return vocabularies;
         }
     }
