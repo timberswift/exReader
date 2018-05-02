@@ -9,28 +9,35 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
-            <RelativePanel Width="auto" Height="auto">
+            <RelativePanel Width="auto" Height="auto" Margin="0,3,0,3">
+                <Border Name="word_border" Margin="5,0,10,0" Background="Beige" RelativePanel.AlignLeftWithPanel="True"
+                           RelativePanel.AlignVerticalCenterWithPanel="True">
                 <TextBlock Name="word_text"      
                            Text="{x:Bind Word}" 
-                           Margin="5,0,10,0" 
+                           Margin="3,3,3,3"                       
                            FontSize="18"  
                            FontWeight="Bold" 
                            FontFamily="Arial Black"
-                           HorizontalAlignment="Center"
-                           RelativePanel.AlignLeftWithPanel="True"
-                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                           HorizontalAlignment="Left"
+                          />
+                </Border>
                 <TextBlock Name="trans_text"
-                           FontSize="14" 
+                           FontSize="13" 
+                           Foreground="Gray"
                            Text="{x:Bind Translation}" 
+                           Padding="1,1,1,1"
                            ToolTipService.ToolTip="{x:Bind Translation}"
-                           HorizontalAlignment="Center"
-                           RelativePanel.RightOf="word_text"
-                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                           HorizontalAlignment="Left"
+                           RelativePanel.RightOf="word_border"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"
+                          />
                 <Button Name="RemoveButton" 
                         FontFamily="Segoe MDL2 Assets" 
+                        Background="White"
                         Content="&#xF0AF;" 
                         FontSize="20"  
                         HorizontalContentAlignment="Center"
+                        RelativePanel.AlignVerticalCenterWithPanel="True"
                         RelativePanel.AlignRightWithPanel="True"
                         Click="WordRemoveButton_Click"
                          />
@@ -38,27 +45,28 @@
         </DataTemplate>
         
         <DataTemplate x:DataType="data:Vocabulary" x:Key="AllBookDataTemplate">
-            <RelativePanel Width="auto" Height="auto">
+            <RelativePanel Width="auto" Height="auto" Margin="0,3,0,3">
                 <TextBlock Name="type_tag"
                            Text="{x:Bind Classification}"
                            Margin="5,0,10,0" 
-                           HorizontalAlignment="Center"
+                           HorizontalAlignment="Left"
                            RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <TextBlock Name="word_text"      
-                           FontSize="18"  
+                           FontSize="16"  
                            FontWeight="Bold" 
                            FontFamily="Arial Black"
                            Text="{x:Bind Word}" 
                            Margin="5,0,10,0" 
-                           HorizontalAlignment="Center"
+                           HorizontalAlignment="Left"
                            RelativePanel.RightOf="type_tag"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <TextBlock Name="trans_text"
-                           FontSize="14" 
+                           FontSize="13" 
+                           Foreground="Gray"
                            Text="{x:Bind Translation}" 
                            ToolTipService.ToolTip="{x:Bind Translation}"
-                           HorizontalAlignment="Center"
+                           HorizontalAlignment="Left"
                            RelativePanel.RightOf="word_text"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <Border Width="20" 
@@ -222,8 +230,19 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
             </Border>
+            <Border Grid.Column="0" Grid.Row="1">
+                <TextBlock Name="all_empty"
+                           Margin="50,50,50,50"
+                           Width="70"
+                           Height="70"
+                           Opacity="1"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           FontSize="24"
+                           Text="暂无单词"/>
+            </Border>
 
-                    <Border Grid.Row="0" Grid.Column="1" Background="Green">
+            <Border Grid.Row="0" Grid.Column="1" Background="Green">
                 
                     <TextBlock Name="nowords_label"  
                        Text="未掌握词汇(学习中)"
@@ -246,6 +265,17 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
             </Border>
+            <Border Grid.Column="1" Grid.Row="1">
+                <TextBlock Name="no_empty"
+                           Margin="50,50,50,50"
+                           Width="70"
+                           Height="70"
+                         
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           FontSize="24"
+                           Text="暂无单词"/>
+            </Border>
             <Border Grid.Row="0" Grid.Column="2" Background="Gray">
                 <TextBlock Name="yeswords_label"
                        Text="已掌握词汇(复习中)"
@@ -267,6 +297,17 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
+            </Border>
+            <Border Grid.Column="2" Grid.Row="1">
+                <TextBlock Name="yes_empty"
+                           Margin="50,50,50,50"
+                           Width="70"
+                           Height="70"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           
+                           FontSize="24"
+                           Text="暂无单词"/>
             </Border>
         </Grid>
     </Grid>

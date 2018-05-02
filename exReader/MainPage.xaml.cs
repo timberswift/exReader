@@ -24,12 +24,13 @@ namespace exReader
     {
         public MainPage()
         {
-            DatabaseManager.WordManage.instance = new DatabaseManager.WordManage();
+            
             this.InitializeComponent();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            DatabaseManager.WordManage.instance = new DatabaseManager.WordManage();
             readerPageHome.IsSelected = true;
             
         }

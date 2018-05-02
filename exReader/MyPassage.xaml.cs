@@ -64,9 +64,9 @@ namespace exReader
             choose = (Passage)e.ClickedItem;
            // Debug.WriteLine(choose.Content);
             Frame.Navigate(typeof(MainReader),choose);
-         //   Frame appFrame = Window.Current.Content as Frame;
-         //   MainPage mainPage = appFrame.Content as MainPage;
-         //   mainPage.SetSelectedNavigationItem(0);
+            Frame appFrame = Window.Current.Content as Frame;
+           MainPage mainPage = appFrame.Content as MainPage;
+            mainPage.SetSelectedNavigationItem(0);
 
            
         }

@@ -27,38 +27,26 @@ namespace exReader
     /// </summary>
     public sealed partial class MyWordsList : Page
     {
-        private ObservableCollection<Vocabulary> booklists;
-        private ObservableCollection<Vocabulary> nobooklists;    
-        private ObservableCollection<Vocabulary> yesbooklists;
-     
+        private ObservableCollection<Vocabulary> booklists = new ObservableCollection<Vocabulary>();
+        private ObservableCollection<Vocabulary> nobooklists = new ObservableCollection<Vocabulary>();
+        private ObservableCollection<Vocabulary> yesbooklists = new ObservableCollection<Vocabulary>();
+
         public MyWordsList()
         {
-            this.InitializeComponent(); 
-            booklists = new ObservableCollection<Vocabulary>(new WordBook().CET4_Book);
-            nobooklists = new ObservableCollection<Vocabulary>(WordBook.GetNoWordBook(booklists));
-            yesbooklists = new ObservableCollection<Vocabulary>(WordBook.GetYesWordBook(booklists));
+            this.InitializeComponent();
+            all_empty.Opacity = 0;
+            yes_empty.Opacity = 0;
+            no_empty.Opacity = 0;
+            
+            // nobooklists = new ObservableCollection<Vocabulary>(WordBook.GetNoWordBook(booklists));
+            // yesbooklists = new ObservableCollection<Vocabulary>(WordBook.GetYesWordBook(booklists));
         }
 
 
         private async void AllBook_button_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            Vocabulary v = new Vocabulary();
-            v.Word = "new";
-            v.Translation = "a. 新的";
-            v.Classification = 1;
-            v.YesorNo = 1;
-            v.StateColor = "#ff0000";
-            booklists.Add(v);
-            Vocabulary b = new Vocabulary();
-            b.Word = "vocabulary";
-            b.Translation = "n. 词汇";
-            b.Classification = 1;
-            b.YesorNo = 0;
-            b.StateColor = "#ff0000";
-            booklists.Add(b);
-            */
-            await SwitchWordsBook(1);
+           
+            await SwitchWordsBook(0);
 
         }
 
@@ -66,34 +54,31 @@ namespace exReader
         {
 
             await SwitchWordsBook(1);
-            // booklists = new WordsManager.WordBook.GetBooks(2);
-           // booklists.Clear();
-           // ObservableCollection<Vocabulary> newBooklists = new ObservableCollection<Vocabulary>(WordBook.GetBooks(2));
         }
 
         private async void Cet6Button_Click(object sender, RoutedEventArgs e)
         {
-            await SwitchWordsBook(3);
+            await SwitchWordsBook(2);
         }
 
         private async void KyButton_Click(object sender, RoutedEventArgs e)
         {
-            await SwitchWordsBook(1);  
+            await SwitchWordsBook(3);  
         }
 
         private async void ToeflButton_Click(object sender, RoutedEventArgs e)
         {        
-            await SwitchWordsBook(2);
+            await SwitchWordsBook(4);
         }
 
         private async void IeltsButton_Click(object sender, RoutedEventArgs e)
         {
-            await SwitchWordsBook(3);
+            await SwitchWordsBook(5);
         }
 
         private async void GreButton_Click(object sender, RoutedEventArgs e)
         {
-            await SwitchWordsBook(1);
+            await SwitchWordsBook(6);
         }
 
         async private Task SwitchWordsBook(int type)
@@ -106,27 +91,31 @@ namespace exReader
             ObservableCollection<Vocabulary> ybooklist;
             switch (type)
             {
-                
+                case 0:
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET4_Book);
+                   booklist.Union(WordBook.CET6_Book).Union(WordBook.Kaoyan_Book).Union(WordBook.TOEFL_Book)
+                        .Union(WordBook.IELTS_Book).Union(WordBook.GRE_Book).ToList();
+                    break;
                 case 1:
-                    booklist = new ObservableCollection<Vocabulary>(new WordBook().CET4_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET4_Book);
                     break;
                 case 2:
-                    booklist = new ObservableCollection<Vocabulary>(new WordBook().CET6_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET6_Book);
                     break;
                 case 3:
-                    booklist = new ObservableCollection<Vocabulary>(new WordBook().Kaoyan_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.Kaoyan_Book);
                     break;
                 case 4:
-                    booklist = new ObservableCollection<Vocabulary>(new WordBook().TOEFL_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.TOEFL_Book);
                     break;
                 case 5:
-                    booklist = new ObservableCollection<Vocabulary>(new WordBook().IELTS_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.IELTS_Book);
                     break;
                 case 6:
-                    booklist = new ObservableCollection<Vocabulary>(new WordBook().GRE_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.GRE_Book);
                     break;
                 default:
-                    booklist = new ObservableCollection<Vocabulary>(new WordBook().CET4_Book);                 
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET4_Book);                 
                     break;
             }
 
@@ -147,6 +136,10 @@ namespace exReader
                 yesbooklists.Add(each);
             }
 
+            ShowEmptyLabel(booklist, 1);
+            ShowEmptyLabel(nbooklist, 2);
+            ShowEmptyLabel(ybooklist, 3);
+
         }
 
         private void Allwords_listview_ItemClick(object sender, ItemClickEventArgs e)
@@ -158,6 +151,7 @@ namespace exReader
         {
         }
 
+
         private void WordRemoveButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;       
@@ -167,12 +161,14 @@ namespace exReader
                 word.YesorNo = 1;
                 nobooklists.Remove(word);
                 yesbooklists.Add(word);
+
             }
             else
             {
                 word.YesorNo = -1;  //被用户删除的状态
                 yesbooklists.Remove(word);
             }
+            ShowEmptyLabel(yesbooklists, 3);
             // Debug.WriteLine("word: " + word.Word + "\n trans: " + word.Translation + "\n y_or_n: " + word.YesorNo + "\n clas: " + word.Classification);
             // ...
         }
@@ -206,6 +202,31 @@ namespace exReader
             {
                 Debug.WriteLine(i.Word);
             }
+        }
+
+        private void ShowEmptyLabel(ObservableCollection<Vocabulary> lists,int type)
+        {           
+            if(lists.Count == 0)
+            {
+                switch (type)
+                {
+                    case 1: all_empty.Opacity = 1; break;
+                    case 2: no_empty.Opacity = 1; break;
+                    case 3: yes_empty.Opacity = 1; break;
+                    default:break;
+                }
+            }
+            else
+            {
+                switch (type)
+                {
+                    case 1: all_empty.Opacity = 0; break;
+                    case 2: no_empty.Opacity = 0; break;
+                    case 3: yes_empty.Opacity = 0; break;
+                    default: break;
+                }
+            }
+
         }
 
       

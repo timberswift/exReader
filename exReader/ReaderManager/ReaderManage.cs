@@ -3,6 +3,7 @@ using exReader.WordsManager;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -19,17 +20,72 @@ namespace exReader.ReaderManager
     public class ReaderManage
     {
         private Passage readerPassage;
-        private WordBook readerWordBook;
+        private WordBook readerWordBook;   
+        private ObservableCollection<Vocabulary> readerWordLists;// = new ObservableCollection<Vocabulary>(WordBook.GetBooks(1));
+        private int readerChooseMode;
 
         [DataMember]
-        public ObservableCollection<Vocabulary> readerWordLists = new ObservableCollection<Vocabulary>(WordBook.GetBooks(1));
-       // private Tuple<int, int, int, int,int, int> readerChooseMode;
-        private int readerChooseMode; //000000  CET4|CET6|Kaoyan|T|I|G    value range: 0~63
+        public Passage ReaderPassage
+        {
+            get
+            {
+                return (new PassageManage().GetPassage());
+            }
+            set
+            {
+                readerPassage = value;
+            }
+        }
 
-        
+        public WordBook ReaderWordBook
+        {
+            get
+            {
+                return readerWordBook;
+            }
+            set
+            {
+                readerWordBook = value;
+            }
+        }
+
+        [DataMember]
+        public int ReaderChooseMode
+        {
+            get
+            {
+                return readerChooseMode;
+            }
+            set
+            {
+                readerChooseMode = value;
+            }
+        }
+
+        [DataMember]
+        public ObservableCollection<Vocabulary> ReaderWordLists
+        {
+            get
+            {
+                return readerWordLists;
+            }
+            set
+            {
+                readerWordLists = value;
+            }
+        }
 
 
-        //public 
+
+        //在数据库匹配单词
+        public void MatchWords(string type, int t)
+        {
+            List<Vocabulary> lists = DatabaseManager.WordManage.instance.QueryWord(this.ReaderPassage.Content, type);
+            List<Vocabulary> newlist = lists.GroupBy(x => x.Word).Select(x => x.First()).ToList<Vocabulary>();  //去重复      
+            ObservableCollection<Vocabulary> vocabularies = new ObservableCollection<Vocabulary>(newlist);
+            this.readerChooseMode = t;
+            this.ReaderWordLists = vocabularies;
+        }
 
     }
 

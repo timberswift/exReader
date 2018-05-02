@@ -8,7 +8,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
-            <RelativePanel Width="auto" Height="auto">
+            <RelativePanel Width="auto" Height="auto" Margin="0,5,0,5">
                 <TextBlock Name="class_tag"
                            FontSize="10"
                            Margin="0,0,5,0" 
@@ -17,18 +17,21 @@
                            RelativePanel.AlignVerticalCenterWithPanel="True"
                            RelativePanel.AlignLeftWithPanel="True"/>
                 <TextBlock Name="word_text"      
-                           FontSize="12"  
+                           FontSize="14"  
                            Text="{x:Bind Word}" 
                            Margin="0,0,5,0" 
-                           HorizontalAlignment="Center"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Left"
                            RelativePanel.RightOf="class_tag"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <TextBlock Name="trans_text"
                            FontSize="11" 
-                           Width="150"
+                           Width="auto"
+                           MaxWidth="150"
+                           Foreground="Gray"
                            Text="{x:Bind Translation}" 
                            ToolTipService.ToolTip="{x:Bind Translation}"
-                           HorizontalAlignment="Center"
+                           HorizontalAlignment="Left"
                            RelativePanel.RightOf="word_text"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <Button Name="YesButton" 
@@ -45,7 +48,7 @@
     </Page.Resources>
     <Grid  Background="#ffffff">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="8*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -117,7 +120,7 @@
                         FontFamily="Segoe MDL2 Assets"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
                         RelativePanel.LeftOf="text_smaller_button" HorizontalAlignment="Right"/>
-               
+
                 <ComboBox Name="font_family"
                           Width="100" Height="27"
                           RelativePanel.LeftOf="text_bigger_button"
@@ -146,13 +149,12 @@
                            Background="Beige"
                            Height="auto" Width="auto"                       
                            SelectionHighlightColor="Green" FontFamily="Arial Black" >
-               
             </RichEditBox>
         </Border>
-        <StackPanel Grid.Column="1" Grid.RowSpan="3" 
+        <StackPanel Grid.Column="1" Grid.RowSpan="2" 
                     Orientation="Vertical">
-            <ToggleSwitch OffContent="自定义" OnContent="全选" IsOn="True" />
-                <Border  Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Background="Black" Margin="0,5,5,0">
+            <ToggleSwitch OffContent="中文" OnContent="English" IsOn="False" />
+            <Border  Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Background="Black" Margin="0,5,5,0">
                 <Grid Height="auto" Background="#ffffff" Margin="2,2,2,2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -160,40 +162,105 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="99*"/>
+                        <ColumnDefinition Width="45*"/>
+                        <ColumnDefinition Width="143*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Row="0" Grid.Column="0" Margin="2,2,1,1" HorizontalAlignment="Stretch" FontSize="14"  Background="#FFF0D0A2" FontWeight="Bold" FontFamily="Arial Black">CET4</Button>
-                    <Button Grid.Row="1" Grid.Column="0" Margin="2,1,1,1" HorizontalAlignment="Stretch" FontSize="14"  Background="#FFCBDDEC" FontWeight="Bold" FontFamily="Arial Black">考研</Button>
-                    <Button Grid.Row="2" Grid.Column="0" Margin="2,1,1,2" HorizontalAlignment="Stretch" FontSize="14"  Background="#FFBFBFBF" FontWeight="Bold" FontFamily="Arial Black">托福TOFEL</Button>
+                    <Button Name="cet4_button" 
+                            Grid.Row="0" Grid.Column="0" Margin="2,2,0.5,1" 
+                            HorizontalAlignment="Stretch" FontSize="14"  Background="#FFF0D0A2" 
+                            FontWeight="Bold" 
+                            FontFamily="Arial Black"
+                            Click="cet4_button_Click" Grid.ColumnSpan="2">CET4</Button>
 
-                    <Button Grid.Row="0" Grid.Column="1" Margin="1,2,2,1" HorizontalAlignment="Stretch" FontSize="14"  Background="#FFF0D0A2" FontWeight="Bold" FontFamily="Arial Black" >CET6</Button>
-                    <Button Grid.Row="1" Grid.Column="1" Margin="1,1,2,1" HorizontalAlignment="Stretch" FontSize="14"  Background="#FFCBDDEC" FontWeight="Bold" FontFamily="Arial Black">GRE</Button>
-                    <Button Grid.Row="2" Grid.Column="1" Margin="1,1,2,2" HorizontalAlignment="Stretch" FontSize="14"  Background="#FFBFBFBF" FontWeight="Bold" FontFamily="Arial Black">雅思IELTS</Button>
+                    <Button Name="kaoyan_button"
+                        Grid.Row="1" Grid.Column="0" Margin="2,1,0.5,1" 
+                            HorizontalAlignment="Stretch" FontSize="14"  Background="#FFCBDDEC" 
+                            FontWeight="Bold" 
+                            FontFamily="Arial Black"
+                            Click="kaoyan_button_Click" Grid.ColumnSpan="2">考研</Button>
+                    <Button Name="toefl_button"
+                        Grid.Row="2" Grid.Column="0" Margin="2,1,0.5,2" 
+                            HorizontalAlignment="Stretch" FontSize="14"  Background="#FFBFBFBF" 
+                            FontWeight="Bold" 
+                            FontFamily="Arial Black"
+                            Click="toefl_button_Click" Grid.ColumnSpan="2">托福TOEFL</Button>
+
+                    <Button Name="cet6_button"
+                        Grid.Row="0" Grid.Column="2" Margin="1.5,2,1.5,1" 
+                            HorizontalAlignment="Stretch" FontSize="14"  Background="#FFF0D0A2" 
+                            FontWeight="Bold" FontFamily="Arial Black" 
+                            Click="cet6_button_Click">CET6</Button>
+
+                    <Button Name="gre_button"
+                        Grid.Row="1" Grid.Column="2" Margin="1.5,1,1.5,1" 
+                            HorizontalAlignment="Stretch" FontSize="14"  Background="#FFCBDDEC" 
+                            FontWeight="Bold" FontFamily="Arial Black"
+                            Click="gre_button_Click">GRE</Button>
+
+                    <Button Name="ielts_button" 
+                        Grid.Row="2" Grid.Column="2" Margin="1.5,1,1.5,2" 
+                            HorizontalAlignment="Stretch" FontSize="14"  Background="#FFBFBFBF" 
+                            FontWeight="Bold" FontFamily="Arial Black"
+                            Click="ielts_button_Click">雅思IELTS</Button>
                 </Grid>
             </Border>
-        
+            <Grid  Grid.Row="0" Margin="0,10,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" Grid.Row="2"  Margin="0,10,5,0">
-            <Border Background="#FF578D37" Margin="0,5,0,5">
+                <Border Grid.Column="0" Margin="10,2,0,2" >
+                    <TextBlock Text="当前提词模式：" Height="auto"  HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2"  FontWeight="Bold" />
+                </Border>
+                <Border Grid.Column="1" Background="Beige" Margin="0,2,10,2" >
+                    <TextBlock Name="Mode_Lable" Text="CET4" Height="auto"  HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2" FontWeight="Bold" />
+                </Border>
+            </Grid>
+        </StackPanel>
+        <Grid Grid.Column="1" Grid.Row="2"  Margin="0,0,5,0" Height="600">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Border Background="#FF578D37" Grid.Row="0" Margin="0,5,0,5">
                 <TextBlock Text="实时提取词汇" Height="auto" Foreground="White" HorizontalAlignment="Center" FontSize="20" Padding="2,2,2,2" Margin="2,2,2,2" FontWeight="Bold" >
                 </TextBlock>
             </Border>
-                <Border Background="Black" >
-                    <ListView Name="words_view" Background="White" Margin="2,2,2,2" 
+            <Border Background="Black" Grid.Row="1">
+                <ListView Name="words_view" Background="White" Margin="2,2,2,2" 
                       ItemClick="words_view_ItemClick"
-                      IsItemClickEnabled="True" 
+                      IsItemClickEnabled="True"    
                       ItemsSource="{x:Bind readerWordLists, Mode=TwoWay}"
                       ItemTemplate="{StaticResource BookDataTemplate}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
-                </Border>
-            </StackPanel>
-        </StackPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </Border>
+            <Border Grid.Column="0" Grid.Row="1">
+                <TextBlock Name="reader_empty"                          
+                           Width="auto"
+                           Height="auto"
+                           Opacity="1"  
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="20"
+                           Text="暂无提取词汇"/>
+            </Border>
+            <Button Grid.Row="2"
+                    Name="export_word_button"
+                    HorizontalAlignment="Stretch"
+                    Content="一键导出至生词本"
+                    Foreground="White"
+                    Background="#FF898D37" FontWeight="Bold" FontSize="18"
+                    Click="export_word_button_Click"
+                    />
+        </Grid>
     </Grid>
 </Page>

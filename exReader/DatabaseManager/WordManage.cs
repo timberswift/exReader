@@ -20,7 +20,7 @@ namespace exReader.DatabaseManager
     public int YesorNo { get; set; }            // "1"
  
     */
-    class WordManage
+    public class WordManage
     {
         public static WordManage instance;
         SQLiteConnection dbfile;
@@ -33,7 +33,7 @@ namespace exReader.DatabaseManager
             db.Open();
             //dictionary file sqlite
             string path = Path.GetFullPath("db/dic.db");
-            dbfile = new SQLiteConnection("Data Source="+path+";");
+            dbfile = new SQLiteConnection("Data Source=" + path + ";");
             dbfile.Open();
             //数据库读入内存
             dbfile.BackupDatabase(db, "main", "main", -1, null, 0);
@@ -62,27 +62,28 @@ namespace exReader.DatabaseManager
             //ttt
             //QueryWord("have if base go usage able technology","cet4");
         }
+
         public List<Vocabulary> QueryWord(String text, String Type)
         {
             //Type can be   zk gk cet4 cet6 toefl gre ielts ky
             //如果查询的类别不是这些考试类别之一则报错
-            if(Type!="zk"&& Type !="gk" && Type !="cet4" && Type !="cet6" && Type !="toefl" && Type !="gre" && Type !="ielts" && Type != "ky")
+            if (Type != "zk" && Type != "gk" && Type != "cet4" && Type != "cet6" && Type != "toefl" && Type != "gre" && Type != "ielts" && Type != "ky")
             {
-                throw new Exception("Test type "+Type+" not supported.");
+                throw new Exception("Test type " + Type + " not supported.");
             }
-            String[] splitedtext = text.Split(new char[] {' ', ',', '.', '?', '!', '\'', '\"', '='});
+            String[] splitedtext = text.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
             List<Vocabulary> vocabularies = new List<Vocabulary>();
             //开始添词
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = db;
             foreach (String aword in splitedtext)
             {
-                command.CommandText = "INSERT INTO wordset VALUES (\'"+aword+"\')";
+                command.CommandText = "INSERT INTO wordset VALUES (\'" + aword + "\')";
                 command.ExecuteNonQuery();
             }
             //词语连接
-            command.CommandText = 
-                "SELECT wordset.word,stardict.translation FROM wordset,stardict WHERE wordset.word = stardict.word AND stardict.tag LIKE \'%"+Type+"%\'";
+            command.CommandText =
+                "SELECT wordset.word,stardict.translation FROM wordset,stardict WHERE wordset.word = stardict.word AND stardict.tag LIKE \'%" + Type + "%\'";
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -90,16 +91,15 @@ namespace exReader.DatabaseManager
                 v.Word = reader.GetString(0);
                 v.Translation = reader.GetString(1);
                 v.Classification = 1;
-                v.YesorNo = 1;
+                v.YesorNo = 0;
                 vocabularies.Add(v);
             }
             reader.Close();
             //最后删词
             command.CommandText = "DELETE FROM wordset WHERE \'1\'=\'1\'";
+            command.ExecuteNonQuery();
             return vocabularies;
         }
     }
-
-
 
 }
