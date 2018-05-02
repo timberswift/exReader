@@ -33,7 +33,7 @@ namespace exReader.DatabaseManager
             db.Open();
             //文件词库数据库
             string path = Path.GetFullPath("db/dic.db");
-            dbfile = new SQLiteConnection("Data Source="+path+";");
+            dbfile = new SQLiteConnection("Data Source="+path+ ";Version=3;");
             dbfile.Open();
             //数据库读入内存
             dbfile.BackupDatabase(db, "main", "main", -1, null, 0);
@@ -43,24 +43,6 @@ namespace exReader.DatabaseManager
             //关闭文件词库数据库
             dbfile.Close();
             dbfile = null;
-            /*
-            //建立查询缓存单词表
-            command.CommandText = "CREATE TABLE zk AS SELECT word FROM stardict WHERE tag LIKE \'%zk%\'";
-            command.Connection = db;
-            command.CommandText = "CREATE TABLE gk AS SELECT word FROM stardict WHERE tag LIKE \'%gk%\'";
-            command.Connection = db;
-            command.CommandText = "CREATE TABLE cet4 AS SELECT word FROM stardict WHERE tag LIKE \'%cet4%\'";
-            command.Connection = db;
-            command.CommandText = "CREATE TABLE cet6 AS SELECT word FROM stardict WHERE tag LIKE \'%cet6%\'";
-            command.Connection = db;
-            command.CommandText = "CREATE TABLE toefl AS SELECT word FROM stardict WHERE tag LIKE \'%toefl%\'";
-            command.Connection = db;
-            command.CommandText = "CREATE TABLE gre AS SELECT word FROM stardict WHERE tag LIKE \'%gre%\'";
-            command.Connection = db;
-            command.CommandText = "CREATE TABLE ielts AS SELECT word FROM stardict WHERE tag LIKE \'%ielts%\'";
-            command.Connection = db;
-            command.CommandText = "CREATE TABLE ky AS SELECT word FROM stardict WHERE tag LIKE \'%ky%\'";
-            command.ExecuteNonQuery();*/
             //建立查询文章表
             command.CommandText = "CREATE TABLE wordset AS SELECT word FROM stardict WHERE \'1\' = \'2\'";
             command.ExecuteNonQuery();
@@ -73,9 +55,20 @@ namespace exReader.DatabaseManager
             command.ExecuteNonQuery();
             //ttt
             //QueryWord("have have have if if base base base go usage able technology","cet4");
+
             //CacheAddWord("master");
             //CacheAddText("a may may what what what science propaganda senior husband");
             //List<Vocabulary> l = VocabularyFiltCacheAnti("cet4 cet6 ky");
+        }
+        public void CacheAddList(List<Vocabulary> vocabularies)
+        {
+            var command = new SQLiteCommand();
+            command.Connection = db;
+            foreach(Vocabulary v in vocabularies)
+            {
+                command.CommandText = "INSERT OR IGNORE INTO wordcache VALUES (\'" + v.Word + "\')";
+                command.ExecuteNonQuery();
+            }
         }
         public void CacheClear()
         {
