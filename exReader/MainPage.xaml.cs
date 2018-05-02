@@ -25,6 +25,7 @@ namespace exReader
         public MainPage()
         {
             DatabaseManager.WordManage.instance = new DatabaseManager.WordManage();
+            DatabaseManager.UserDataDB.instance = new DatabaseManager.UserDataDB();
             this.InitializeComponent();
         }
 
