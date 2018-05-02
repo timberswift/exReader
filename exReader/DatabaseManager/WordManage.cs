@@ -27,19 +27,24 @@ namespace exReader.DatabaseManager
         SQLiteConnection db;
         public WordManage()
         {
-            //in memory
+            //内存词库数据库
             string str = "Data Source=:memory:;Version=3;New=True;";
             db = new SQLiteConnection(str);
             db.Open();
-            //dictionary file sqlite
+            //文件词库数据库
             string path = Path.GetFullPath("db/dic.db");
             dbfile = new SQLiteConnection("Data Source="+path+";");
             dbfile.Open();
             //数据库读入内存
             dbfile.BackupDatabase(db, "main", "main", -1, null, 0);
-            //建立查询缓存单词表
+            //command对象
             var command = new SQLiteCommand();
             command.Connection = db;
+            //关闭文件词库数据库
+            dbfile.Close();
+            dbfile = null;
+            /*
+            //建立查询缓存单词表
             command.CommandText = "CREATE TABLE zk AS SELECT word FROM stardict WHERE tag LIKE \'%zk%\'";
             command.Connection = db;
             command.CommandText = "CREATE TABLE gk AS SELECT word FROM stardict WHERE tag LIKE \'%gk%\'";
@@ -55,14 +60,98 @@ namespace exReader.DatabaseManager
             command.CommandText = "CREATE TABLE ielts AS SELECT word FROM stardict WHERE tag LIKE \'%ielts%\'";
             command.Connection = db;
             command.CommandText = "CREATE TABLE ky AS SELECT word FROM stardict WHERE tag LIKE \'%ky%\'";
-            command.ExecuteNonQuery();
+            command.ExecuteNonQuery();*/
             //建立查询文章表
             command.CommandText = "CREATE TABLE wordset AS SELECT word FROM stardict WHERE \'1\' = \'2\'";
             command.ExecuteNonQuery();
-            command.CommandText = "CREATE UNIQUE INDEX word ON wordset(word)";
+            command.CommandText = "CREATE UNIQUE INDEX wordset_word ON wordset(word)";
+            command.ExecuteNonQuery();
+            //建立缓存词表
+            command.CommandText = "CREATE TABLE wordcache AS SELECT word FROM stardict WHERE \'1\' = \'2\'";
+            command.ExecuteNonQuery();
+            command.CommandText = "CREATE UNIQUE INDEX wordcache_word ON wordcache(word)";
             command.ExecuteNonQuery();
             //ttt
             //QueryWord("have have have if if base base base go usage able technology","cet4");
+            //CacheAddWord("master");
+            //CacheAddText("a may may what what what science propaganda senior husband");
+            //List<Vocabulary> l = VocabularyFiltCacheAnti("cet4 cet6 ky");
+        }
+        public void CacheClear()
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.Connection = db;
+            command.CommandText = "DELETE FROM wordcache WHERE \'1\' = \'1\'";
+            command.ExecuteNonQuery();
+        }
+        public void CacheAddWord(String Word)
+        {
+            Word = Word.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' })[0];
+            SQLiteCommand command = new SQLiteCommand();
+            command.Connection = db;
+            command.CommandText = "INSERT OR IGNORE INTO wordcache VALUES (\'" + Word + "\')";
+            command.ExecuteNonQuery();
+        }
+        public void CacheAddText(String Text)
+        {
+            String[] splitedtext = Text.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
+            SQLiteCommand command = new SQLiteCommand();
+            command.Connection = db;
+            //添加词语
+            foreach (String aword in splitedtext)
+            {
+                command.CommandText = "INSERT OR IGNORE INTO wordcache VALUES (\'" + aword + "\')";
+                command.ExecuteNonQuery();
+            }
+        }
+        public List<Vocabulary> VocabularyFiltCache(String TypeSet)
+        {
+            var vocabularies = new List<Vocabulary>();
+            String[] Types = TypeSet.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
+            SQLiteCommand command = new SQLiteCommand();
+            command.Connection = db;
+
+            command.CommandText =
+                "SELECT wordcache.word,stardict.translation FROM wordcache,stardict WHERE wordcache.word = stardict.word AND (\'1\'=\'2\'";
+            foreach (String Type in Types)
+            {
+                command.CommandText += " OR stardict.tag LIKE \'%" + Type + "%\'";
+            }
+            command.CommandText += ")";
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var v = new Vocabulary();
+                v.Word = reader.GetString(0);
+                v.Translation = reader.GetString(1);
+                vocabularies.Add(v);
+            }
+            reader.Close();
+            return vocabularies;
+        }
+        public List<Vocabulary> VocabularyFiltCacheAnti(String TypeSet)
+        {
+            var vocabularies = new List<Vocabulary>();
+            String[] Types = TypeSet.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
+            SQLiteCommand command = new SQLiteCommand();
+            command.Connection = db;
+
+            command.CommandText =
+                "SELECT wordcache.word,stardict.translation FROM wordcache,stardict WHERE wordcache.word = stardict.word ";
+            foreach(String Type in Types)
+            {
+                command.CommandText+= " AND NOT stardict.tag LIKE \'%" + Type + "%\'";
+            }
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var v = new Vocabulary();
+                v.Word = reader.GetString(0);
+                v.Translation = reader.GetString(1);
+                vocabularies.Add(v);
+            }
+            reader.Close();
+            return vocabularies;
         }
         public List<Vocabulary> QueryWord(String text, String Type)
         {
@@ -91,8 +180,6 @@ namespace exReader.DatabaseManager
                 Vocabulary v = new Vocabulary();
                 v.Word = reader.GetString(0);
                 v.Translation = reader.GetString(1);
-                v.Classification = 1;
-                v.YesorNo = 1;
                 vocabularies.Add(v);
             }
             reader.Close();
