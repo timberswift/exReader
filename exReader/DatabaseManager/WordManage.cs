@@ -70,6 +70,16 @@ namespace exReader.DatabaseManager
                 command.ExecuteNonQuery();
             }
         }
+        public void CacheAddList(List<String> book)
+        {
+            var command = new SQLiteCommand();
+            command.Connection = db;
+            foreach (String v in book)
+            {
+                command.CommandText = "INSERT OR IGNORE INTO wordcache VALUES (\'" + v + "\')";
+                command.ExecuteNonQuery();
+            }
+        }
         public void CacheClear()
         {
             SQLiteCommand command = new SQLiteCommand();
