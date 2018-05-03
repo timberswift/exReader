@@ -7,12 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Notifications;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -32,102 +35,166 @@ namespace exReader
     /// 
     public sealed partial class MainReader : Page
     {
-        private ReaderManage reader = new ReaderManage();
+        private ReaderManage reader;
         private FileManage fileManage;// = new FileManage();
+        //private RichEditBox
         private ObservableCollection<Vocabulary> readerWordLists;// =  new ObservableCollection<Vocabulary>();   //提词列表ListView绑定的数据
         ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
-        
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            // ReaderManage.reader = new ReaderManage();
+            // reader = new ReaderManage();
+            // WordBook.InitWordsBook();  //  每次切换回提词界面，单词本清空。
+        }
+
         public MainReader()
         {
             this.InitializeComponent();
             fonts.Add(new FontFamily("Arial"));
             fonts.Add(new FontFamily("Courier New"));
             fonts.Add(new FontFamily("Times New Roman"));
+
+            reader = new ReaderManage();
             fileManage = new FileManage();
-            readerWordLists = new ObservableCollection<Vocabulary>();
+            readerWordLists = new ObservableCollection<Vocabulary>();   
             UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode);
 
-            WordBook.InitWordsBook();  //  每次切换回提词界面，单词本清空。
+            initReader();
+            
+
         }
         private void words_view_ItemClick(object sender, ItemClickEventArgs e)
         {
 
         }
 
-        private void initReaderList()
+        private void initReader()
         {
-           // reader
-            // readerWordLists = new ObservableCollection<Vocabulary>();
+
+            //暂时文章从
+           
+            if(CacheReaderManage.CacheReader == null)
+            {
+                reader.ReaderPassage = new PassageManage().GetPassage();
+                reader.ReaderChooseMode = 0;
+
+            }
+            else
+            {
+                reader = CacheReaderManage.CacheReader;
+                int type = CacheReaderManage.CacheReader.ReaderChooseMode;
+                if (CacheReaderManage.CacheReader.ReaderChooseMode != 0)
+                {
+                    SearchWordList(GetStringType(type), type);
+                }
+            }
+
+            editor.Document.Selection.SetText(TextSetOptions.FormatRtf, reader.ReaderPassage.Content);
+       
         }
+     
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             Vocabulary item = button.DataContext as Vocabulary;
-           
-            Vocabulary result = (Vocabulary)reader.ReaderWordLists.Where(x => x.Word == item.Word);
-            result.YesorNo = 1;
-            readerWordLists.Remove(item);  
-          //  ShowEmptyLabel(yesbooklists, 3);
+ 
+            int index = reader.ReaderWordLists.IndexOf(reader.ReaderWordLists.Where(x => x.Word == item.Word).FirstOrDefault());
+
+            //   result.YesorNo = 1;
+            readerWordLists.Remove(item);
+            reader.ReaderWordLists.RemoveAt(index);
+            if (readerWordLists.Count == 0) reader_empty.Opacity = 1;  //列表已清除为空
 
         }
 
         private void export_file_Click(object sender, RoutedEventArgs e)
         {
-            // FileManage fileManage = new FileManage();
-            ReaderManage temp_reader = reader;
-            fileManage.SerializeFile(temp_reader);
+            FileManage fileManage = new FileManage();
 
+            fileManage.SerializeFile(reader);
+            ShowToastNotification("exReader提示", "成功导出工程文件!");
         }
 
-        private void save_file_Click(object sender, RoutedEventArgs e)
+        private async void save_file_Click(object sender, RoutedEventArgs e)
         {
-            //reader = await fileManage.DeSerializeFile();
+            //保存当前editor文本到readerPassage的Content
+           // reader.ReaderPassage.Content = editor.Document.Selection.GetText(TextGetOptions.FormatRtf,*);
+
+            if (reader.ReaderPassage == null)
+            {
+                var dialog = new ContentDialog()
+                {
+                    Title = "exReader提示",
+                    Content = "没有可保存的文章！",
+                    PrimaryButtonText = "确定",
+                    // SecondaryButtonText = "取消",
+                    FullSizeDesired = false,
+                };
+                await dialog.ShowAsync();
+            }
+            else
+            {
+                PassageManage.SavePassage(reader.ReaderPassage);
+                var dialog = new ContentDialog()
+                {
+                    Title = "exReader提示",
+                    Content = "成功保存到阅读历史记录！",
+                    PrimaryButtonText = "确定",
+                    FullSizeDesired = false,
+                };
+                await dialog.ShowAsync();
+            }
+          
         }
 
         private async void open_file_Click(object sender, RoutedEventArgs e)
         {
 
             reader = await fileManage.DeSerializeFile();
-            if (reader != null) UpdateBindingData(reader.ReaderWordLists,reader.ReaderChooseMode);
-            //MainPage.MyNavigationView.Header = "Header of this passage";
+            if (reader != null)
+            {
+                RefreshUI();
+                ShowToastNotification("exReader提示", "已打开文章");
+            }
+            
         }
 
      
        
         private void cet4_button_Click(object sender, RoutedEventArgs e)
         {
-            Mode_Lable.Text = "CET4";
             SearchWordList("cet4",1);
         }
 
         private void cet6_button_Click(object sender, RoutedEventArgs e)
         {
-            Mode_Lable.Text = "CET6";
+          
             SearchWordList("cet6",2);
         }
 
         private void kaoyan_button_Click(object sender, RoutedEventArgs e)
         {
-            Mode_Lable.Text = "考研";
+          
             SearchWordList("ky",3);
         }
 
         private void toefl_button_Click(object sender, RoutedEventArgs e)
         {
-            Mode_Lable.Text = "托福TOEFL";
+           
             SearchWordList("toefl",4);
         }
 
         private void ielts_button_Click(object sender, RoutedEventArgs e)
         {
-            Mode_Lable.Text = "雅思IELTS";
+           
             SearchWordList("ielts", 5);
         }
 
         private void gre_button_Click(object sender, RoutedEventArgs e)
         {
-            Mode_Lable.Text = "GRE";
+            
             SearchWordList("gre",6);
         }
 
@@ -136,8 +203,8 @@ namespace exReader
         {
             reader.MatchWords(type, t);
             UpdateBindingData(reader.ReaderWordLists, t);
+            SetModeLabel(t);
         }
-
 
         //更新提词列表数据
         public void UpdateBindingData(ObservableCollection<Vocabulary> newlists, int type)
@@ -158,21 +225,16 @@ namespace exReader
         private void export_word_button_Click(object sender, RoutedEventArgs e)
         {
             int type_mark = reader.ReaderChooseMode;
-
-            try
+            if(readerWordLists.Count != 0)
             {
                 //提词表存入单词本数据库
                 WordBook.StorageWordBook(WordBook.SetBooks(readerWordLists, type_mark));
                 ShowToastNotification("exReader提示", "成功导入到我的生词本!");
             }
-            catch
+            else
             {
                 ShowToastNotification("exReader提示", "导入失败！提词列表为空");
             }
-            /*
-            if (readerWordLists.Count != 0 || readerWordLists == null) ShowToastNotification("exReader提示", "成功导入到我的生词本!");
-            else ShowToastNotification("exReader提示", "导入失败！提词列表为空");
-            */
             
         }
 
@@ -183,12 +245,70 @@ namespace exReader
             if (e.Parameter is Passage)
             {
                 Passage choose_passage = (Passage)e.Parameter;
-
-                Debug.WriteLine(choose_passage.HeadName);
-
+                reader.ReaderPassage = choose_passage;
+                editor.Document.Selection.SetText(TextSetOptions.FormatRtf, choose_passage.Content);
             }
         }
 
+        //离开Reader页面之前，缓存当前reader信息
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            CacheReaderManage.CacheReader = reader;
+        }
+
+        //每次打开工程open file，刷新UI
+        private void RefreshUI()
+        {
+            //# ReaderManage.ReaderPassage = new Passage();
+
+            //设置选词模式Label
+            SetModeLabel(reader.ReaderChooseMode);
+
+            //文本框设置文章Content
+            editor.Document.Selection.SetText(TextSetOptions.FormatRtf, reader.ReaderPassage.Content);
+
+            //显示文章高亮信息
+           //ShowHightLightInfo(Passage reader_passage);   
+
+            //刷新提词绑定列表
+            UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode);
+
+            //添加到缓存reader
+            CacheReaderManage.CacheReader = reader;
+
+        }
+
+        //设置提词模式Label
+        private void SetModeLabel(int type)
+        {
+            switch(type)
+            {
+                case 0: Mode_Lable.Text = "未选择"; break;
+                case 1: Mode_Lable.Text = "CET4"; break;
+                case 2: Mode_Lable.Text = "CET6"; break;
+                case 3: Mode_Lable.Text = "考研"; break;
+                case 4: Mode_Lable.Text = "托福TOEFL"; break;
+                case 5: Mode_Lable.Text = "雅思IELTS"; break;
+                case 6: Mode_Lable.Text = "GRE"; break;
+                default:break;
+            }
+        }
+
+        private string GetStringType(int type)
+        {
+            switch (type)
+            {                
+                case 1: return "cet4";
+                case 2: return "cet6";
+                case 3: return "ky";
+                case 4: return "toefl";
+                case 5: return "ielts";
+                case 6: return "gre";
+                default: return null;
+            }
+        }
+
+        //显示Toast通知
         private void ShowToastNotification(string title, string stringContent)
         {
             ToastNotifier ToastNotifier = ToastNotificationManager.CreateToastNotifier();
@@ -205,6 +325,7 @@ namespace exReader
             ToastNotifier.Show(toast);
         }
 
+
         private void PrintList(ObservableCollection<Vocabulary> list)
         {
             if (list != null)
@@ -219,5 +340,7 @@ namespace exReader
                 Debug.WriteLine("list is empty!");
             }
         }
+
+    
     }
 } 

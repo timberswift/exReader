@@ -39,11 +39,8 @@ namespace exReader
             all_empty.Opacity = 0;
             yes_empty.Opacity = 0;
             no_empty.Opacity = 0;
-            
-            // nobooklists = new ObservableCollection<Vocabulary>(WordBook.GetNoWordBook(booklists));
-            // yesbooklists = new ObservableCollection<Vocabulary>(WordBook.GetYesWordBook(booklists));
+          
         }
-
 
         private async void AllBook_button_Click(object sender, RoutedEventArgs e)
         {
@@ -84,6 +81,7 @@ namespace exReader
             await SwitchWordsBook(6);
         }
 
+        // 匹配选择单词本，从数据库取出相应单词本，放入绑定数据列表
         async private Task SwitchWordsBook(int type)
         {
             booklists.Clear();
@@ -98,7 +96,7 @@ namespace exReader
                     booklist = new ObservableCollection<Vocabulary>(WordBook.All_Book);
                     break;
                 case 1:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet4"));//new ObservableCollection<Vocabulary>(WordBook.CET4_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet4"));
                     break;
                 case 2:
                     booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet6"));
@@ -143,16 +141,7 @@ namespace exReader
 
         }
 
-        private void Allwords_listview_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void Allwords_listview_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-
+        // # 移动单词掌握状态
         private void WordRemoveButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;       
@@ -170,8 +159,7 @@ namespace exReader
                 yesbooklists.Remove(word);
             }
             ShowEmptyLabel(yesbooklists, 3);
-            // Debug.WriteLine("word: " + word.Word + "\n trans: " + word.Translation + "\n y_or_n: " + word.YesorNo + "\n clas: " + word.Classification);
-            // ...
+
         }
 
         public ObservableCollection<Vocabulary> GetStateWordBook(ObservableCollection<Vocabulary> allWordBook,int type)
@@ -197,14 +185,7 @@ namespace exReader
         }
 
 
-        public void Print(ObservableCollection<Vocabulary> v)
-        {
-            foreach(var i in v)
-            {
-                Debug.WriteLine(i.Word);
-            }
-        }
-
+        //显示空列表标签
         private void ShowEmptyLabel(ObservableCollection<Vocabulary> lists,int type)
         {           
             if(lists.Count == 0)
@@ -230,6 +211,7 @@ namespace exReader
 
         }
 
+        // # 显示当前选择单词本模式背景
         private void SectionChange(int type)
         {
             switch(type)
@@ -291,6 +273,13 @@ namespace exReader
             }
         }
 
-      
+        public void Print(ObservableCollection<Vocabulary> v)
+        {
+            foreach (var i in v)
+            {
+                Debug.WriteLine(i.Word);
+            }
+        }
+
     }
 }

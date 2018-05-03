@@ -21,12 +21,6 @@ namespace exReader.FileManager
     public class FileManage
     {
     
-        //public Passage passage { get; set; }
-        //public WordBook wordBook { get; set; }
-
-      // DataContractSerializer serializer = new DataContractSerializer(typeof(Passage));
-
-
         public async void SerializeFile(ReaderManage reader)
         {
             DataContractSerializer serializer = new DataContractSerializer(typeof(ReaderManage));
@@ -47,10 +41,6 @@ namespace exReader.FileManager
                 Debug.WriteLine("write stream: " + stream.ToString());
                 serializer.WriteObject(stream, reader);
 
-               // await FileIO.WriteTextAsync(file, file.Name);
-                // Let Windows know that we're finished changing the file so
-                // the other app can update the remote version of the file.
-                // Completing updates may require Windows to ask for user input.
                 Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
                 if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
                 {
@@ -65,8 +55,8 @@ namespace exReader.FileManager
             {
                 //this.textBlock.Text = "Operation cancelled.";
             }      
-
         }
+
 
         public async Task<ReaderManage> DeSerializeFile()
         {

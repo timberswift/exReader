@@ -304,8 +304,7 @@
                            Width="70"
                            Height="70"
                            TextWrapping="Wrap"
-                           TextAlignment="Center"
-                           
+                           TextAlignment="Center"                
                            FontSize="24"
                            Text="暂无单词"/>
             </Border>

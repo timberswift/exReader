@@ -81,5 +81,13 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+        <TextBlock Name="Empty_PassageLabel" Grid.Row="1"
+                 Text="暂时没有历史阅读文章"
+                 FontSize="50"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Opacity="1"
+            >
+        </TextBlock>
     </Grid>
 </Page>

@@ -23,10 +23,8 @@ namespace exReader.WordsManager
 
     public class Vocabulary
     {
-        //private Tuple<string, string, int, int, string> Word;
         private string word;           //单词
         private string translation;//单词释义
-        // public Type Classification { get; set; }     //单词分类
         private int classification;    //单词分类
         private int yesorNo;         //单词掌握情况
         private string stateColor;
@@ -58,10 +56,8 @@ namespace exReader.WordsManager
             get { return stateColor; }
             set { stateColor = value; }
         }
-
         
     }
-
 
 
     public class WordBook
@@ -72,7 +68,7 @@ namespace exReader.WordsManager
         private static List<Vocabulary> toefl_Book = new List<Vocabulary>(FetchWordBook("toefl"));
         private static List<Vocabulary> ielts_Book = new List<Vocabulary>(FetchWordBook("ielts"));
         private static List<Vocabulary> gre_Book = new List<Vocabulary>(FetchWordBook("gre"));
-        private static List<Vocabulary> all_Book = new List<Vocabulary>(ComBineBook());
+        private static List<Vocabulary> all_Book = new List<Vocabulary>(CombineBook());
 
 
         public static List<Vocabulary> CET4_Book
@@ -113,8 +109,6 @@ namespace exReader.WordsManager
             set { all_Book = value; }
         }
 
-
-
         public static void InitWordsBook()
         {
             CET4_Book = new List<Vocabulary>();
@@ -126,7 +120,7 @@ namespace exReader.WordsManager
             All_Book = new List<Vocabulary>();
         }
 
-        public static List<Vocabulary> ComBineBook()
+        public static List<Vocabulary> CombineBook()
         {
             List<Vocabulary> vocabularies = new List<Vocabulary>();
             vocabularies = CET4_Book.Concat(CET6_Book).Concat(Kaoyan_Book).Concat(TOEFL_Book)
@@ -134,7 +128,7 @@ namespace exReader.WordsManager
             return vocabularies;
         }
 
-
+        //将导出的单词添加类别标签
         public static List<Vocabulary> SetBooks(ObservableCollection<Vocabulary> reader_sourcelist, int type)
         {
             List<Vocabulary> This_Book = new List<Vocabulary>();
@@ -145,12 +139,11 @@ namespace exReader.WordsManager
                 item.YesorNo = 0;
                 This_Book.Add(item);
             }
-
+            return This_Book;
             /*
              * List<Vocabulary> This_Book = GetBooks(type);
             List<Vocabulary> New_Book = new List<Vocabulary>(reader_sourcelist);
-            bool flag = true;
-            
+            bool flag = true;           
             foreach(var item in reader_sourcelist)
             {
                 foreach(var this_item in This_Book)
@@ -163,15 +156,13 @@ namespace exReader.WordsManager
                     item.Classification = type;  //
                     New_Book.Add(item);
                 }
-
             }
             PrintList(New_Book);
             return New_Book;
             */
-            return This_Book;
-
         }
 
+        //筛选出未掌握的单词
         public static ObservableCollection<Vocabulary> GetNoWordBook(ObservableCollection<Vocabulary> allWordBook)
         {
             var noWordBook = new ObservableCollection<Vocabulary>();
@@ -187,6 +178,7 @@ namespace exReader.WordsManager
             return noWordBook;
         }
 
+        //筛选出已掌握的单词
         public static ObservableCollection<Vocabulary> GetYesWordBook(ObservableCollection<Vocabulary> allWordBook)
         {
             var yesWordBook = new ObservableCollection<Vocabulary>();
@@ -201,6 +193,7 @@ namespace exReader.WordsManager
             return yesWordBook;
         }
 
+        //标记单词掌握颜色
         public static List<Vocabulary> MarkColor(List<Vocabulary> v)
         {
             foreach(var item in v)
@@ -218,21 +211,19 @@ namespace exReader.WordsManager
         }
 
 
-        //向数据库存储单词本数据
+        // # 向数据库存储单词本数据
         public static void StorageWordBook(List<Vocabulary> new_readerbook)
         {
             UserDataDB.instance.SaveWordBook(new_readerbook);
         }
 
-        //从数据库取出单词本数据
+        // # 从数据库取出单词本数据
         public static List<Vocabulary> FetchWordBook(string type)
         {
             WordManage.instance.CacheAddList(UserDataDB.instance.FetchWord());
             List<Vocabulary> DataBaseBook = WordManage.instance.VocabularyFiltCache(type);
             return DataBaseBook;
         }
-
-
 
         private static void PrintList(List<Vocabulary> list)
         {
@@ -248,8 +239,7 @@ namespace exReader.WordsManager
                 Debug.WriteLine("list is empty!");
             }
         }
-      
-
+     
 
     }
 }

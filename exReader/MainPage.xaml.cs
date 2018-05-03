@@ -1,4 +1,6 @@
-﻿using System;
+﻿using exReader.PassageManager;
+using exReader.ReaderManager;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +24,7 @@ namespace exReader
     /// </summary>
     public sealed partial class MainPage : Page
     {
+       // private CacheReaderManage on_reader = new CacheReaderManage();
         public MainPage()
         {
 
@@ -32,6 +35,7 @@ namespace exReader
         {
             DatabaseManager.UserDataDB.instance = new DatabaseManager.UserDataDB();
             DatabaseManager.WordManage.instance = new DatabaseManager.WordManage();
+         //   on_reader = new ReaderManage();
             readerPageHome.IsSelected = true;
             
         }
@@ -50,12 +54,20 @@ namespace exReader
             else if (readerPageHome.IsSelected)
             {
                 MyFrame.Navigate(typeof(MainReader));
-                MyNavigationView.Header = "Header of this passage";
+                if (CacheReaderManage.CacheReader == null)
+                {
+                    MyNavigationView.Header = "Passage Header";
+                }
+                else
+                {
+                    MyNavigationView.Header = CacheReaderManage.CacheReader.ReaderPassage.HeadName;
+                }
             }
         }
         public void SetSelectedNavigationItem(int index)
         {
             MyNavigationView.SelectedItem = MyNavigationView.MenuItems[index];
         }
+
     }
 }

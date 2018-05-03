@@ -29,8 +29,7 @@
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
 
-         
-
+        
         </NavigationView.MenuItems>
         <NavigationView.Content>
             <Frame Name="MyFrame"></Frame>

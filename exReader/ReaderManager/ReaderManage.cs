@@ -15,12 +15,10 @@ namespace exReader.ReaderManager
     //本空间下实现 阅读器主页各功能、主要的提词算法
     //附操作 MainReader.xaml.cs
 
-
     [DataContract]
     public class ReaderManage
     {
         private Passage readerPassage;
-        private WordBook readerWordBook;   
         private ObservableCollection<Vocabulary> readerWordLists;
         private int readerChooseMode;
 
@@ -29,23 +27,11 @@ namespace exReader.ReaderManager
         {
             get
             {
-                return (new PassageManage().GetPassage());
+                return readerPassage;
             }
             set
             {
                 readerPassage = value;
-            }
-        }
-
-        public WordBook ReaderWordBook
-        {
-            get
-            {
-                return readerWordBook;
-            }
-            set
-            {
-                readerWordBook = value;
             }
         }
 
@@ -75,23 +61,29 @@ namespace exReader.ReaderManager
             }
         }
 
-
-
         //在数据库匹配单词
-        public void MatchWords(string type, int t)
+        public  void MatchWords(string type, int t)
         {
-            List<Vocabulary> lists = DatabaseManager.WordManage.instance.QueryWord(this.ReaderPassage.Content, type);
+            List<Vocabulary> lists = DatabaseManager.WordManage.instance.QueryWord(readerPassage.Content, type);
             List<Vocabulary> newlist = lists.GroupBy(x => x.Word).Select(x => x.First()).ToList<Vocabulary>();  //去重复      
             ObservableCollection<Vocabulary> vocabularies = new ObservableCollection<Vocabulary>(newlist);
             this.readerChooseMode = t;
-            this.ReaderWordLists = vocabularies;
+            this.readerWordLists = vocabularies;
         }
 
     }
 
-    public class ReaderWords
+    //缓存Reader信息
+    public  static class CacheReaderManage
     {
+        private static ReaderManage cacheReader;
+        public static ReaderManage CacheReader
+        {
+            get
+            {  return cacheReader; }
+            set
+            {  cacheReader = value; }
+        }
 
-        //private 
     }
 }

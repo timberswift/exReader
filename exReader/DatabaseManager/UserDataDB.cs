@@ -29,7 +29,7 @@ namespace exReader.DatabaseManager
             }
             catch (Exception e)
             {
-
+                
             }
         }
         public List<String> FetchWord()

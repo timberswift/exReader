@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:exReader.WordsManager"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
@@ -216,7 +217,7 @@
                     <TextBlock Text="当前提词模式：" Height="auto"  HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2"  FontWeight="Bold" />
                 </Border>
                 <Border Grid.Column="1" Background="Beige" Margin="0,2,10,2" >
-                    <TextBlock Name="Mode_Lable" Text="CET4" Height="auto"  HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2" FontWeight="Bold" />
+                    <TextBlock Name="Mode_Lable" Text="未选择" Height="auto"  HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2" FontWeight="Bold" />
                 </Border>
             </Grid>
         </StackPanel>
