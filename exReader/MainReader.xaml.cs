@@ -42,8 +42,6 @@ namespace exReader
             //editor.Document.SetText(Windows.UI.Text.TextSetOptions.None, "This is some sample text");
             this.InitializeComponent();
             fileManage = new FileManage();
-            // wordManage = new WordManage();
-            //reader = new ReaderManage();
             readerWordLists = new ObservableCollection<Vocabulary>();
             
             UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode);
@@ -62,14 +60,21 @@ namespace exReader
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
+            Button button = sender as Button;
+            Vocabulary item = button.DataContext as Vocabulary;
+           
+            Vocabulary result = (Vocabulary)reader.ReaderWordLists.Where(x => x.Word == item.Word);
+            result.YesorNo = 1;
+            readerWordLists.Remove(item);  
+          //  ShowEmptyLabel(yesbooklists, 3);
 
         }
 
         private void export_file_Click(object sender, RoutedEventArgs e)
         {
             // FileManage fileManage = new FileManage();
-            ReaderManage re = reader;
-            fileManage.SerializeFile(re);
+            ReaderManage temp_reader = reader;
+            fileManage.SerializeFile(temp_reader);
 
         }
 
@@ -86,41 +91,41 @@ namespace exReader
             //MainPage.MyNavigationView.Header = "Header of this passage";
         }
 
-
-      
+     
        
         private void cet4_button_Click(object sender, RoutedEventArgs e)
         {
-            initReaderList();
+            Mode_Lable.Text = "CET4";
             SearchWordList("cet4",1);
         }
 
         private void cet6_button_Click(object sender, RoutedEventArgs e)
         {
-            initReaderList();
+            Mode_Lable.Text = "CET6";
             SearchWordList("cet6",2);
         }
 
         private void kaoyan_button_Click(object sender, RoutedEventArgs e)
         {
+            Mode_Lable.Text = "考研";
             SearchWordList("ky",3);
         }
 
         private void toefl_button_Click(object sender, RoutedEventArgs e)
         {
-            initReaderList();
+            Mode_Lable.Text = "托福TOEFL";
             SearchWordList("toefl",4);
         }
 
         private void ielts_button_Click(object sender, RoutedEventArgs e)
         {
-            initReaderList();
+            Mode_Lable.Text = "雅思IELTS";
             SearchWordList("ielts", 5);
         }
 
         private void gre_button_Click(object sender, RoutedEventArgs e)
         {
-            initReaderList();
+            Mode_Lable.Text = "GRE";
             SearchWordList("gre",6);
         }
 
@@ -151,19 +156,21 @@ namespace exReader
         private void export_word_button_Click(object sender, RoutedEventArgs e)
         {
             int type_mark = reader.ReaderChooseMode;
-                 
-            switch (reader.ReaderChooseMode)
+
+            try
             {
-                case 1: WordBook.CET4_Book.AddRange(WordBook.SetBooks(readerWordLists, type_mark)); break;
-                case 2: WordBook.CET6_Book.AddRange(WordBook.SetBooks(readerWordLists, type_mark)); break;
-                case 3: WordBook.Kaoyan_Book.AddRange(WordBook.SetBooks(readerWordLists, type_mark)); break;
-                case 4: WordBook.TOEFL_Book.AddRange(WordBook.SetBooks(readerWordLists, type_mark)); break;
-                case 5: WordBook.IELTS_Book.AddRange(WordBook.SetBooks(readerWordLists, type_mark)); break;
-                case 6: WordBook.GRE_Book.AddRange(WordBook.SetBooks(readerWordLists, type_mark)); break;
-                default: break;
+                //提词表存入单词本数据库
+                WordBook.StorageWordBook(WordBook.SetBooks(readerWordLists, type_mark));
+                ShowToastNotification("exReader提示", "成功导入到我的生词本!");
             }
+            catch
+            {
+                ShowToastNotification("exReader提示", "导入失败！提词列表为空");
+            }
+            /*
             if (readerWordLists.Count != 0 || readerWordLists == null) ShowToastNotification("exReader提示", "成功导入到我的生词本!");
             else ShowToastNotification("exReader提示", "导入失败！提词列表为空");
+            */
             
         }
 

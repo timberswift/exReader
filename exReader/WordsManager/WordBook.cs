@@ -1,8 +1,10 @@
-﻿using System;
+﻿using exReader.DatabaseManager;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 
 namespace exReader.WordsManager
 {
@@ -60,26 +62,58 @@ namespace exReader.WordsManager
         
     }
 
+
+
     public class WordBook
     {
-        private List<Vocabulary> reader_Book;
-
-        public static List<Vocabulary> CET4_Book { get; set; }
-        //= GetBooks(1);
-        // public List<Vocabulary> CET { get { return CET4_Book; } set { value = GetBooks(2); } }
-        public static List<Vocabulary> CET6_Book { get; set; }
-        public static List<Vocabulary> Kaoyan_Book { get; set; }
-        public static List<Vocabulary> TOEFL_Book { get; set; }
-        public static List<Vocabulary> IELTS_Book { get; set; }
-        public static List<Vocabulary> GRE_Book { get; set; }
-        public static List<Vocabulary> All_Book { get; set; }
+        private static List<Vocabulary> cet4_Book = new List<Vocabulary>(FetchWordBook("cet4"));
+        private static List<Vocabulary> cet6_Book = new List<Vocabulary>(FetchWordBook("cet6"));
+        private static List<Vocabulary> kaoyan_Book = new List<Vocabulary>(FetchWordBook("ky"));
+        private static List<Vocabulary> toefl_Book = new List<Vocabulary>(FetchWordBook("toefl"));
+        private static List<Vocabulary> ielts_Book = new List<Vocabulary>(FetchWordBook("ielts"));
+        private static List<Vocabulary> gre_Book = new List<Vocabulary>(FetchWordBook("gre"));
+        private static List<Vocabulary> all_Book = new List<Vocabulary>(ComBineBook());
 
 
-        public List<Vocabulary> Reader_Book
+        public static List<Vocabulary> CET4_Book
         {
-            get { return reader_Book; }
-            set { reader_Book = value; }
+            get { return cet4_Book; }
+            set { cet4_Book = value; }
         }
+
+        public static List<Vocabulary> CET6_Book
+        {
+            get { return cet6_Book; }
+            set { cet6_Book = value; }
+        }
+        public static List<Vocabulary> Kaoyan_Book
+        {
+            get { return kaoyan_Book; }
+            set { kaoyan_Book = value; }
+        }
+        public static List<Vocabulary> TOEFL_Book
+        {
+            get { return toefl_Book; }
+            set { toefl_Book = value; }
+        }
+        public static List<Vocabulary> IELTS_Book
+        {
+            get { return ielts_Book; }
+            set { ielts_Book = value; }
+        }
+        public static List<Vocabulary> GRE_Book
+        {
+            get { return gre_Book; }
+            set { gre_Book = value; }
+        }
+
+        public static List<Vocabulary> All_Book
+        {
+            get { return all_Book; }
+            set { all_Book = value; }
+        }
+
+
 
         public static void InitWordsBook()
         {
@@ -92,31 +126,31 @@ namespace exReader.WordsManager
             All_Book = new List<Vocabulary>();
         }
 
-        public static List<Vocabulary> GetBooks(int type)  //1.提取reader_Book的各类单词  2.累加历史单词本  3.然后去重复
+        public static List<Vocabulary> ComBineBook()
         {
-           // var books = new List<Vocabulary>();
-            switch (type)
-            {
-                case 0: return All_Book;
-                case 1: return CET4_Book;
-                case 2: return CET6_Book;
-                case 3: return Kaoyan_Book;
-                case 4: return TOEFL_Book;
-                case 5: return IELTS_Book;
-                case 6: return GRE_Book;
-                default: return null;
-               
-            }
-           
+            List<Vocabulary> vocabularies = new List<Vocabulary>();
+            vocabularies = CET4_Book.Concat(CET6_Book).Concat(Kaoyan_Book).Concat(TOEFL_Book)
+                .Concat(IELTS_Book).Concat(GRE_Book).ToList();
+            return vocabularies;
         }
+
 
         public static List<Vocabulary> SetBooks(ObservableCollection<Vocabulary> reader_sourcelist, int type)
         {
-            List<Vocabulary> This_Book = GetBooks(type);
+            List<Vocabulary> This_Book = new List<Vocabulary>();
             List<Vocabulary> New_Book = new List<Vocabulary>(reader_sourcelist);
-            if (This_Book == null) return New_Book;
+            foreach (var item in New_Book)
+            {
+                item.Classification = type;
+                item.YesorNo = 0;
+                This_Book.Add(item);
+            }
 
+            /*
+             * List<Vocabulary> This_Book = GetBooks(type);
+            List<Vocabulary> New_Book = new List<Vocabulary>(reader_sourcelist);
             bool flag = true;
+            
             foreach(var item in reader_sourcelist)
             {
                 foreach(var this_item in This_Book)
@@ -125,6 +159,7 @@ namespace exReader.WordsManager
                 }
                 if (flag)
                 {
+                    item.YesorNo = 0;          //
                     item.Classification = type;  //
                     New_Book.Add(item);
                 }
@@ -132,6 +167,8 @@ namespace exReader.WordsManager
             }
             PrintList(New_Book);
             return New_Book;
+            */
+            return This_Book;
 
         }
 
@@ -181,6 +218,22 @@ namespace exReader.WordsManager
         }
 
 
+        //向数据库存储单词本数据
+        public static void StorageWordBook(List<Vocabulary> new_readerbook)
+        {
+            UserDataDB.instance.SaveWordBook(new_readerbook);
+        }
+
+        //从数据库取出单词本数据
+        public static List<Vocabulary> FetchWordBook(string type)
+        {
+            WordManage.instance.CacheAddList(UserDataDB.instance.FetchWord());
+            List<Vocabulary> DataBaseBook = WordManage.instance.VocabularyFiltCache(type);
+            return DataBaseBook;
+        }
+
+
+
         private static void PrintList(List<Vocabulary> list)
         {
             if (list != null)
@@ -195,43 +248,8 @@ namespace exReader.WordsManager
                 Debug.WriteLine("list is empty!");
             }
         }
-        // private List<Vocabulary> FindBooks(int type)
-        /*
-               switch (type)
-               {
-                   case 1:
+      
 
-                       books.Add(new Vocabulary { Word = "hello", Translation = "n. 你好", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "word", Translation = "n. 话", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "class", Translation = "n. 班级，分类", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "translate", Translation = "v. 翻译", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "book", Translation = "n. 书  v.预订 v.测试长度1 a.测试长度2", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "static", Translation = "a. 静态的", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "head", Translation = "n. 头", Classification = type, YesorNo = 1 });
-
-                       books = MarkColor(books);
-                       return books;
-                   case 2:
-                       books.Add(new Vocabulary { Word = "visual", Translation = "a. 视觉的", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "studio", Translation = "n. 工作站", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "reader", Translation = "n. 阅读器", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "constraint", Translation = "n. 限制", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "Chinese", Translation = "n. 中国人 a. 中国人的", Classification = type, YesorNo = 1 });
-
-                       books = MarkColor(books);
-                       return books;
-                   default:
-                       books.Add(new Vocabulary { Word = "passage", Translation = "n. 文章", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "manager", Translation = "n. 经理、管理器", Classification = type, YesorNo = 1 });
-                       books.Add(new Vocabulary { Word = "ink", Translation = "n. 墨水", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "delicate", Translation = "a. 易碎的", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "enchanted", Translation = "a. 迷人的", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "static", Translation = "a. 静态的", Classification = type, YesorNo = 0 });
-                       books.Add(new Vocabulary { Word = "head", Translation = "n. 头", Classification = type, YesorNo = 1 });
-
-                       books = MarkColor(books);
-                       return books;
-                       */
 
     }
 }
