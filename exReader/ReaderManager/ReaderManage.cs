@@ -21,7 +21,7 @@ namespace exReader.ReaderManager
     {
         private Passage readerPassage;
         private WordBook readerWordBook;   
-        private ObservableCollection<Vocabulary> readerWordLists;// = new ObservableCollection<Vocabulary>(WordBook.GetBooks(1));
+        private ObservableCollection<Vocabulary> readerWordLists;
         private int readerChooseMode;
 
         [DataMember]
@@ -91,7 +91,7 @@ namespace exReader.ReaderManager
 
     public class ReaderWords
     {
-        private Vocabulary vocabulary;
+
         //private 
     }
 }
