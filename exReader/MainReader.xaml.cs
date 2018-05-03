@@ -35,20 +35,18 @@ namespace exReader
         private ReaderManage reader = new ReaderManage();
         private FileManage fileManage;// = new FileManage();
         private ObservableCollection<Vocabulary> readerWordLists;// =  new ObservableCollection<Vocabulary>();   //提词列表ListView绑定的数据
-        ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
         
+
         public MainReader()
         {
+            //editor.Document.SetText(Windows.UI.Text.TextSetOptions.None, "This is some sample text");
             this.InitializeComponent();
-            fonts.Add(new FontFamily("Arial"));
-            fonts.Add(new FontFamily("Courier New"));
-            fonts.Add(new FontFamily("Times New Roman"));
             fileManage = new FileManage();
             // wordManage = new WordManage();
             //reader = new ReaderManage();
             readerWordLists = new ObservableCollection<Vocabulary>();
+            
             UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode);
-
             WordBook.InitWordsBook();  //  每次切换回提词界面，单词本清空。
         }
         private void words_view_ItemClick(object sender, ItemClickEventArgs e)

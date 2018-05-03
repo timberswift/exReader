@@ -9,6 +9,7 @@
     <Page.Resources>
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
             <RelativePanel Width="auto" Height="auto" Margin="0,5,0,5">
+
                 <TextBlock Name="class_tag"
                            FontSize="10"
                            Margin="0,0,5,0" 
@@ -16,6 +17,7 @@
                            HorizontalAlignment="Center"
                            RelativePanel.AlignVerticalCenterWithPanel="True"
                            RelativePanel.AlignLeftWithPanel="True"/>
+
                 <TextBlock Name="word_text"      
                            FontSize="14"  
                            Text="{x:Bind Word}" 
@@ -24,6 +26,7 @@
                            HorizontalAlignment="Left"
                            RelativePanel.RightOf="class_tag"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
+
                 <TextBlock Name="trans_text"
                            FontSize="11" 
                            Width="auto"
@@ -34,6 +37,7 @@
                            HorizontalAlignment="Left"
                            RelativePanel.RightOf="word_text"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
+
                 <Button Name="YesButton" 
                         FontFamily="Segoe MDL2 Assets" 
                         Content="&#xF0AF;" 
@@ -42,7 +46,8 @@
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
                         Click="YesButton_Click"
-                         />
+                        />
+
             </RelativePanel>
         </DataTemplate>
     </Page.Resources>
@@ -57,8 +62,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border Background="Black" Margin="15,2,15,1">
-            <RelativePanel Grid.Row="0" Grid.Column="0" Height="auto"  Background="White" Margin="2,1,2,1">
-                <Button Name="open_file"                
+            <RelativePanel Grid.Row="0" Grid.Column="0" 
+                           Height="35"  Background="White" 
+                           Margin="2,1,2,1">
+
+                <Button x:Name="open_file"                
                         Width="auto"
                         Height="auto"
                         FontSize="20"
@@ -70,7 +78,8 @@
                         Click="open_file_Click"
                         ToolTipService.ToolTip="打开文章"
                         Margin="0,0,0,0"/>
-                <Button Name="export_file"                
+
+                <Button x:Name="export_file"                
                         Width="auto"
                         Height="auto"
                         FontSize="20"
@@ -82,7 +91,8 @@
                         Click="export_file_Click"
                         ToolTipService.ToolTip="导出工程"
                         Margin="0,0,0,0"/>
-                <Button Name="save_file"                
+
+                <Button x:Name="save_file"                
                         Width="auto"
                         Height="auto"
                         FontSize="20"
@@ -94,68 +104,117 @@
                         Click="save_file_Click"
                         ToolTipService.ToolTip="保存工程"
                         Margin="0,0,0,0"/>
-                <TextBlock Name="hightlight_lable"
+
+                <TextBlock x:Name="hightlight_lable"
                            Text="提词高亮"
                            Margin="5,0,0,0"
                            RelativePanel.RightOf="save_file"
-                           RelativePanel.AlignVerticalCenterWithPanel="True" FontWeight="Normal" FontFamily="Arial Black">
-                </TextBlock>
-                <ToggleSwitch Name="off_on_highlight"                
+                           RelativePanel.AlignVerticalCenterWithPanel="True" FontWeight="Normal" FontFamily="Arial Black"/>
+
+                <ToggleSwitch x:Name="off_on_highlight"                
                               IsOn="True" 
+                              Width="auto"
+                              Height="auto"
                               Margin="5,0,0,0" 
                               RelativePanel.RightOf="hightlight_lable"
+                              VerticalAlignment="Center"
+                              VerticalContentAlignment="Center"
                               RelativePanel.AlignVerticalCenterWithPanel="True" />
-                <Button Name="text_smaller_button" 
+
+                <TextBlock x:Name="style_icon"
+                           FontFamily="Segoe MDL2 Assets" 
+                           FontSize="25"
+                           Text="&#xE8C1;"
+                           Width="auto" 
+                           Height="auto" 
+                           Margin="0,0,5,0" 
+                           RelativePanel.LeftOf="boldButton"
+                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+
+                <AppBarButton x:Name="boldButton"
+                              Width="25"
+                              Height="30"
+                              FontSize="15"
+                              VerticalAlignment="Center"
+                              VerticalContentAlignment="Top"
+                              Content="&#xE8DD;" 
+                              
+                              FontFamily="Segoe MDL2 Assets"
+                              ToolTipService.ToolTip="Bold" 
+                              RelativePanel.AlignVerticalCenterWithPanel="True"
+                              RelativePanel.LeftOf="italicButton" 
+                              Margin="0,-7,0,0" RenderTransformOrigin="0.52,0.803" />
+
+                <AppBarButton x:Name="italicButton"
+                              Width="25"
+                              Height="30" 
+                              FontSize="15"
+                              Content="&#xE8DB;"
+                              FontFamily="Segoe MDL2 Assets"
+                              ToolTipService.ToolTip="Italic" 
+                              RelativePanel.AlignVerticalCenterWithPanel="True"
+                              RelativePanel.LeftOf="underlineButton" 
+                              Margin="0,-5,0,0"/>
+
+                <AppBarButton x:Name="underlineButton"
+                              Width="25"
+                              Height="30"
+                              FontSize="15"
+                              Content="&#xE8DC;"
+                              FontFamily="Segoe MDL2 Assets"
+                              ToolTipService.ToolTip="Underline" 
+                              RelativePanel.AlignVerticalCenterWithPanel="True"
+                              RelativePanel.LeftOf="text_bigger_button" 
+                              Margin="0,-5,0,0"/>
+
+                <Button x:Name="text_smaller_button" 
                         Width="auto"
                         Height="auto"
+                        Margin="0,0,5,0"
                         Content="&#xE949;"
                         FontFamily="Segoe MDL2 Assets"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
                         RelativePanel.AlignRightWithPanel="True"/>
-                <Button Name="text_bigger_button" 
+
+                <Button x:Name="text_bigger_button" 
                         Width="auto"
                         Height="auto"
-                        Margin="5,0,0,0"
+                        Margin="4,0,5,0"
                         Content="&#xE948;"
                         FontFamily="Segoe MDL2 Assets"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
-                        RelativePanel.LeftOf="text_smaller_button" HorizontalAlignment="Right"/>
+                        RelativePanel.LeftOf="text_smaller_button" 
+                        HorizontalAlignment="Right"/>
 
-                <ComboBox Name="font_family"
-                          Width="100" Height="27"
-                          RelativePanel.LeftOf="text_bigger_button"
-                          PlaceholderText="FontFamily"
-                          FontSize="13"
-                          Margin="5,0,0,0"
-                          ItemsSource="{x:Bind fonts}"
-                          RelativePanel.AlignVerticalCenterWithPanel="True"
-                          DisplayMemberPath="Source"
-                 />
-                <TextBlock Name="style_icon"
-                           FontFamily="Segoe MDL2 Assets" Text="&#xE8C1;"
-                           Width="auto" Height="auto"
-                           Margin="5,0,5,0"
-                           RelativePanel.LeftOf="font_family"
-                           RelativePanel.AlignVerticalCenterWithPanel="True"
-                           FontSize="24" VerticalAlignment="Top"
-                />
             </RelativePanel>
         </Border>
+        
         <Border Background="Beige" 
                 Grid.Column="0" Grid.Row="1"  
                 Grid.RowSpan="2" 
                 Margin="15,3,15,10">
-            <RichEditBox x:Name="editor" 
+
+            <RichEditBox   x:Name="editor" 
                            Background="Beige"
+                           PlaceholderText="This is a text"
                            Height="auto" Width="auto"                       
-                           SelectionHighlightColor="Green" FontFamily="Arial Black" >
+                           SelectionHighlightColor="Green" 
+                           FontFamily="Arial Black" >
             </RichEditBox>
+            
         </Border>
         <StackPanel Grid.Column="1" Grid.RowSpan="2" 
                     Orientation="Vertical">
-            <ToggleSwitch OffContent="中文" OnContent="English" IsOn="False" />
-            <Border  Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2" Background="Black" Margin="0,5,5,0">
-                <Grid Height="auto" Background="#ffffff" Margin="2,2,2,2">
+            <ToggleSwitch OffContent="中文" 
+                          OnContent="English" 
+                          IsOn="False" />
+            <Border  Grid.Column="1"  
+                     Grid.Row="0" 
+                     Grid.RowSpan="2" 
+                     Background="Black" 
+                     Margin="0,5,5,0">
+                <Grid Height="auto" Background="#ffffff" 
+                      Margin="2,2,2,2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
