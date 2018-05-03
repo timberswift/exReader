@@ -52,6 +52,11 @@ namespace exReader
                 MyFrame.Navigate(typeof(MainReader));
                 MyNavigationView.Header = "Header of this passage";
             }
+            else if(args.IsSettingsSelected)
+            {
+                MyFrame.Navigate(typeof(Setting));
+                MyNavigationView.Header = "Setting";
+            }
         }
         public void SetSelectedNavigationItem(int index)
         {
