@@ -201,10 +201,12 @@
 
             <RichEditBox   x:Name="editor" 
                            Background="Beige"
-                           PlaceholderText="This is a text"
                            Height="auto" Width="auto"                       
                            SelectionHighlightColor="Green" 
-                           FontFamily="Arial Black" >
+                           IsTextPredictionEnabled="True"
+                           IsTextScaleFactorEnabled="True"
+                           FontFamily="Arial Black" 
+                           FontSize="14">
             </RichEditBox>
             
         </Border>
