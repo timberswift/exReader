@@ -9,7 +9,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
-            <RelativePanel Width="auto" Height="auto" Margin="0,3,0,3">
+            <RelativePanel Width="auto" Height="auto" Margin="0,5,0,5">
                 <Border Name="word_border" Margin="5,0,10,0" Background="Beige" RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignVerticalCenterWithPanel="True">
                 <TextBlock Name="word_text"      
@@ -45,7 +45,7 @@
         </DataTemplate>
         
         <DataTemplate x:DataType="data:Vocabulary" x:Key="AllBookDataTemplate">
-            <RelativePanel Width="auto" Height="auto" Margin="0,3,0,3">
+            <RelativePanel Width="auto" Height="auto" Margin="0,5,0,5">
                 <TextBlock Name="type_tag"
                            Text="{x:Bind Classification}"
                            Margin="5,0,10,0" 
@@ -86,7 +86,7 @@
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Hub Grid.Row="0" Foreground="White">
-            <HubSection Header="All" >
+            <HubSection Name="all_section" Header="All" >
                 <DataTemplate>
                     <Button Name="allBook_button" 
                             Background="Wheat"
@@ -101,7 +101,7 @@
                     </Button>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="CET4" >
+            <HubSection Name="cet4_section" Header="CET4" >
                 <DataTemplate>
                     <Button 
                         Name="cet4Button"
@@ -117,7 +117,7 @@
                     </Button>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="CET6" >
+            <HubSection Name="cet6_section" Header="CET6" >
                 <DataTemplate>
                     <Button 
                         Name="cet6Button"
@@ -133,7 +133,7 @@
                     </Button>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="考研英语" >
+            <HubSection Name="kaoyan_section" Header="考研英语" >
                 <DataTemplate>
                     <Button 
                         Name="kyButton"
@@ -149,10 +149,10 @@
                     </Button>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="TOEFL" >
+            <HubSection Name="toefl_section" Header="TOEFL" >
                 <DataTemplate>
                     <Button Name="toeflButton"
-                            Background="White"
+                            Background="#FF214C97"
                             Click="ToeflButton_Click">
                         <Button.Content >
                             <Rectangle Width="400" Height="260">
@@ -164,11 +164,11 @@
                     </Button>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="IELTS" >
+            <HubSection Name="ielts_section" Header="IELTS" >
                 <DataTemplate>
                     <Button Name="ieltsButton"
                             Click="IeltsButton_Click"
-                            Background="White">
+                            Background="#FFEC5B5B">
                         <Button.Content >
                             <Rectangle Width="400" Height="260">
                                 <Rectangle.Fill>
@@ -179,13 +179,13 @@
                     </Button>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="GRE" >
+            <HubSection Name="gre_section" Header="GRE" >
                 <DataTemplate>
                     <Button Name="greButton"
                             Click="GreButton_Click"
-                            Background="White">
+                            Background="#FF7E474B">
                         <Button.Content >
-                            <Rectangle Width="500" Height="260">
+                            <Rectangle Width="550" Height="260">
                                 <Rectangle.Fill>
                                     <ImageBrush ImageSource="Assets/GRE.jpg" />
                                 </Rectangle.Fill>
@@ -274,7 +274,7 @@
                            TextWrapping="Wrap"
                            TextAlignment="Center"
                            FontSize="24"
-                           Text="暂无单词"/>
+                           Text="暂无单词" FocusVisualPrimaryBrush="#FFCF673F"/>
             </Border>
             <Border Grid.Row="0" Grid.Column="2" Background="Gray">
                 <TextBlock Name="yeswords_label"

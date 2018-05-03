@@ -1,4 +1,5 @@
-﻿using exReader.WordsManager;
+﻿using exReader.DatabaseManager;
+using exReader.WordsManager;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -52,7 +54,7 @@ namespace exReader
 
         private async void Cet4Button_Click(object sender, RoutedEventArgs e)
         {
-
+            //SectionChange(0);
             await SwitchWordsBook(1);
         }
 
@@ -73,6 +75,7 @@ namespace exReader
 
         private async void IeltsButton_Click(object sender, RoutedEventArgs e)
         {
+           
             await SwitchWordsBook(5);
         }
 
@@ -92,30 +95,28 @@ namespace exReader
             switch (type)
             {
                 case 0:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET4_Book);
-                   booklist.Union(WordBook.CET6_Book).Union(WordBook.Kaoyan_Book).Union(WordBook.TOEFL_Book)
-                        .Union(WordBook.IELTS_Book).Union(WordBook.GRE_Book).ToList();
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.All_Book);
                     break;
                 case 1:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET4_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet4"));//new ObservableCollection<Vocabulary>(WordBook.CET4_Book);
                     break;
                 case 2:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET6_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet6"));
                     break;
                 case 3:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.Kaoyan_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("ky"));
                     break;
                 case 4:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.TOEFL_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("toefl"));
                     break;
                 case 5:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.IELTS_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("ielts"));
                     break;
                 case 6:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.GRE_Book);
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("gre"));
                     break;
                 default:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET4_Book);                 
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet4"));                 
                     break;
             }
 
@@ -227,6 +228,67 @@ namespace exReader
                 }
             }
 
+        }
+
+        private void SectionChange(int type)
+        {
+            switch(type)
+            {
+                case 0:
+                    all_section.Background = new SolidColorBrush(Color.FromArgb(100,207, 103, 63)) ;
+                    cet4_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    cet6_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    kaoyan_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    toefl_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    ielts_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    gre_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));     
+                    break;
+                case 1:
+                    all_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    cet4_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    cet6_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    kaoyan_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    toefl_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    ielts_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    gre_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    break;
+                case 2:
+                    all_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    cet4_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    cet6_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    kaoyan_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    toefl_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    ielts_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    gre_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    break;
+                case 3:
+                    all_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    cet4_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    cet6_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    kaoyan_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    toefl_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    ielts_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    gre_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    break;
+                case 4:
+                    all_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    cet4_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    cet6_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    kaoyan_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    toefl_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    ielts_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    gre_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    break;
+                case 5:
+                    all_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    cet4_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    cet6_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    kaoyan_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    toefl_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    ielts_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
+                    gre_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    break;
+            }
         }
 
       

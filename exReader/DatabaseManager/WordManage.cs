@@ -16,8 +16,8 @@ namespace exReader.DatabaseManager
     public string Word { get; set; }            // "book"
     public string Translation { get; set; }     // "n. 书；v. 预订"
            //public string pronunciation { get; set; } //   音标待定  "/`boo:k/"
-    public Type Classification { get; set; }    // "CET4"
-    public int YesorNo { get; set; }            // "1"
+    public int Classification { get; set; }    // "CET4"
+    public int YesorNo { get; set; }            // "0"
  
     */
     public class WordManage
