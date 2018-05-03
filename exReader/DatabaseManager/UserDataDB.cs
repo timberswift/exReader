@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using exReader.PassageManager;
 using exReader.WordsManager;
 using Microsoft.Data.Sqlite;
 
@@ -57,6 +58,31 @@ namespace exReader.DatabaseManager
                 command.CommandText = "INSERT OR IGNORE INTO newword VALUES('" + v.Word + "')";
                 command.ExecuteNonQuery();
             }
+        }
+        public void SavaPassage(Passage passage)
+        {
+            var command = new SqliteCommand();
+            command.Connection = db;
+            command.CommandText = "INSERT INTO articles (title,content) VALUES ("+passage.HeadName+","+passage.Content+")";
+            command.ExecuteNonQuery();
+        }
+        public List<Passage> LoadPassage()
+        {
+            List<Passage> myPassages = new List<Passage>();
+            var command = new SqliteCommand();
+            command.Connection = db;
+            command.CommandText = "SELECT titlt FROM articles";
+
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Passage passage = new Passage();
+                passage.HeadName= reader.GetString(0);
+                myPassages.Add(passage);
+            }
+            reader.Close();
+            return myPassages;
+
         }
     }
 }

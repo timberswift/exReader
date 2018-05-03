@@ -12,8 +12,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using System.Text;
+
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -43,14 +46,17 @@ namespace exReader
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // ReaderManage.reader = new ReaderManage();
-            // reader = new ReaderManage();
-            // WordBook.InitWordsBook();  //  每次切换回提词界面，单词本清空。
+            
         }
+
 
         public MainReader()
         {
+            //editor.PlaceholderText = "This is some sample text";
+            //editor.Document.Selection.CharacterFormat.Size = 15;
+            //editor.Document.SetText(options: Windows.UI.Text.TextSetOptions.None, value: "This is some sample text");
             this.InitializeComponent();
+
             fonts.Add(new FontFamily("Arial"));
             fonts.Add(new FontFamily("Courier New"));
             fonts.Add(new FontFamily("Times New Roman"));
@@ -64,17 +70,32 @@ namespace exReader
             
 
         }
+
+        
+
+        private void docunment_operat()
+        {
+            string str;
+            editor.Document.Selection.GetText(Windows.UI.Text.TextGetOptions.FormatRtf, out str);
+
+            byte[] bytes = Encoding.Unicode.GetBytes(str);
+            string str2 = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+
+            editor.Document.Selection.SetText(TextSetOptions.FormatRtf, str2);
+        }
+
         private void words_view_ItemClick(object sender, ItemClickEventArgs e)
         {
 
         }
 
+
         private void initReader()
         {
 
             //暂时文章从
-           
-            if(CacheReaderManage.CacheReader == null)
+
+            if (CacheReaderManage.CacheReader == null)
             {
                 reader.ReaderPassage = new PassageManage().GetPassage();
                 reader.ReaderChooseMode = 0;
@@ -91,7 +112,30 @@ namespace exReader
             }
 
             editor.Document.Selection.SetText(TextSetOptions.FormatRtf, reader.ReaderPassage.Content);
-       
+
+        }
+
+        private void setHighLight (string text, Windows.UI.Color color)
+        {
+            editor.Document.GetText(TextGetOptions.None, out text);
+            var editorLengh = text.Length;
+            editor.Document.Selection.SetRange(0, editorLengh);
+            int i = 1;
+            while(i >0)
+            {
+                i = editor.Document.Selection.FindText(text, editorLengh, FindOptions.None);
+                ITextSelection seoectedText = editor.Document.Selection;
+                if(seoectedText !=null)
+                {
+                    seoectedText.CharacterFormat.BackgroundColor = color;
+                }
+            }
+        }
+
+        private void initReaderList()
+        {
+           // reader
+           // readerWordLists = new ObservableCollection<Vocabulary>();
         }
      
 
@@ -341,6 +385,115 @@ namespace exReader
             }
         }
 
-    
+
+        private void boldButton_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                charFormatting.Bold = Windows.UI.Text.FormatEffect.Toggle;
+                selectedText.CharacterFormat = charFormatting;
+            }
+        }
+
+        private void italicButton_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                charFormatting.Italic = Windows.UI.Text.FormatEffect.Toggle;
+                selectedText.CharacterFormat = charFormatting;
+            }
+        }
+
+        private void underlineButton_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                if (charFormatting.Underline == Windows.UI.Text.UnderlineType.None)
+                {
+                    charFormatting.Underline = Windows.UI.Text.UnderlineType.Single;
+                }
+                else
+                {
+                    charFormatting.Underline = Windows.UI.Text.UnderlineType.None;
+                }
+                selectedText.CharacterFormat = charFormatting;
+            }
+        }
+
+        private void text_smaller_button_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                try
+                {
+                   
+                    if (charFormatting.Size >= 7)
+                    {
+                        //selectedText.CharacterFormat.BackgroundColor = Colors.Blue;
+                        charFormatting.Size--;
+                        selectedText.CharacterFormat = charFormatting;
+                    }
+                }
+                catch (Exception)
+                {
+                    selectedText.CharacterFormat.BackgroundColor = Colors.Red;
+                }
+            }else
+            {
+                if (editor.FontSize >= 7)
+                    editor.FontSize--;
+            }
+        }
+
+        private void text_bigger_button_Click(object sender, RoutedEventArgs e)
+        {
+            //ConsoleColor[] colors = (ConsoleColor[])ConsoleColor.GetValues(typeof(ConsoleColor));
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                try
+                {
+                    //charFormatting.BackgroundColor = colors[0];
+                    //var color = colors[1];
+                    //selectedText.CharacterFormat.BackgroundColor = color;
+                    //ITextSelection selectedText = reb.Document.Selection;
+                    if (charFormatting.Size <= 30)
+                    {
+                        //selectedText.CharacterFormat.BackgroundColor = Colors.Blue;
+                        charFormatting.Size++;
+                        selectedText.CharacterFormat = charFormatting;
+                    }
+                }
+                catch (Exception)
+                {
+                    selectedText.CharacterFormat.BackgroundColor = Colors.Red;
+                }
+                
+            }else
+            {
+                try
+                {
+                    if (editor.FontSize <= 30)
+                    {
+                        //selectedText.CharacterFormat.BackgroundColor = Colors.Blue;
+                        editor.FontSize++;
+                    }
+                }
+                catch (Exception)
+                {
+                    //editor.Background = Colors.Red;
+                }
+            }
+        }
+
     }
 } 

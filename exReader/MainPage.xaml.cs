@@ -63,6 +63,11 @@ namespace exReader
                     MyNavigationView.Header = CacheReaderManage.CacheReader.ReaderPassage.HeadName;
                 }
             }
+            else if(args.IsSettingsSelected)
+            {
+                MyFrame.Navigate(typeof(Setting));
+                MyNavigationView.Header = "Setting";
+            }
         }
         public void SetSelectedNavigationItem(int index)
         {
