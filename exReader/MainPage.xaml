@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Loaded="Page_Loaded">
-    <NavigationView 
+    
+    <NavigationView
         Name="MyNavigationView"  
         SelectionChanged="NavigationView_OnSelectionChanged"
         CompactModeThresholdWidth="100"
@@ -41,5 +42,6 @@
         <NavigationView.Header>
             exReader
         </NavigationView.Header>
+        
     </NavigationView>
 </Page>
