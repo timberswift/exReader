@@ -35,18 +35,16 @@ namespace exReader
         private ReaderManage reader = new ReaderManage();
         private FileManage fileManage;// = new FileManage();
         private ObservableCollection<Vocabulary> readerWordLists;// =  new ObservableCollection<Vocabulary>();   //提词列表ListView绑定的数据
-        ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
         
+
         public MainReader()
         {
+            //editor.Document.SetText(Windows.UI.Text.TextSetOptions.None, "This is some sample text");
             this.InitializeComponent();
-            fonts.Add(new FontFamily("Arial"));
-            fonts.Add(new FontFamily("Courier New"));
-            fonts.Add(new FontFamily("Times New Roman"));
             fileManage = new FileManage();
             readerWordLists = new ObservableCollection<Vocabulary>();
+            
             UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode);
-
             WordBook.InitWordsBook();  //  每次切换回提词界面，单词本清空。
         }
         private void words_view_ItemClick(object sender, ItemClickEventArgs e)
@@ -217,6 +215,68 @@ namespace exReader
             else
             {
                 Debug.WriteLine("list is empty!");
+            }
+        }
+
+        private void boldButton_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                charFormatting.Bold = Windows.UI.Text.FormatEffect.Toggle;
+                selectedText.CharacterFormat = charFormatting;
+            }
+        }
+
+        private void italicButton_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                charFormatting.Italic = Windows.UI.Text.FormatEffect.Toggle;
+                selectedText.CharacterFormat = charFormatting;
+            }
+        }
+
+        private void underlineButton_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                if (charFormatting.Underline == Windows.UI.Text.UnderlineType.None)
+                {
+                    charFormatting.Underline = Windows.UI.Text.UnderlineType.Single;
+                }
+                else
+                {
+                    charFormatting.Underline = Windows.UI.Text.UnderlineType.None;
+                }
+                selectedText.CharacterFormat = charFormatting;
+            }
+        }
+
+        private void text_smaller_button_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                charFormatting.Size --;
+                selectedText.CharacterFormat = charFormatting;
+            }
+        }
+
+        private void text_bigger_button_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if (selectedText != null)
+            {
+                Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
+                charFormatting.Size ++;
+                selectedText.CharacterFormat = charFormatting;
             }
         }
     }
