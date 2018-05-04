@@ -23,7 +23,7 @@ namespace exReader.DatabaseManager
             {
                 command.CommandText = "CREATE TABLE newword(word varchar(64))";
                 command.ExecuteNonQuery();
-                command.CommandText = "CREATE UNIQUE INDEX newword_word newword(word)";
+                command.CommandText = "CREATE UNIQUE INDEX newword_word ON newword(word)";
                 command.ExecuteNonQuery();
                 command.CommandText = "CREATE TABLE articles(title text, content text)";
                 command.ExecuteNonQuery();
@@ -63,7 +63,7 @@ namespace exReader.DatabaseManager
         {
             var command = new SqliteCommand();
             command.Connection = db;
-            command.CommandText = "INSERT INTO articles (title,content) VALUES ("+passage.HeadName+","+passage.Content+")";
+            command.CommandText = "INSERT INTO articles (title,content) VALUES ('"+passage.HeadName+"','"+passage.Content+"')";
             command.ExecuteNonQuery();
         }
         public List<Passage> LoadPassage()
@@ -71,7 +71,7 @@ namespace exReader.DatabaseManager
             List<Passage> myPassages = new List<Passage>();
             var command = new SqliteCommand();
             command.Connection = db;
-            command.CommandText = "SELECT titlt FROM articles";
+            command.CommandText = "SELECT title FROM articles";
 
             var reader = command.ExecuteReader();
             while (reader.Read())
@@ -80,9 +80,34 @@ namespace exReader.DatabaseManager
                 passage.HeadName= reader.GetString(0);
                 myPassages.Add(passage);
             }
+
+            // >>> TANG HAO ADD
+            command.CommandText= "SELECT content FROM articles";
+            var reader2 = command.ExecuteReader();
+            int length = 0; 
+            while(reader2.Read() && length < myPassages.Count)
+            {
+                myPassages[length].Content = reader2.GetString(0);
+                length++;
+            }
+            reader2.Close();
+            // <<< TANG HAO ADD
+
             reader.Close();
+           
             return myPassages;
 
+        }
+
+      //  public void ClearPassages() { }
+  
+
+        public void DeletePassage(string title)
+        {
+            var command = new SqliteCommand();
+            command.Connection = db;
+            command.CommandText = "DELETE FROM articles WHERE title = " + "'"+title+"'";
+            command.ExecuteNonQuery();
         }
     }
 }

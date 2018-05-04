@@ -20,19 +20,19 @@
                            RelativePanel.AlignLeftWithPanel="True" FontFamily="Arial Black"/>
 
                 <TextBlock Name="word_text"      
-                           FontSize="14"  
+                           FontSize="16"  
                            Text="{x:Bind Word}" 
                            Margin="0,0,5,0" 
                            FontWeight="Bold"
                            HorizontalAlignment="Left"
                            RelativePanel.RightOf="class_tag"
-                           RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                           RelativePanel.AlignVerticalCenterWithPanel="True" Foreground="#FFE87038"/>
 
                 <TextBlock Name="trans_text"
-                           FontSize="11" 
+                           FontSize="12" 
                            Width="auto"
                            MaxWidth="150"
-                           Foreground="Gray"
+                           Foreground="Black"
                            Text="{x:Bind Translation}" 
                            ToolTipService.ToolTip="{x:Bind Translation}"
                            HorizontalAlignment="Left"
@@ -62,10 +62,10 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Background="Black" Margin="15,2,15,1">
+        <Border Background="Black" Margin="15,2,15,0">
             <RelativePanel Grid.Row="0" Grid.Column="0" 
-                           Height="35"  Background="White" 
-                           Margin="2,1,2,1">
+                           Height="auto"  Background="White" 
+                           Margin="2,2,2,2">
 
                 <Button x:Name="open_file"                
                         Width="auto"
@@ -110,7 +110,9 @@
                            Text="提词高亮"
                            Margin="5,0,0,0"
                            RelativePanel.RightOf="save_file"
-                           RelativePanel.AlignVerticalCenterWithPanel="True" FontWeight="Normal" FontFamily="Arial Black"/>
+                           RelativePanel.AlignVerticalCenterWithPanel="True" 
+                           FontWeight="Normal" 
+                           FontFamily="Arial Black"/>
 
                 <ToggleSwitch x:Name="off_on_highlight"                     
                               Width="auto"
@@ -200,7 +202,7 @@
 
             </RelativePanel>
         </Border>
-        
+
         <Border Background="Beige" 
                 Grid.Column="0" Grid.Row="1"  
                 Grid.RowSpan="2" 
@@ -212,33 +214,34 @@
                            SelectionHighlightColor="Green" 
                            IsTextPredictionEnabled="True"
                            IsTextScaleFactorEnabled="True"
-                           FontFamily="Arial Black" 
-                           
-                           FontSize="16" PlaceholderText="Paste passage here..." Header=""/>
+                           FontFamily="Arial Black"                    
+                           FontSize="18" 
+                           PlaceholderText="Paste passage here..." 
+                           />
 
         </Border>
         <StackPanel Grid.Column="1" Grid.RowSpan="2" 
                     Orientation="Vertical">
-            
+
             <ToggleSwitch OffContent="中文" 
                           OnContent="English" 
                           IsOn="False" />
-            
+
             <Border  Grid.Column="1"  
                      Grid.Row="0" 
                      Grid.RowSpan="2" 
                      Background="Black" 
                      Margin="0,5,5,0">
-                
+
                 <Grid Height="auto" Background="#ffffff" 
                       Margin="2,2,2,2">
-                    
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="99*"/>
                         <ColumnDefinition Width="45*"/>
@@ -266,7 +269,7 @@
                             FontFamily="Arial Black"
                             Click="kaoyan_button_Click" 
                             Grid.ColumnSpan="2">考研</Button>
-                    
+
                     <Button Name="toefl_button"
                             Grid.Row="2" Grid.Column="0" 
                             Margin="2,1,0.5,2" 
@@ -304,7 +307,7 @@
                             FontWeight="Bold" FontFamily="Arial Black"
                             Click="ielts_button_Click">雅思IELTS</Button>
                 </Grid>
-                
+
             </Border>
             <Grid  Grid.Row="0" Margin="0,10,0,5">
                 <Grid.ColumnDefinitions>
@@ -320,10 +323,10 @@
                                FontWeight="Bold" />
                 </Border>
 
-                <Border Grid.Column="1" Background="Beige" Margin="0,2,10,2" >
+                <Border Name="Mode_Border" Grid.Column="1" Background="#87CEEB" Margin="0,2,10,2" >
                     <TextBlock Name="Mode_Lable" Text="未选择" Height="auto"  HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2" FontWeight="Bold" />
                 </Border>
-        
+
             </Grid>
         </StackPanel>
         <Grid Grid.Column="1" Grid.Row="2"  Margin="0,0,5,0" Height="600">

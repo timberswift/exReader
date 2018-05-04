@@ -159,6 +159,8 @@ namespace exReader
                 word.YesorNo = -1;  //被用户删除的状态
                 yesbooklists.Remove(word);
             }
+
+            ShowEmptyLabel(nobooklists, 2);
             ShowEmptyLabel(yesbooklists, 3);
 
         }

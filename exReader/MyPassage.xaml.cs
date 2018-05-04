@@ -35,20 +35,16 @@ namespace exReader
           
         }
 
-        private void refreshPassage_button_Click(object sender, RoutedEventArgs e)
-        {
-            //this.Frame.Navigate(typeof(MainReader));
-            for (int i =0;i<10;i++)
+        //清空历史文章列表
+        private void clearPassage_button_Click(object sender, RoutedEventArgs e)
+        {       
+            if (passagelists.Count != 0)
             {
-                passagelists.Add(new Passage
-                {
-                    Content = "Donald Trump has pulled back from a potential trade war with Europe by postponing a decision on imposing steel and aluminum tariffs until 1 June.The US president imposed a worldwide 25 % tariff on steel imports and a 10 % tariff on aluminum in March but granted temporary exemptions to Canada, Mexico, Brazil, the European Union(EU), Australia and Argentina.These were due to expire at 12.01am on Tuesday.The extension offers temporary reprieve for French president Emmanuel Macron and German chancellor Angela Merkel, who lobbied Trump during visits to the White House last week.It could also be seen by political analysts as the latest issue on which Trump’s bark has proved worse than his bite.The administration “reached agreements in principle with Argentina, Australia, and Brazil with respect to steel and aluminum, the details of which will be finalized shortly”, the White House said on Monday. “The Administration is also extending negotiations with Canada, Mexico, and the European Union for a final 30 days. "
-                    ,
-                    HeadName = "Bad now Ameriacan " + i
-                });
+                passagelists.Clear();
+                PassageManage.ClearPassages();
+                Empty_PassageLabel.Opacity = 1;
             }
-            if (passagelists.Count != 0) Empty_PassageLabel.Opacity = 0;
-            else Empty_PassageLabel.Opacity = 1;
+            else Empty_PassageLabel.Opacity = 0;
         }
 
         //选择文章，跳转至reader界面
@@ -56,26 +52,22 @@ namespace exReader
         {
             Passage choose = new Passage();
             choose = (Passage)e.ClickedItem;
-           // Debug.WriteLine(choose.Content);
             Frame.Navigate(typeof(MainReader),choose);
             Frame appFrame = Window.Current.Content as Frame;
-           MainPage mainPage = appFrame.Content as MainPage;
+            MainPage mainPage = appFrame.Content as MainPage;
             mainPage.SetSelectedNavigationItem(0);
-
            
         }
 
         //加载历史文章
         private void LoadPassages()
         {
-            Debug.WriteLine("Histghgs dgjag gdjgh\n ");
             if (PassageManage.HistoryPassages.Count !=0 )
             {
                 Empty_PassageLabel.Opacity = 0;
                 ObservableCollection<Passage> passages = new ObservableCollection<Passage>(PassageManage.LoadPassages());
                 foreach (var p in passages)
                 {
-                    Debug.WriteLine("Hist\n "+p.Content);
                     passagelists.Add(p);
                 }
             }

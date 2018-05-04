@@ -9,23 +9,27 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="data:Passage" x:Key="PassageDataTemplate">
-            <Border Background="Beige" Width="auto">
+            <Border Background="#FFE98B" Width="auto">
             <StackPanel Orientation="Vertical" Width="auto" Margin="10,10,10,0">
-                <TextBlock Name="passage_name"
+                    <Border Background="#FFF48F">
+                        <TextBlock Name="passage_name"
                            TextWrapping="Wrap"
+                           Padding="8,0,8,0"
                            Text="{x:Bind HeadName}"
                            Width="auto"   
                            Height="auto"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            FontSize="30"/>
-                <TextBlock Name="passage_content_button"                       
+                    </Border>
+                    <TextBlock Name="passage_content_button"                       
                            Margin="5,10,0,0"
                            MaxWidth="400"
+                           Height="500"
                            TextWrapping="Wrap"
                            Text="{x:Bind Content}"
                            HorizontalAlignment="Left"
-                           VerticalAlignment="Stretch"
+                          
                         />
             </StackPanel>
             </Border>
@@ -39,30 +43,33 @@
             <RowDefinition Height="8*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <RelativePanel Grid.Row="0">
-            <TextBlock 
+        <Border Grid.Row="0" Background="Black" Margin="4,4,4,4" >
+            <RelativePanel  Margin="2,2,2,2" Background="White" >
+                <TextBlock 
                        Name="Header"
                        Text="阅读历史"
                        FontSize="28"
                        HorizontalAlignment="Left"
-                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
                        RelativePanel.AlignVerticalCenterWithPanel="True"
                        VerticalAlignment="Center"
                       />
-            <Button Name="refreshPassage_button"
-                    Content="刷新"
+                <Button Name="clearPassage_button"
+                    Content="清空"
                     Background="White"
-                    FontSize="20"
+                    FontSize="18"
                     Margin="0,0,30,0"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignVerticalCenterWithPanel="True"
-                    Click="refreshPassage_button_Click">
-            </Button>
-        </RelativePanel>
+                    Click="clearPassage_button_Click"/>
+            </RelativePanel>
+        </Border>
 
-        <ListView Grid.Row="1" 
+        <Border Grid.Row="1" Background="Black" Margin="5,5,5,0">
+        <ListView 
                   Name="Passage_list"
-                  Background="#FFE0D9D5"
+                  Margin="3,3,3,3"
+                  Background="#FFFFFF"
                   ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                   ScrollViewer.HorizontalScrollMode="Enabled"                  
@@ -76,12 +83,9 @@
                     <StackPanel Background="Transparent" Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+      
+            </ListView>
+        </Border>
         <TextBlock Name="Empty_PassageLabel" Grid.Row="1"
                  Text="暂时没有历史阅读文章"
                  FontSize="50"

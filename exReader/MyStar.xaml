@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid >
+    <Grid Background="White" >
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="8*"/>
@@ -47,8 +47,9 @@
         </RelativePanel>
 
         <Hub Grid.Row="1" 
-                  Name="ad_list" Background="#FFBDCBBC">
-            <HubSection Name="gu_section" Header="The Guardian (卫报)" IsHeaderInteractive="True" FontFamily="Arial Black" >
+             Background="#F0F0F0"
+                  Name="ad_list">
+            <HubSection Name="gu_section" Header="The Guardian (卫报)"  FontFamily="Arial Black" >
                 <DataTemplate>
                     <Button Name="guardianButton"
                             Background="White"
@@ -64,7 +65,7 @@
                 </DataTemplate>
             </HubSection>
             
-            <HubSection Name="me_section" Header="Medium" IsHeaderInteractive="True" >
+            <HubSection Name="me_section" Header="Medium" >
                 <DataTemplate>
                     <Button Name="meduimButton"
                             Background="White"
@@ -80,7 +81,7 @@
                 </DataTemplate>
             </HubSection>
             
-            <HubSection Name="time_section" Header="NewYork Times (纽约时报)" IsHeaderInteractive="True" >
+            <HubSection Name="time_section" Header="NewYork Times (纽约时报)" >
                 <DataTemplate>
                     <Button Name="timeButton"
                             Background="White"
@@ -96,7 +97,7 @@
                 </DataTemplate>
             </HubSection>
             
-            <HubSection Name="eco_section" Header="The Economist (经济学人)" IsHeaderInteractive="True" >
+            <HubSection Name="eco_section" Header="The Economist (经济学人)" >
                 <DataTemplate>
                     <Button Name="ecoButton"
                             Background="White"

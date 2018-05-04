@@ -140,26 +140,7 @@ namespace exReader.WordsManager
                 This_Book.Add(item);
             }
             return This_Book;
-            /*
-             * List<Vocabulary> This_Book = GetBooks(type);
-            List<Vocabulary> New_Book = new List<Vocabulary>(reader_sourcelist);
-            bool flag = true;           
-            foreach(var item in reader_sourcelist)
-            {
-                foreach(var this_item in This_Book)
-                {
-                    if (item.Word == this_item.Word) flag = false;
-                }
-                if (flag)
-                {
-                    item.YesorNo = 0;          //
-                    item.Classification = type;  //
-                    New_Book.Add(item);
-                }
-            }
-            PrintList(New_Book);
-            return New_Book;
-            */
+    
         }
 
         //筛选出未掌握的单词

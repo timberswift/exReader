@@ -74,7 +74,7 @@ namespace exReader.ReaderManager
     }
 
     //缓存Reader信息
-    public  static class CacheReaderManage
+    public static class CacheReaderManage
     {
         private static ReaderManage cacheReader;
         public static ReaderManage CacheReader

@@ -27,6 +27,7 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Popups;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -41,13 +42,18 @@ namespace exReader
         private ReaderManage reader;
         private FileManage fileManage;// = new FileManage();
         private string bindHeadName;
+        private bool toggle_state = false;
+        private int i = 1;
         //private RichEditBox
         private ObservableCollection<Vocabulary> readerWordLists;// =  new ObservableCollection<Vocabulary>();   //提词列表ListView绑定的数据
         ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            fonts.Add(new FontFamily("Arial"));
+            fonts.Add(new FontFamily("Courier New"));
+            fonts.Add(new FontFamily("Times New Roman"));
+
         }
 
 
@@ -58,10 +64,7 @@ namespace exReader
             //editor.Document.SetText(options: Windows.UI.Text.TextSetOptions.None, value: "This is some sample text");
             this.InitializeComponent();
 
-            fonts.Add(new FontFamily("Arial"));
-            fonts.Add(new FontFamily("Courier New"));
-            fonts.Add(new FontFamily("Times New Roman"));
-
+        
             reader = new ReaderManage();
             fileManage = new FileManage();
             readerWordLists = new ObservableCollection<Vocabulary>();   
@@ -69,7 +72,6 @@ namespace exReader
 
             bindHeadName = "Passage header";
             
-
             initReader();
             
 
@@ -108,71 +110,86 @@ namespace exReader
             else
             {
                 reader = CacheReaderManage.CacheReader;
+                editor.Document.Selection.SetText(TextSetOptions.FormatRtf, reader.ReaderPassage.Content);
                 int type = CacheReaderManage.CacheReader.ReaderChooseMode;
                 if (CacheReaderManage.CacheReader.ReaderChooseMode != 0)
                 {
                     SearchWordList(GetStringType(type), type);
                 }
             }
-
-            editor.Document.Selection.SetText(TextSetOptions.FormatRtf, reader.ReaderPassage.Content);
-
+    
         }
 
         //高亮切换
-        private void off_on_highlight_Toggled(object sender, RoutedEventArgs e)
+        private  void off_on_highlight_Toggled(object sender, RoutedEventArgs e)
         {
             ToggleSwitch toggleSwitch = sender as ToggleSwitch;
             if (toggleSwitch != null)
             {
                 if (toggleSwitch.IsOn == true)
                 {
-                    reader_empty.Opacity = 1;
+                    toggle_state = true;
+                    try
+                    {   
+                        SetModeHighLight(reader.ReaderChooseMode);
+                    }
+                    catch { }
+                   
                 }
                 else
                 {
-                    reader_empty.Opacity = 0;
+                    toggle_state = false;
+                    try
+                    {
+                         SetHighLight(Colors.Transparent);
+                    }
+                    catch { }
                 }
             }
         }
+
 
         //设置指定文本高亮
-        private void SetHighLight (string text, Windows.UI.Color color)
+        private void SetHighLight(Windows.UI.Color color)
         {
-            editor.Document.GetText(TextGetOptions.None, out text);
-            var editorLengh = text.Length;
-            editor.Document.Selection.SetRange(0, editorLengh);
-            int i = 1;
-            while(i >0)
+            int count = 0;
+            List<ITextSelection> Selections = new List<ITextSelection>();
+            while (count < reader.ReaderPassage.HighLightInfo.Count)
             {
-                i = editor.Document.Selection.FindText(text, editorLengh, FindOptions.None);
-                ITextSelection seoectedText = editor.Document.Selection;
-                if(seoectedText !=null)
-                {
-                    seoectedText.CharacterFormat.BackgroundColor = color;
-                }
+                ITextSelection selection = editor.Document.Selection;
+                selection.StartPosition = reader.ReaderPassage.HighLightInfo[count].Item1;
+                selection.EndPosition = selection.StartPosition + reader.ReaderPassage.HighLightInfo[count].Item2;
+                selection.CharacterFormat.BackgroundColor = color;
+                Selections.Add(selection);
+                count++;
             }
+
         }
 
-
+        //从提词表移除选定单词
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
+            if (toggle_state)
+            {
+                SetHighLight(Colors.Transparent);
+            }
             Button button = sender as Button;
             Vocabulary item = button.DataContext as Vocabulary;
  
             int index = reader.ReaderWordLists.IndexOf(reader.ReaderWordLists.Where(x => x.Word == item.Word).FirstOrDefault());
-
-            //   result.YesorNo = 1;
             readerWordLists.Remove(item);
             reader.ReaderWordLists.RemoveAt(index);
             if (readerWordLists.Count == 0) reader_empty.Opacity = 1;  //列表已清除为空
 
+            if (toggle_state)
+            {
+                SetModeHighLight(reader.ReaderChooseMode);
+            }
         }
 
         private void export_file_Click(object sender, RoutedEventArgs e)
         {
             FileManage fileManage = new FileManage();
-
             fileManage.SerializeFile(reader);
             ShowToastNotification("exReader提示", "成功导出工程文件!");
         }
@@ -180,9 +197,16 @@ namespace exReader
         private async void save_file_Click(object sender, RoutedEventArgs e)
         {
             //保存当前editor文本到readerPassage的Content
-           // reader.ReaderPassage.Content = editor.Document.Selection.GetText(TextGetOptions.FormatRtf,*);
+            if(reader.ReaderPassage.HeadName == null)
+            {
+               string headname = await InputHeaderDialogAsync("输入文章标题:");
+               if (headname == "") reader.ReaderPassage.HeadName = "Passage " + i++;
+               else reader.ReaderPassage.HeadName = headname;
+            }
 
-            if (reader.ReaderPassage == null)
+            GetEditBoxText();  //从文本框获取文章内容
+
+            if (reader.ReaderPassage.Content == null)
             {
                 var dialog = new ContentDialog()
                 {
@@ -206,7 +230,7 @@ namespace exReader
                 };
                 await dialog.ShowAsync();
             }
-          
+           // CacheReaderManage.CacheReader = reader;
         }
 
         private async void open_file_Click(object sender, RoutedEventArgs e)
@@ -220,8 +244,7 @@ namespace exReader
             }
             
         }
-
-     
+    
        
         private void cet4_button_Click(object sender, RoutedEventArgs e)
         {
@@ -261,9 +284,17 @@ namespace exReader
         //根据按钮选择生成提词列表
         private void SearchWordList(string type,int t)
         {
+            SetHighLight(Colors.Transparent);     
+            GetEditBoxText();  //从文本框获取文章内容
             reader.MatchWords(type, t);
             UpdateBindingData(reader.ReaderWordLists, t);
             SetModeLabel(t);
+            reader.ReaderPassage.HighLightInfo = PassageManage.GetHighLightInfo(reader.ReaderPassage.Content, readerWordLists);
+            if (toggle_state == true)
+            {
+                SetModeHighLight(t);
+            }
+            CacheReaderManage.CacheReader = reader;
         }
 
         //更新提词列表数据
@@ -298,45 +329,38 @@ namespace exReader
             
         }
 
-        //获得从 #文章页面# 传来的 Passage 对象
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (e.Parameter is Passage)
-            {
-                Passage choose_passage = (Passage)e.Parameter;
-                reader.ReaderPassage = choose_passage;
-                editor.Document.Selection.SetText(TextSetOptions.FormatRtf, choose_passage.Content);
-               // editor.Header = choose_passage.HeadName;
-            }
-        }
-
-        //离开Reader页面之前，缓存当前reader信息
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            CacheReaderManage.CacheReader = reader;
-        }
 
         //每次打开工程open file，刷新UI
         private void RefreshUI()
         {
-            // reader.ReaderPassage.Content = editor.Document.GetText(TextGetOptions.None, out text);
 
-            //设置选词模式Label
-            SetModeLabel(reader.ReaderChooseMode);
+            GetEditBoxText();  
+            
+            SetModeLabel(reader.ReaderChooseMode);    //设置选词模式Label
+       
+            SetEditBoxText();   //文本框设置文章Content
 
-            //文本框设置文章Content
+            //ShowHightLightInfo(Passage reader_passage);   //显示文章高亮信息
+
+            UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode); //刷新提词绑定列表
+  
+            CacheReaderManage.CacheReader = reader;  //添加到缓存reader
+
+        }
+
+        //从文本框获取文章内容
+        private void GetEditBoxText()
+        {
+            string value = string.Empty;
+            editor.Document.GetText(TextGetOptions.AdjustCrlf, out value); 
+            reader.ReaderPassage.Content = value;
+        }
+
+        //设置文本框的文章内容
+        private void SetEditBoxText()
+        {
+           // editor.Document.Selection.SetText(TextSetOptions.None, null);
             editor.Document.Selection.SetText(TextSetOptions.FormatRtf, reader.ReaderPassage.Content);
-
-            //显示文章高亮信息
-           //ShowHightLightInfo(Passage reader_passage);   
-
-            //刷新提词绑定列表
-            UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode);
-
-            //添加到缓存reader
-            CacheReaderManage.CacheReader = reader;
-
         }
 
         //设置提词模式Label
@@ -344,7 +368,7 @@ namespace exReader
         {
             switch(type)
             {
-                case 0: Mode_Lable.Text = "未选择"; break;
+                case 0: Mode_Lable.Text = "未选择";break;
                 case 1: Mode_Lable.Text = "CET4"; break;
                 case 2: Mode_Lable.Text = "CET6"; break;
                 case 3: Mode_Lable.Text = "考研"; break;
@@ -352,6 +376,20 @@ namespace exReader
                 case 5: Mode_Lable.Text = "雅思IELTS"; break;
                 case 6: Mode_Lable.Text = "GRE"; break;
                 default:break;
+            }
+        }
+        //设置提词模式Label
+        private void SetModeHighLight(int type)
+        {
+            switch (type)
+            {     
+                case 1: SetHighLight(Colors.Orange);  break;
+                case 2: SetHighLight(Colors.DarkOrange); break;
+                case 3: SetHighLight(Colors.SkyBlue); break;
+                case 4: SetHighLight(Colors.GreenYellow); break;
+                case 5: SetHighLight(Colors.MediumSpringGreen); break;
+                case 6: SetHighLight(Colors.DeepSkyBlue); break;
+                default: break;
             }
         }
 
@@ -386,6 +424,43 @@ namespace exReader
             ToastNotifier.Show(toast);
         }
 
+        //输入文章标题Dialog
+        private async Task<string> InputHeaderDialogAsync(string title)
+        {
+            TextBox inputTextBox = new TextBox();
+            inputTextBox.AcceptsReturn = false;
+            inputTextBox.Height = 32;
+            ContentDialog dialog = new ContentDialog();
+            dialog.Content = inputTextBox;
+            dialog.Title = title;
+            dialog.IsSecondaryButtonEnabled = true;
+            dialog.PrimaryButtonText = "Ok";
+            dialog.SecondaryButtonText = "Cancel";
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                return inputTextBox.Text;
+            else
+                return "";
+        }
+
+        //获得从 #文章页面# 传来的 Passage 对象
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter is Passage)
+            {
+                Passage choose_passage = (Passage)e.Parameter;
+                reader.ReaderPassage = choose_passage;
+                editor.Document.Selection.SetText(TextSetOptions.FormatRtf, choose_passage.Content);
+                // editor.Header = choose_passage.HeadName;
+            }
+        }
+
+
+        //离开Reader页面之前，缓存当前reader信息
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            CacheReaderManage.CacheReader = reader;
+        }
 
         private void PrintList(ObservableCollection<Vocabulary> list)
         {
@@ -402,7 +477,7 @@ namespace exReader
             }
         }
 
-
+        //字体加粗
         private void boldButton_Click(object sender, RoutedEventArgs e)
         {
             Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
@@ -414,6 +489,7 @@ namespace exReader
             }
         }
 
+        //字体斜体
         private void italicButton_Click(object sender, RoutedEventArgs e)
         {
             Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
@@ -425,6 +501,7 @@ namespace exReader
             }
         }
 
+        //字体加下划线
         private void underlineButton_Click(object sender, RoutedEventArgs e)
         {
             Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
@@ -443,6 +520,7 @@ namespace exReader
             }
         }
 
+        //字体变小
         private void text_smaller_button_Click(object sender, RoutedEventArgs e)
         {
             Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
@@ -470,6 +548,7 @@ namespace exReader
             }
         }
 
+        //字体变大
         private void text_bigger_button_Click(object sender, RoutedEventArgs e)
         {
             //ConsoleColor[] colors = (ConsoleColor[])ConsoleColor.GetValues(typeof(ConsoleColor));
