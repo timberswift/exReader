@@ -13,6 +13,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Text;
+using System.ComponentModel;
+using System.Data;
+using System.Windows.Input;
 
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -43,7 +46,9 @@ namespace exReader
         private string bindHeadName;
         //private RichEditBox
         private ObservableCollection<Vocabulary> readerWordLists;// =  new ObservableCollection<Vocabulary>();   //提词列表ListView绑定的数据
-        ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
+                                                                 //
+        //public ObservableCollection<String> fonts = new ObservableCollection<String>();
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -56,11 +61,14 @@ namespace exReader
             //editor.PlaceholderText = "This is some sample text";
             //editor.Document.Selection.CharacterFormat.Size = 15;
             //editor.Document.SetText(options: Windows.UI.Text.TextSetOptions.None, value: "This is some sample text");
-            this.InitializeComponent();
 
-            fonts.Add(new FontFamily("Arial"));
-            fonts.Add(new FontFamily("Courier New"));
-            fonts.Add(new FontFamily("Times New Roman"));
+            this.InitializeComponent();
+            //fonts.Add(new FontFamily("Oblique"));
+            //fonts.Add(new FontFamily("Courier New");
+            //fonts.Add(new FontFamily("Courier New"));
+            //fonts.Add(new FontFamily("Times New Roman"));
+            //fonts.Add(new FontFamily("Segoe UI"));
+            //fonts.Add(new FontFamily("Comic Sans MS"));
 
             reader = new ReaderManage();
             fileManage = new FileManage();
@@ -402,6 +410,26 @@ namespace exReader
             }
         }
 
+        private void fontStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if(selectedText != null)
+            {
+                //var family = fontStyle.SelectedItem;
+                //string a = "Oblique";
+                var family = fontStyle.SelectedItem.ToString();
+                //Windows.UI.Text.ITextCharacterFormat charFormatting1 = selectedText.CharacterFormat;
+                //if (fontStyle.SelectedItem.ToString() == a)
+                //charFormatting1.FontStyle.ToString() = fontStyle.SelectedItem.ToString();
+                // charFormatting1.FontStyle = Windows.UI.Text.FontStyle.
+                selectedText.CharacterFormat.Name = family;
+
+
+
+            }
+            
+        }
 
         private void boldButton_Click(object sender, RoutedEventArgs e)
         {
@@ -411,6 +439,10 @@ namespace exReader
                 Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
                 charFormatting.Bold = Windows.UI.Text.FormatEffect.Toggle;
                 selectedText.CharacterFormat = charFormatting;
+            }
+            else
+            {
+
             }
         }
 
@@ -513,6 +545,5 @@ namespace exReader
         }
 
 
-       
     }
 } 
