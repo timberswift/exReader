@@ -30,7 +30,13 @@
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
 
-        
+            <NavigationViewItem Tag="MarkStar" Name="myMarkStar" Content="优质文章源推荐">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE734;"></FontIcon>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+
         </NavigationView.MenuItems>
         <NavigationView.Content>
             <Frame Name="MyFrame"></Frame>

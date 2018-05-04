@@ -63,11 +63,17 @@ namespace exReader
                     MyNavigationView.Header = CacheReaderManage.CacheReader.ReaderPassage.HeadName;
                 }
             }
+            else if (myMarkStar.IsSelected)
+            {
+                MyFrame.Navigate(typeof(MyStar));
+                MyNavigationView.Header = "优质文章源推荐";
+            }
             else if(args.IsSettingsSelected)
             {
                 MyFrame.Navigate(typeof(Setting));
                 MyNavigationView.Header = "Setting";
             }
+            
         }
         public void SetSelectedNavigationItem(int index)
         {

@@ -47,6 +47,8 @@ namespace exReader
                     HeadName = "Bad now Ameriacan " + i
                 });
             }
+            if (passagelists.Count != 0) Empty_PassageLabel.Opacity = 0;
+            else Empty_PassageLabel.Opacity = 1;
         }
 
         //选择文章，跳转至reader界面
@@ -66,13 +68,14 @@ namespace exReader
         //加载历史文章
         private void LoadPassages()
         {
-            if (PassageManage.HistoryPassages != null)
+            Debug.WriteLine("Histghgs dgjag gdjgh\n ");
+            if (PassageManage.HistoryPassages.Count !=0 )
             {
                 Empty_PassageLabel.Opacity = 0;
                 ObservableCollection<Passage> passages = new ObservableCollection<Passage>(PassageManage.LoadPassages());
-
                 foreach (var p in passages)
                 {
+                    Debug.WriteLine("Hist\n "+p.Content);
                     passagelists.Add(p);
                 }
             }

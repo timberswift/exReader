@@ -17,7 +17,7 @@
                            Text="{x:Bind Classification }"
                            HorizontalAlignment="Center"
                            RelativePanel.AlignVerticalCenterWithPanel="True"
-                           RelativePanel.AlignLeftWithPanel="True"/>
+                           RelativePanel.AlignLeftWithPanel="True" FontFamily="Arial Black"/>
 
                 <TextBlock Name="word_text"      
                            FontSize="14"  
@@ -112,14 +112,13 @@
                            RelativePanel.RightOf="save_file"
                            RelativePanel.AlignVerticalCenterWithPanel="True" FontWeight="Normal" FontFamily="Arial Black"/>
 
-                <ToggleSwitch x:Name="off_on_highlight"                
-                              IsOn="True" 
+                <ToggleSwitch x:Name="off_on_highlight"                     
                               Width="auto"
                               Height="auto"
                               Margin="5,0,0,0" 
                               RelativePanel.RightOf="hightlight_lable"
-                              VerticalAlignment="Center"
-                              VerticalContentAlignment="Center"
+                         
+                              Toggled="off_on_highlight_Toggled"
                               RelativePanel.AlignVerticalCenterWithPanel="True" />
 
                 <TextBlock x:Name="style_icon"
@@ -132,10 +131,10 @@
                            RelativePanel.LeftOf="boldButton"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
 
-                <AppBarButton x:Name="boldButton"
-                              Width="25"
-                              Height="30"
-                              FontSize="15"
+                <Button x:Name="boldButton"
+                         Background="White"
+                              Width="auto"
+                              Height="auto"
                               VerticalAlignment="Center"
                               VerticalContentAlignment="Top"
                               Content="&#xE8DD;" 
@@ -143,51 +142,58 @@
                               ToolTipService.ToolTip="Bold" 
                               RelativePanel.AlignVerticalCenterWithPanel="True"
                               RelativePanel.LeftOf="italicButton" 
-                              Margin="0,-5,0,0" 
                               Click="boldButton_Click"/>
 
-                <AppBarButton x:Name="italicButton"
-                              Width="25"
-                              Height="30" 
-                              FontSize="15"
+                <Button x:Name="italicButton"
+                        Background="White"
+                        FontWeight="Bold"
+                              Width="auto"
+                              Height="auto" 
                               Content="&#xE8DB;"
                               FontFamily="Segoe MDL2 Assets"
                               ToolTipService.ToolTip="Italic" 
                               RelativePanel.AlignVerticalCenterWithPanel="True"
                               RelativePanel.LeftOf="underlineButton" 
-                              Margin="0,-5,0,0"
                               Click="italicButton_Click"/>
 
-                <AppBarButton x:Name="underlineButton"
-                              Width="25"
-                              Height="30"
-                              FontSize="15"
-                              Content="&#xE8DC;"
-                              FontFamily="Segoe MDL2 Assets"
-                              ToolTipService.ToolTip="Underline" 
-                              RelativePanel.AlignVerticalCenterWithPanel="True"
-                              RelativePanel.LeftOf="text_bigger_button" 
-                              Margin="0,-5,0,0"
-                              Click="underlineButton_Click"/>
+                <Button x:Name="underlineButton"
+                         Background="White"
+                         FontWeight="Bold"
+                         Width="auto"
+                         Height="auto"
+                         Content="&#xE8DC;"
+                         FontFamily="Segoe MDL2 Assets"
+                         ToolTipService.ToolTip="Underline" 
+                         RelativePanel.AlignVerticalCenterWithPanel="True"
+                         RelativePanel.LeftOf="text_bigger_button" 
+                         Click="underlineButton_Click"/>
 
                 <Button x:Name="text_smaller_button" 
+                        Background="Gray"
+                        Foreground="White"
+                        FontWeight="Bold"
                         Width="auto"
                         Height="auto"
                         Margin="0,0,5,0"
                         Content="&#xE949;"
                         FontFamily="Segoe MDL2 Assets"
+                        ToolTipService.ToolTip="fontsize smaller"
                         Click="text_smaller_button_Click"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
                         RelativePanel.AlignRightWithPanel="True"
                         />
 
                 <Button x:Name="text_bigger_button" 
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Background="Gray"
                         Width="auto"
                         Height="auto"
                         Margin="4,0,5,0"
                         Content="&#xE948;"
                         FontFamily="Segoe MDL2 Assets"
                         Click="text_bigger_button_Click"
+                        ToolTipService.ToolTip="fontsize larger"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
                         RelativePanel.LeftOf="text_smaller_button" 
                         HorizontalAlignment="Right"/>
@@ -207,9 +213,9 @@
                            IsTextPredictionEnabled="True"
                            IsTextScaleFactorEnabled="True"
                            FontFamily="Arial Black" 
-                           FontSize="14">
-            </RichEditBox>
-            
+                           
+                           FontSize="16" PlaceholderText="Paste passage here..." Header=""/>
+
         </Border>
         <StackPanel Grid.Column="1" Grid.RowSpan="2" 
                     Orientation="Vertical">

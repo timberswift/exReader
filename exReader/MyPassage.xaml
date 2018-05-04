@@ -62,6 +62,7 @@
 
         <ListView Grid.Row="1" 
                   Name="Passage_list"
+                  Background="#FFE0D9D5"
                   ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                   ScrollViewer.HorizontalScrollMode="Enabled"                  

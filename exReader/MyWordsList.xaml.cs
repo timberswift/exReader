@@ -39,6 +39,7 @@ namespace exReader
             all_empty.Opacity = 0;
             yes_empty.Opacity = 0;
             no_empty.Opacity = 0;
+            SwitchWordsBook(0);
           
         }
 

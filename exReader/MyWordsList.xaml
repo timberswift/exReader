@@ -221,8 +221,7 @@
                       IsItemClickEnabled="True" 
                       ItemsSource="{x:Bind booklists ,Mode=TwoWay}"                 
                       ItemTemplate="{StaticResource AllBookDataTemplate}"
-                      ItemClick="Allwords_listview_ItemClick" 
-                      SelectionChanged="Allwords_listview_SelectionChanged">
+                      >
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

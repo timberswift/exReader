@@ -40,6 +40,7 @@ namespace exReader
     {
         private ReaderManage reader;
         private FileManage fileManage;// = new FileManage();
+        private string bindHeadName;
         //private RichEditBox
         private ObservableCollection<Vocabulary> readerWordLists;// =  new ObservableCollection<Vocabulary>();   //提词列表ListView绑定的数据
         ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
@@ -65,6 +66,9 @@ namespace exReader
             fileManage = new FileManage();
             readerWordLists = new ObservableCollection<Vocabulary>();   
             UpdateBindingData(reader.ReaderWordLists, reader.ReaderChooseMode);
+
+            bindHeadName = "Passage header";
+            
 
             initReader();
             
@@ -115,7 +119,25 @@ namespace exReader
 
         }
 
-        private void setHighLight (string text, Windows.UI.Color color)
+        //高亮切换
+        private void off_on_highlight_Toggled(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch != null)
+            {
+                if (toggleSwitch.IsOn == true)
+                {
+                    reader_empty.Opacity = 1;
+                }
+                else
+                {
+                    reader_empty.Opacity = 0;
+                }
+            }
+        }
+
+        //设置指定文本高亮
+        private void SetHighLight (string text, Windows.UI.Color color)
         {
             editor.Document.GetText(TextGetOptions.None, out text);
             var editorLengh = text.Length;
@@ -132,12 +154,6 @@ namespace exReader
             }
         }
 
-        private void initReaderList()
-        {
-           // reader
-           // readerWordLists = new ObservableCollection<Vocabulary>();
-        }
-     
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
@@ -291,6 +307,7 @@ namespace exReader
                 Passage choose_passage = (Passage)e.Parameter;
                 reader.ReaderPassage = choose_passage;
                 editor.Document.Selection.SetText(TextSetOptions.FormatRtf, choose_passage.Content);
+               // editor.Header = choose_passage.HeadName;
             }
         }
 
@@ -303,7 +320,7 @@ namespace exReader
         //每次打开工程open file，刷新UI
         private void RefreshUI()
         {
-            //# ReaderManage.ReaderPassage = new Passage();
+            // reader.ReaderPassage.Content = editor.Document.GetText(TextGetOptions.None, out text);
 
             //设置选词模式Label
             SetModeLabel(reader.ReaderChooseMode);
@@ -495,5 +512,7 @@ namespace exReader
             }
         }
 
+
+       
     }
 } 

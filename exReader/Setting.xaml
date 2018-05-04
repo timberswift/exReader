@@ -27,7 +27,7 @@
         <TextBlock Grid.Row="0" Margin="50,50,0,0" FontSize="30">夜间模式</TextBlock>
         <ToggleSwitch HorizontalAlignment="Left" Margin="50,25,0,0" Grid.Row="1" Toggled="ToggleSwitch_OnToggled"></ToggleSwitch>
         <TextBlock Grid.Row="2" Margin="50,50,0,0" FontSize="30">关于我们</TextBlock>
-        <TextBlock Grid.Row="3" Margin="50,25,0,0">balbala</TextBlock>
+        <TextBlock Grid.Row="3" Margin="50,25,0,0">exReader提词阅读器  V1.0</TextBlock>
         
         
     </Grid>

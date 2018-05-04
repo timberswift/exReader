@@ -95,6 +95,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyStar.xaml.cs">
+      <DependentUpon>MyStar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
@@ -124,6 +127,12 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\guardian.png" />
+    <Content Include="Assets\guardian1.png" />
+    <Content Include="Assets\guardian2.jpg" />
+    <Content Include="Assets\Medium-logo.png" />
+    <Content Include="Assets\the-economist-logo.png" />
+    <Content Include="Assets\times.jpg" />
     <Content Include="db\dic.db" />
     <None Include="exReader_TemporaryKey.pfx" />
   </ItemGroup>
@@ -149,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="MyStar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Setting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
