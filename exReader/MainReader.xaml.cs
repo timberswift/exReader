@@ -13,6 +13,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Text;
+using System.ComponentModel;
+using System.Data;
+using System.Windows.Input;
 
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -28,6 +31,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Popups;
+using System.Runtime.InteropServices;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -46,25 +50,39 @@ namespace exReader
         private int i = 1;
         //private RichEditBox
         private ObservableCollection<Vocabulary> readerWordLists;// =  new ObservableCollection<Vocabulary>();   //提词列表ListView绑定的数据
-        ObservableCollection<FontFamily> fonts = new ObservableCollection<FontFamily>();
+                                                                 //
+        //public ObservableCollection<String> fonts = new ObservableCollection<String>();
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            fonts.Add(new FontFamily("Arial"));
-            fonts.Add(new FontFamily("Courier New"));
-            fonts.Add(new FontFamily("Times New Roman"));
+          
 
         }
+
+        
 
 
         public MainReader()
         {
+
             //editor.PlaceholderText = "This is some sample text";
             //editor.Document.Selection.CharacterFormat.Size = 15;
             //editor.Document.SetText(options: Windows.UI.Text.TextSetOptions.None, value: "This is some sample text");
+            //SetLineSpace(editor, 300);
             this.InitializeComponent();
 
+
         
+
+            //fonts.Add(new FontFamily("Oblique"));
+            //fonts.Add(new FontFamily("Courier New");
+            //fonts.Add(new FontFamily("Courier New"));
+            //fonts.Add(new FontFamily("Times New Roman"));
+            //fonts.Add(new FontFamily("Segoe UI"));
+            //fonts.Add(new FontFamily("Comic Sans MS"));
+
+
             reader = new ReaderManage();
             fileManage = new FileManage();
             readerWordLists = new ObservableCollection<Vocabulary>();   
@@ -73,7 +91,11 @@ namespace exReader
             bindHeadName = "Passage header";
             
             initReader();
-            
+
+            //ITextParagraphFormat textFormat = null;
+            //ITextParagraphFormat textFormat;
+            //textFormat= ITextParagraphFormat.ReferenceEquals;
+            //editor.Document.SetDefaultParagraphFormat(textFormat);
 
         }
 
@@ -477,6 +499,30 @@ namespace exReader
             }
         }
 
+
+       
+
+        private void fontStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+            Windows.UI.Text.ITextSelection selectedText = editor.Document.Selection;
+            if(selectedText != null)
+            {
+                //var family = fontStyle.SelectedItem;
+                //string a = "Oblique";
+                var family = fontStyle.SelectedItem.ToString();
+                //Windows.UI.Text.ITextCharacterFormat charFormatting1 = selectedText.CharacterFormat;
+                //if (fontStyle.SelectedItem.ToString() == a)
+                //charFormatting1.FontStyle.ToString() = fontStyle.SelectedItem.ToString();
+                // charFormatting1.FontStyle = Windows.UI.Text.FontStyle.
+                selectedText.CharacterFormat.Name = family;
+
+
+
+            }
+            
+        }
+
         //字体加粗
         private void boldButton_Click(object sender, RoutedEventArgs e)
         {
@@ -486,6 +532,10 @@ namespace exReader
                 Windows.UI.Text.ITextCharacterFormat charFormatting = selectedText.CharacterFormat;
                 charFormatting.Bold = Windows.UI.Text.FormatEffect.Toggle;
                 selectedText.CharacterFormat = charFormatting;
+            }
+            else
+            {
+
             }
         }
 
@@ -592,6 +642,5 @@ namespace exReader
         }
 
 
-       
     }
 } 

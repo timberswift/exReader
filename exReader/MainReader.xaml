@@ -5,9 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:exReader.WordsManager"
+    xmlns:data1="using:System"
+    xmlns:animation="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
+        
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
             <RelativePanel Width="auto" Height="auto" Margin="0,5,0,5">
 
@@ -52,20 +55,27 @@
             </RelativePanel>
         </DataTemplate>
     </Page.Resources>
+    
     <Grid  Background="#ffffff">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
         <Border Background="Black" Margin="15,2,15,0">
             <RelativePanel Grid.Row="0" Grid.Column="0" 
                            Height="auto"  Background="White" 
                            Margin="2,2,2,2">
+
+        
+      
+
 
                 <Button x:Name="open_file"                
                         Width="auto"
@@ -119,24 +129,41 @@
                               Height="auto"
                               Margin="5,0,0,0" 
                               RelativePanel.RightOf="hightlight_lable"
-                         
                               Toggled="off_on_highlight_Toggled"
                               RelativePanel.AlignVerticalCenterWithPanel="True" />
 
                 <TextBlock x:Name="style_icon"
                            FontFamily="Segoe MDL2 Assets" 
-                           FontSize="25"
+                           FontSize="20"
                            Text="&#xE8C1;"
                            Width="auto" 
                            Height="auto" 
                            Margin="0,0,5,0" 
-                           RelativePanel.LeftOf="boldButton"
+                           RelativePanel.LeftOf="fontStyle"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
 
-                <Button x:Name="boldButton"
-                         Background="White"
+                <ComboBox x:Name="fontStyle"
+                          Height="auto"
+                          Background="White"
+                          Width="150"
+                          Margin="0,0,22,0"
+                          FontFamily="Arial"
+                          PlaceholderText="Arial"
+                          SelectionChanged="fontStyle_SelectionChanged"
+                          RelativePanel.LeftOf="boldButton"
+                          RelativePanel.AlignVerticalCenterWithPanel="True">
+                    <x:String>Courier New</x:String>
+                    <x:String>Times New Roman</x:String>
+                    <x:String>Arial</x:String>
+                    <x:String>Comic Sans MS</x:String>
+                </ComboBox>
+
+                <AppBarButton x:Name="boldButton"
+                              Background="White"
+                              FontSize="17"
                               Width="auto"
                               Height="auto"
+                              Margin="0,0,20,0"
                               VerticalAlignment="Center"
                               VerticalContentAlignment="Top"
                               Content="&#xE8DD;" 
@@ -144,61 +171,64 @@
                               ToolTipService.ToolTip="Bold" 
                               RelativePanel.AlignVerticalCenterWithPanel="True"
                               RelativePanel.LeftOf="italicButton" 
-                              Click="boldButton_Click"/>
+                              Click="boldButton_Click" />
 
-                <Button x:Name="italicButton"
-                        Background="White"
-                        FontWeight="Bold"
+                <AppBarButton x:Name="italicButton"
+                              Background="White"
+                              FontSize="17"
+                              FontWeight="Bold"
                               Width="auto"
                               Height="auto" 
+                              Margin="0,0,15,0"
                               Content="&#xE8DB;"
                               FontFamily="Segoe MDL2 Assets"
                               ToolTipService.ToolTip="Italic" 
                               RelativePanel.AlignVerticalCenterWithPanel="True"
                               RelativePanel.LeftOf="underlineButton" 
-                              Click="italicButton_Click"/>
+                              Click="italicButton_Click" />
 
-                <Button x:Name="underlineButton"
-                         Background="White"
-                         FontWeight="Bold"
-                         Width="auto"
-                         Height="auto"
-                         Content="&#xE8DC;"
-                         FontFamily="Segoe MDL2 Assets"
-                         ToolTipService.ToolTip="Underline" 
-                         RelativePanel.AlignVerticalCenterWithPanel="True"
-                         RelativePanel.LeftOf="text_bigger_button" 
-                         Click="underlineButton_Click"/>
+                <AppBarButton x:Name="underlineButton"
+                              Background="White"
+                              FontSize="17"
+                              FontWeight="Bold"
+                              Width="auto"
+                              Height="auto"
+                              Margin="0,0,10,0"
+                              Content="&#xE8DC;"
+                              FontFamily="Segoe MDL2 Assets"
+                              ToolTipService.ToolTip="Underline" 
+                              RelativePanel.AlignVerticalCenterWithPanel="True"
+                              RelativePanel.LeftOf="text_bigger_button" 
+                              Click="underlineButton_Click"/>
 
-                <Button x:Name="text_smaller_button" 
-                        Background="Gray"
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Width="auto"
-                        Height="auto"
-                        Margin="0,0,5,0"
-                        Content="&#xE949;"
-                        FontFamily="Segoe MDL2 Assets"
-                        ToolTipService.ToolTip="fontsize smaller"
-                        Click="text_smaller_button_Click"
-                        RelativePanel.AlignVerticalCenterWithPanel="True"
-                        RelativePanel.AlignRightWithPanel="True"
-                        />
+                <AppBarButton  x:Name="text_smaller_button" 
+                               FontWeight="Bold"
+                               Background="White"
+                               FontSize="17"
+                               Width="auto"
+                               Height="auto" 
+                               Margin="0,0,0,0"
+                               Content="&#xE8E7;"
+                               FontFamily="Segoe MDL2 Assets"
+                               ToolTipService.ToolTip="fontsize smaller"
+                               Click="text_smaller_button_Click"
+                               RelativePanel.AlignVerticalCenterWithPanel="True"
+                               RelativePanel.AlignRightWithPanel="True"/>
 
-                <Button x:Name="text_bigger_button" 
-                        Foreground="White"
-                        FontWeight="Bold"
-                        Background="Gray"
-                        Width="auto"
-                        Height="auto"
-                        Margin="4,0,5,0"
-                        Content="&#xE948;"
-                        FontFamily="Segoe MDL2 Assets"
-                        Click="text_bigger_button_Click"
-                        ToolTipService.ToolTip="fontsize larger"
-                        RelativePanel.AlignVerticalCenterWithPanel="True"
-                        RelativePanel.LeftOf="text_smaller_button" 
-                        HorizontalAlignment="Right"/>
+                <AppBarButton x:Name="text_bigger_button" 
+                              FontWeight="Bold"
+                              Background="White"
+                              FontSize="17"
+                              Width="auto"
+                              Margin="0,0,5,0"
+                              Height="auto"
+                              Content="&#xE8E8;"
+                              FontFamily="Segoe MDL2 Assets"
+                              Click="text_bigger_button_Click"
+                              ToolTipService.ToolTip="fontsize larger"
+                              RelativePanel.AlignVerticalCenterWithPanel="True"
+                              RelativePanel.LeftOf="text_smaller_button" 
+                              HorizontalAlignment="Right"/>
 
             </RelativePanel>
         </Border>
@@ -260,7 +290,7 @@
                             Grid.ColumnSpan="2">CET4</Button>
 
                     <Button Name="kaoyan_button"
-                        Grid.Row="1" Grid.Column="0" 
+                            Grid.Row="1" Grid.Column="0" 
                             Margin="2,1,0.5,1" 
                             HorizontalAlignment="Stretch" 
                             FontSize="14"  
@@ -345,6 +375,7 @@
                            Margin="2,2,2,2" FontWeight="Bold" >
                 </TextBlock>
             </Border>
+            
             <Border Background="Black" Grid.Row="1">
                 <ListView Name="words_view" 
                           Background="White" 
@@ -370,6 +401,8 @@
                            FontSize="20"
                            Text="暂无提取词汇"/>
             </Border>
+
+
             <Button Grid.Row="2"
                     Name="export_word_button"
                     HorizontalAlignment="Stretch"

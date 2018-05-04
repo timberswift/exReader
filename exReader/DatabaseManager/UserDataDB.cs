@@ -15,13 +15,15 @@ namespace exReader.DatabaseManager
         SqliteConnection db;
         public UserDataDB()
         {
+            var tt = new SqliteConnectionStringBuilder("Data Source=:memory:;");
             db = new SqliteConnection("filename=userdata.db");
+            //db = new SqliteConnection("Data Source=:memory:;");
             db.Open();
             var command = new SqliteCommand();
             command.Connection = db;
             try
             {
-                command.CommandText = "CREATE TABLE newword(word varchar(64))";
+                command.CommandText = "CREATE TABLE newword(word varchar(64), rmb integer)";
                 command.ExecuteNonQuery();
                 command.CommandText = "CREATE UNIQUE INDEX newword_word ON newword(word)";
                 command.ExecuteNonQuery();
@@ -30,8 +32,18 @@ namespace exReader.DatabaseManager
             }
             catch (Exception e)
             {
-                
+
             }
+            //ttt
+            /*
+            var v = new Vocabulary();
+            v.Word = "aaa";
+            v.YesorNo = 1;
+            List<Vocabulary> l = new List<Vocabulary>();
+            l.Add(v);
+            SaveWordBook(l);
+            var ta = GetRmbStatus("aaa");
+            */
         }
         public List<String> FetchWord()
         {
@@ -49,13 +61,42 @@ namespace exReader.DatabaseManager
             reader.Close();
             return words;
         }
+        public bool GetRmbStatus(String word)
+        {
+            var command = new SqliteCommand();
+            command.Connection = db;
+            command.CommandText = "SELECT rmb FROM newword WHERE word = '" + word + "'";
+            var reader = command.ExecuteReader();
+            bool r;
+            if (reader.Read())
+            {
+                var s = reader.GetString(0);
+                r = (s == "1");
+            }
+            else
+            {
+                r = false;
+            }
+            reader.Close();
+            return r;
+
+        }
+        public void DeleteWord(String Word)
+        {
+            var command = new SqliteCommand
+            {
+                Connection = db,
+                CommandText = "DELETE FROM newword WHERE word = '" + Word + "'"
+            };
+            command.ExecuteNonQuery();
+        }
         public void SaveWordBook(List<Vocabulary> book)
         {
             var command = new SqliteCommand();
             command.Connection = db;
             foreach (Vocabulary v in book)
             {
-                command.CommandText = "INSERT OR IGNORE INTO newword VALUES('" + v.Word + "')";
+                command.CommandText = "INSERT OR REPLACE INTO newword VALUES('" + v.Word + "', '" + v.YesorNo + "')";
                 command.ExecuteNonQuery();
             }
         }
@@ -64,6 +105,7 @@ namespace exReader.DatabaseManager
             var command = new SqliteCommand();
             command.Connection = db;
             command.CommandText = "INSERT INTO articles (title,content) VALUES ('"+passage.HeadName+"','"+passage.Content+"')";
+
             command.ExecuteNonQuery();
         }
         public List<Passage> LoadPassage()
@@ -77,7 +119,7 @@ namespace exReader.DatabaseManager
             while (reader.Read())
             {
                 Passage passage = new Passage();
-                passage.HeadName= reader.GetString(0);
+                passage.HeadName = reader.GetString(0);
                 myPassages.Add(passage);
             }
 
