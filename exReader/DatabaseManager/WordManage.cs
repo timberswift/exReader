@@ -22,20 +22,20 @@ namespace exReader.DatabaseManager
     */
     public class WordManage
     {
+        public static char[] spc = new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=', '\\', '/' };
         public static WordManage instance;
         SQLiteConnection dbfile;
         SQLiteConnection db;
         public WordManage()
         {
+            //文件词库数据库
+            string path = Path.GetFullPath("db/dic.db");
+            dbfile = new SQLiteConnection("Data Source="+path+ ";Version=3;");
+            dbfile.Open();
             //内存词库数据库
             string str = "Data Source=:memory:;Version=3;New=True;";
             db = new SQLiteConnection(str);
             db.Open();
-            //文件词库数据库
-            string path = Path.GetFullPath("db/dic.db");
-
-            dbfile = new SQLiteConnection("Data Source="+path+ ";Version=3;");
-            dbfile.Open();
             //数据库读入内存
             dbfile.BackupDatabase(db, "main", "main", -1, null, 0);
             //command对象
@@ -90,7 +90,7 @@ namespace exReader.DatabaseManager
         }
         public void CacheAddWord(String Word)
         {
-            Word = Word.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' })[0];
+            Word = Word.Split(spc)[0];
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = db;
             command.CommandText = "INSERT OR IGNORE INTO wordcache VALUES (\'" + Word + "\')";
@@ -98,7 +98,7 @@ namespace exReader.DatabaseManager
         }
         public void CacheAddText(String Text)
         {
-            String[] splitedtext = Text.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
+            String[] splitedtext = Text.Split(spc);
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = db;
             //添加词语
@@ -111,7 +111,7 @@ namespace exReader.DatabaseManager
         public List<Vocabulary> VocabularyFiltCache(String TypeSet)
         {
             var vocabularies = new List<Vocabulary>();
-            String[] Types = TypeSet.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
+            String[] Types = TypeSet.Split(spc);
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = db;
 
@@ -136,7 +136,7 @@ namespace exReader.DatabaseManager
         public List<Vocabulary> VocabularyFiltCacheAnti(String TypeSet)
         {
             var vocabularies = new List<Vocabulary>();
-            String[] Types = TypeSet.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
+            String[] Types = TypeSet.Split(spc);
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = db;
 
@@ -166,7 +166,7 @@ namespace exReader.DatabaseManager
             {
                 throw new Exception("Test type " + Type + " not supported.");
             }
-            String[] splitedtext = text.Split(new char[] { ' ', ',', '.', '?', '!', '\'', '\"', '=' });
+            String[] splitedtext = text.Split(spc);
             List<Vocabulary> vocabularies = new List<Vocabulary>();
             //开始添词
             SQLiteCommand command = new SQLiteCommand();
