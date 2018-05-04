@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:exReader.WordsManager"
+    xmlns:data1="using:System"
+    xmlns:animation="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -148,7 +150,7 @@
                           RelativePanel.AlignVerticalCenterWithPanel="True">
                     <x:String>Courier New</x:String>
                     <x:String>Times New Roman</x:String>
-                    <x:String>Segoe UI</x:String>
+                    <x:String>Arial</x:String>
                     <x:String>Comic Sans MS</x:String>
                 </ComboBox>
 
@@ -241,8 +243,10 @@
                            FontFamily="Arial Black"                   
                            FontSize="16" 
                            PlaceholderText="Paste passage here..." 
-                           Header=""/>
+                           Header="">
 
+            </RichEditBox>
+            
         </Border>
         <StackPanel Grid.Column="1" Grid.RowSpan="2" 
                     Orientation="Vertical">
@@ -395,7 +399,8 @@
                            FontSize="20"
                            Text="暂无提取词汇"/>
             </Border>
-            
+
+
             <Button Grid.Row="2"
                     Name="export_word_button"
                     HorizontalAlignment="Stretch"

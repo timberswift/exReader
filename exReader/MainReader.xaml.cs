@@ -30,6 +30,7 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Runtime.InteropServices;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -55,13 +56,16 @@ namespace exReader
             
         }
 
+        
+
 
         public MainReader()
         {
+
             //editor.PlaceholderText = "This is some sample text";
             //editor.Document.Selection.CharacterFormat.Size = 15;
             //editor.Document.SetText(options: Windows.UI.Text.TextSetOptions.None, value: "This is some sample text");
-
+            //SetLineSpace(editor, 300);
             this.InitializeComponent();
             //fonts.Add(new FontFamily("Oblique"));
             //fonts.Add(new FontFamily("Courier New");
@@ -79,7 +83,11 @@ namespace exReader
             
 
             initReader();
-            
+
+            //ITextParagraphFormat textFormat = null;
+            //ITextParagraphFormat textFormat;
+            //textFormat= ITextParagraphFormat.ReferenceEquals;
+            //editor.Document.SetDefaultParagraphFormat(textFormat);
 
         }
 
