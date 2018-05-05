@@ -26,39 +26,27 @@ namespace exReader.ReaderManager
         public Passage ReaderPassage
         {
             get
-            {
-                return readerPassage;
-            }
+            {  return readerPassage;  }
             set
-            {
-                readerPassage = value;
-            }
+            {  readerPassage = value; }
         }
 
         [DataMember]
         public int ReaderChooseMode
         {
             get
-            {
-                return readerChooseMode;
-            }
+            {  return readerChooseMode; }
             set
-            {
-                readerChooseMode = value;
-            }
+            {  readerChooseMode = value;  }
         }
 
         [DataMember]
         public ObservableCollection<Vocabulary> ReaderWordLists
         {
             get
-            {
-                return readerWordLists;
-            }
+            {    return readerWordLists; }
             set
-            {
-                readerWordLists = value;
-            }
+            {    readerWordLists = value; }
         }
 
         //在数据库匹配单词

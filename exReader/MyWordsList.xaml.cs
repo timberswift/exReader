@@ -43,47 +43,53 @@ namespace exReader
           
         }
 
-        private async void AllBook_button_Click(object sender, RoutedEventArgs e)
+        private  void AllBook_button_Click(object sender, RoutedEventArgs e)
         {
            
-            await SwitchWordsBook(0);
-
+           SwitchWordsBook(0);
+           allwords_label.Text = "全部词汇";
         }
 
-        private async void Cet4Button_Click(object sender, RoutedEventArgs e)
+        private  void Cet4Button_Click(object sender, RoutedEventArgs e)
         {
             //SectionChange(0);
-            await SwitchWordsBook(1);
+            SwitchWordsBook(1);
+            allwords_label.Text = "CET4词汇";
         }
 
-        private async void Cet6Button_Click(object sender, RoutedEventArgs e)
+        private void Cet6Button_Click(object sender, RoutedEventArgs e)
         {
-            await SwitchWordsBook(2);
+             SwitchWordsBook(2);
+            allwords_label.Text = "CET6词汇";
         }
 
-        private async void KyButton_Click(object sender, RoutedEventArgs e)
+        private  void KyButton_Click(object sender, RoutedEventArgs e)
         {
-            await SwitchWordsBook(3);  
+            SwitchWordsBook(3);
+            allwords_label.Text = "考研词汇";
         }
 
-        private async void ToeflButton_Click(object sender, RoutedEventArgs e)
+        private  void ToeflButton_Click(object sender, RoutedEventArgs e)
         {        
-            await SwitchWordsBook(4);
+             SwitchWordsBook(4);
+            allwords_label.Text = "TOEFL词汇";
         }
 
-        private async void IeltsButton_Click(object sender, RoutedEventArgs e)
+        private void IeltsButton_Click(object sender, RoutedEventArgs e)
         {
            
-            await SwitchWordsBook(5);
+            SwitchWordsBook(5);
+            allwords_label.Text = "IELTS词汇";
         }
 
-        private async void GreButton_Click(object sender, RoutedEventArgs e)
+        private  void GreButton_Click(object sender, RoutedEventArgs e)
         {
-            await SwitchWordsBook(6);
+             SwitchWordsBook(6);
+             allwords_label.Text = "GRE词汇";
         }
 
         // 匹配选择单词本，从数据库取出相应单词本，放入绑定数据列表
-        async private Task SwitchWordsBook(int type)
+        private void SwitchWordsBook(int type)
         {
             booklists.Clear();
             nobooklists.Clear();
@@ -97,25 +103,25 @@ namespace exReader
                     booklist = new ObservableCollection<Vocabulary>(WordBook.All_Book);
                     break;
                 case 1:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet4"));
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET4_Book);
                     break;
                 case 2:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet6"));
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.CET6_Book);
                     break;
                 case 3:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("ky"));
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.Kaoyan_Book);
                     break;
                 case 4:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("toefl"));
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.TOEFL_Book);
                     break;
                 case 5:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("ielts"));
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.IELTS_Book);
                     break;
                 case 6:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("gre"));
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.GRE_Book);
                     break;
                 default:
-                    booklist = new ObservableCollection<Vocabulary>(WordBook.FetchWordBook("cet4"));                 
+                    booklist = new ObservableCollection<Vocabulary>(WordBook.All_Book);                 
                     break;
             }
 
@@ -142,6 +148,9 @@ namespace exReader
 
         }
 
+ 
+
+
         // # 移动单词掌握状态
         private void WordRemoveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -157,37 +166,36 @@ namespace exReader
             else
             {
                 word.YesorNo = -1;  //被用户删除的状态
+                booklists.Remove(word);  //总词库也移除
                 yesbooklists.Remove(word);
             }
-
+            UpdateStateColor();
             ShowEmptyLabel(nobooklists, 2);
             ShowEmptyLabel(yesbooklists, 3);
 
         }
 
-        public ObservableCollection<Vocabulary> GetStateWordBook(ObservableCollection<Vocabulary> allWordBook,int type)
+  
+        private void UpdateStateColor()
         {
-            var noWordBook = new ObservableCollection<Vocabulary>();
-            var yesWordBook = new ObservableCollection<Vocabulary>();
-            foreach (var word in allWordBook)
+            
+            ObservableCollection<Vocabulary> newlist = new ObservableCollection<Vocabulary>(booklists);
+            booklists.Clear();
+            foreach(var item in newlist)
             {
-                if (word.YesorNo == 0)
+                if(item.YesorNo == 1)
                 {
-                    word.StateColor = "#00ff00";
-                    noWordBook.Add(word);
+                    item.StateColor = "#00ff00";
+                    booklists.Add(item);
                 }
-
-                else if (word.YesorNo == 1)
+                else if(item.YesorNo == 0)
                 {
-                    word.StateColor = "#ff0000";
-                    yesWordBook.Add(word);
+
+                    item.StateColor = "#ff0000";
+                    booklists.Add(item);
                 }
             }
-            if (type == 0) return noWordBook;
-            else return yesWordBook;
         }
-
-
         //显示空列表标签
         private void ShowEmptyLabel(ObservableCollection<Vocabulary> lists,int type)
         {           
@@ -220,7 +228,7 @@ namespace exReader
             switch(type)
             {
                 case 0:
-                    all_section.Background = new SolidColorBrush(Color.FromArgb(100,207, 103, 63)) ;
+                    all_section.Background =  new SolidColorBrush(Color.FromArgb(100,207, 103, 63)) ;
                     cet4_section.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
                     cet6_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));
                     kaoyan_section.Background = new SolidColorBrush(Color.FromArgb(100, 207, 103, 63));

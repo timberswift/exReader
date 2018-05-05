@@ -11,16 +11,18 @@ using System.IO;
 using System.Diagnostics;
 using Windows.Storage.Pickers;
 using exReader.ReaderManager;
+using Windows.UI.Notifications;
 
 namespace exReader.FileManager
 {
-    //侯平月、汤浩、ljm、wyh工作空间
+    //汤浩工作空间
     //本类实现将 #工程文件# 涉及到的 #类数据# 打包与解包，实现序列化、反序列化，实现导入、导出工程文件 （自定义文件名 .xread）
     //附操作 MainReader.xaml.cs
 
     public class FileManage
     {
     
+        //序列化
         public async void SerializeFile(ReaderManage reader)
         {
             DataContractSerializer serializer = new DataContractSerializer(typeof(ReaderManage));
@@ -42,6 +44,7 @@ namespace exReader.FileManager
                 serializer.WriteObject(stream, reader);
 
                 Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+                ShowToastNotification("exReader提示", "成功导出工程文件!");
                 if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
                 {
                     //.textBlock.Text = "File " + file.Name + " was saved.";
@@ -57,7 +60,7 @@ namespace exReader.FileManager
             }      
         }
 
-
+        //反序列化
         public async Task<ReaderManage> DeSerializeFile()
         {
             DataContractSerializer deserializer = new DataContractSerializer(typeof(ReaderManage));
@@ -73,7 +76,7 @@ namespace exReader.FileManager
             {
                 var stream = await storageFile.OpenStreamForReadAsync();
                 reader = deserializer.ReadObject(stream) as ReaderManage;
-
+              
                 return reader;
             }
             else
@@ -83,8 +86,26 @@ namespace exReader.FileManager
             }
    
         }
-       
-      
+
+        //显示Toast通知
+        private void ShowToastNotification(string title, string stringContent)
+        {
+            ToastNotifier ToastNotifier = ToastNotificationManager.CreateToastNotifier();
+            Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+            Windows.Data.Xml.Dom.XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
+            toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode(title));
+            toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode(stringContent));
+            Windows.Data.Xml.Dom.IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
+            Windows.Data.Xml.Dom.XmlElement audio = toastXml.CreateElement("audio");
+            audio.SetAttribute("src", "ms-winsoundevent:Notification.SMS");
+
+            ToastNotification toast = new ToastNotification(toastXml);
+            toast.ExpirationTime = DateTime.Now.AddSeconds(4);
+            ToastNotifier.Show(toast);
+        }
+
+
+
 
     }
 }

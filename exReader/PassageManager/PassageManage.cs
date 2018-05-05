@@ -11,35 +11,31 @@ using System.Collections.ObjectModel;
 
 namespace exReader.PassageManager
 {
-    //侯平月工作空间
+    //汤浩、侯平月工作空间
     //本空间下实现 Passage类的数据定义封装、页面风格实现、高亮信息收集
     //附操作 MainReader.xaml.cs
 
     [DataContract]
     public class Passage
     {
-        private string headName;
-        private string content;
+        private string headName;  //文章标题
+        private string content;   //文章内容
+        private List<Tuple<int, int>> highLightInfo = new List<Tuple<int, int>>();//文章高亮信息
+
         [DataMember]
         public string HeadName { get { return headName; } set { headName = value; } }
         [DataMember]
         public string Content { get { return content; } set { content = value; } }     //存储文本内容
-        // [DataMember]
-        //public Dictionary<int, Tuple<string, string>> HightLightInfo { get; set; }  //Very Important!! 存储高亮信息，字典键值对为 <位置(int)，<单词(string)，颜色(string)
-        //other
-        private List<Tuple<int, int>> highLightInfo = new List<Tuple<int, int>>();
-
+        [DataMember]
         public List<Tuple<int, int>> HighLightInfo
         {
             get { return highLightInfo; }
             set { highLightInfo = value; }
         }
 
-
-
-
-
     }
+
+
 
     public class PassageManage
     {
@@ -107,9 +103,9 @@ namespace exReader.PassageManager
         {
             Passage p = new Passage();
             //p.Content = "Donald Trump has pulled back from a potential trade war with Europe by postponing a decision on imposing steel and aluminum tariffs until 1 June.The US president imposed a worldwide 25 % tariff on steel imports and a 10 % tariff on aluminum in March but granted temporary exemptions to Canada, Mexico, Brazil, the European Union(EU), Australia and Argentina.These were due to expire at 12.01am on Tuesday.The extension offers temporary reprieve for French president Emmanuel Macron and German chancellor Angela Merkel, who lobbied Trump during visits to the White House last week.It could also be seen by political analysts as the latest issue on which Trump’s bark has proved worse than his bite.The administration “reached agreements in principle with Argentina, Australia, and Brazil with respect to steel and aluminum, the details of which will be finalized shortly”, the White House said on Monday. “The Administration is also extending negotiations with Canada, Mexico, and the European Union for a final 30 days. ";
-            p.Content = "A London-based British Council employee has been arrested during a family visit to Iran, as the authorities in the country step up targeting people with ties to UK institutions.Aras Amiri, a 32 - cases are a worrying development for Nazanin Zaghari-Ratcliffe, the British woman who is serving a five - year jail sentence in Tehran on alleged spying charges and whose family insists she is being punished as a tool of diplomatic pressure.year - old Iranian national, was visiting her home country to see her ailing grandmother before the Persian new year, in March, when she was detained, said her cousin, Mohsen Omrani, on Wednesday.Amiri’s detention is the latest in a string of recent arrests involving British dual nationals or Iranians linked with British institutions. Last week it emerged that Abbas Edalat, a professor at Imperial College London, had been arrested in April by the hardline Revolutionary Guards.";
+            p.Content = "This is an example passage:   A London-based British Council employee has been arrested during a family visit to Iran, as the authorities in the country step up targeting people with ties to UK institutions.Aras Amiri, a 32 - cases are a worrying development for Nazanin Zaghari-Ratcliffe, the British woman who is serving a five - year jail sentence in Tehran on alleged spying charges and whose family insists she is being punished as a tool of diplomatic pressure.year - old Iranian national, was visiting her home country to see her ailing grandmother before the Persian new year, in March, when she was detained, said her cousin, Mohsen Omrani, on Wednesday.Amiri’s detention is the latest in a string of recent arrests involving British dual nationals or Iranians linked with British institutions. Last week it emerged that Abbas Edalat, a professor at Imperial College London, had been arrested in April by the hardline Revolutionary Guards.";
 
-            p.HeadName = "New Great America";
+            p.HeadName = "Example";
             return p;
         }
 

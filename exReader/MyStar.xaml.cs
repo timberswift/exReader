@@ -84,5 +84,14 @@ namespace exReader
            
 
         }
+
+        private void search_field_KeyDown_1(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                search_button_Click(this, new RoutedEventArgs());
+            }
+        
+        }
     }
 }

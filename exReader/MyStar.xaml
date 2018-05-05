@@ -22,6 +22,8 @@
             <TextBox Name="search_field"
                      RelativePanel.AlignHorizontalCenterWithPanel="True"
                      RelativePanel.AlignVerticalCenterWithPanel="True"
+                    
+                     KeyDown="search_field_KeyDown_1"
                      Width="550"/>
             <Button Name="search_button"
                     Background="Gray"

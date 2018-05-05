@@ -10,7 +10,7 @@
     <Page.Resources>
         <DataTemplate x:DataType="data:Vocabulary" x:Key="BookDataTemplate">
             <RelativePanel Width="auto" Height="auto" Margin="0,5,0,5">
-                <Border Name="word_border" Margin="5,0,10,0" Background="Beige" RelativePanel.AlignLeftWithPanel="True"
+                <Border Name="word_border" Margin="5,0,10,0" Background="LightSalmon" RelativePanel.AlignLeftWithPanel="True"
                            RelativePanel.AlignVerticalCenterWithPanel="True">
                 <TextBlock Name="word_text"      
                            Text="{x:Bind Word}" 
@@ -69,8 +69,9 @@
                            HorizontalAlignment="Left"
                            RelativePanel.RightOf="word_text"
                            RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                <Border Width="20" 
-                        Height="20" 
+                <Border Width="15" 
+                        Height="15" 
+                        
                         Background="{x:Bind StateColor}"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
@@ -209,6 +210,9 @@
             <Border Grid.Row="0" Grid.Column="0" Background="Beige">
                 <TextBlock Name="allwords_label"  
                        Text="全部词汇"
+                        FontWeight="Bold"
+                           FontFamily="Arial"
+                           FontSize="18"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
             </Border>
@@ -244,7 +248,10 @@
             <Border Grid.Row="0" Grid.Column="1" Background="Green">
                 
                     <TextBlock Name="nowords_label"  
-                       Text="未掌握词汇(学习中)"
+                       Text="正在学习"
+                               FontFamily="Arial"
+                               FontWeight="Bold"
+                               FontSize="18"
                        HorizontalAlignment="Center"
                            Foreground="White"
                        VerticalAlignment="Center"/>
@@ -277,7 +284,10 @@
             </Border>
             <Border Grid.Row="0" Grid.Column="2" Background="Gray">
                 <TextBlock Name="yeswords_label"
-                       Text="已掌握词汇(复习中)"
+                       Text="正在复习"
+                               FontFamily="Arial"
+                               FontWeight="Bold"
+                               FontSize="18"
                        HorizontalAlignment="Center"
                        Foreground="White"
                        VerticalAlignment="Center"/>

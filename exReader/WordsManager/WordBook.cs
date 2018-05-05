@@ -24,9 +24,9 @@ namespace exReader.WordsManager
     public class Vocabulary
     {
         private string word;           //单词
-        private string translation;//单词释义
+        private string translation;    //单词释义
         private int classification;    //单词分类
-        private int yesorNo;         //单词掌握情况
+        private int yesorNo;           //单词掌握情况
         private string stateColor;
 
         public string Word

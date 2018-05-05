@@ -8,6 +8,7 @@
     xmlns:data1="using:System"
     xmlns:animation="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     Loaded="Page_Loaded"
+    
     mc:Ignorable="d">
     <Page.Resources>
         
@@ -29,7 +30,7 @@
                            FontWeight="Bold"
                            HorizontalAlignment="Left"
                            RelativePanel.RightOf="class_tag"
-                           RelativePanel.AlignVerticalCenterWithPanel="True" Foreground="#FFE87038"/>
+                           RelativePanel.AlignVerticalCenterWithPanel="True" Foreground="#FF7038"/>
 
                 <TextBlock Name="trans_text"
                            FontSize="12" 
@@ -46,6 +47,7 @@
                         FontFamily="Segoe MDL2 Assets" 
                         Content="&#xF0AF;" 
                         FontSize="14"  
+                        Background="White"
                         Margin="5,0,0,0"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
@@ -72,11 +74,6 @@
             <RelativePanel Grid.Row="0" Grid.Column="0" 
                            Height="auto"  Background="White" 
                            Margin="2,2,2,2">
-
-        
-      
-
-
                 <Button x:Name="open_file"                
                         Width="auto"
                         Height="auto"
@@ -124,7 +121,9 @@
                            FontWeight="Normal" 
                            FontFamily="Arial Black"/>
 
-                <ToggleSwitch x:Name="off_on_highlight"                     
+                <ToggleSwitch x:Name="off_on_highlight"   
+                              Tag="highlight_toggleswitch"
+                              IsOn="True"
                               Width="auto"
                               Height="auto"
                               Margin="5,0,0,0" 
@@ -162,8 +161,8 @@
                               Background="White"
                               FontSize="17"
                               Width="auto"
-                              Height="auto"
-                              Margin="0,0,20,0"
+                              Height="30"
+                              Margin="0,0,10,10"
                               VerticalAlignment="Center"
                               VerticalContentAlignment="Top"
                               Content="&#xE8DD;" 
@@ -178,8 +177,8 @@
                               FontSize="17"
                               FontWeight="Bold"
                               Width="auto"
-                              Height="auto" 
-                              Margin="0,0,15,0"
+                              Height="30" 
+                              Margin="0,0,10,10"
                               Content="&#xE8DB;"
                               FontFamily="Segoe MDL2 Assets"
                               ToolTipService.ToolTip="Italic" 
@@ -192,8 +191,8 @@
                               FontSize="17"
                               FontWeight="Bold"
                               Width="auto"
-                              Height="auto"
-                              Margin="0,0,10,0"
+                              Height="30"
+                              Margin="0,0,10,10"
                               Content="&#xE8DC;"
                               FontFamily="Segoe MDL2 Assets"
                               ToolTipService.ToolTip="Underline" 
@@ -206,9 +205,13 @@
                                Background="White"
                                FontSize="17"
                                Width="auto"
-                               Height="auto" 
-                               Margin="0,0,0,0"
+                               Height="30" 
+                               
+                               Margin="0,0,10,10"
                                Content="&#xE8E7;"
+                               
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
                                FontFamily="Segoe MDL2 Assets"
                                ToolTipService.ToolTip="fontsize smaller"
                                Click="text_smaller_button_Click"
@@ -220,8 +223,8 @@
                               Background="White"
                               FontSize="17"
                               Width="auto"
-                              Margin="0,0,5,0"
-                              Height="auto"
+                              Margin="0,0,5,10"
+                              Height="30"
                               Content="&#xE8E8;"
                               FontFamily="Segoe MDL2 Assets"
                               Click="text_bigger_button_Click"
@@ -353,8 +356,8 @@
                                FontWeight="Bold" />
                 </Border>
 
-                <Border Name="Mode_Border" Grid.Column="1" Background="#87CEEB" Margin="0,2,10,2" >
-                    <TextBlock Name="Mode_Lable" Text="未选择" Height="auto"  HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2" FontWeight="Bold" />
+                <Border Name="Mode_Border" Grid.Column="1" Background="#FF7038" Margin="0,2,10,2" >
+                    <TextBlock Name="Mode_Lable" Text="未选择" Height="auto" Foreground="White" HorizontalAlignment="Center" FontSize="16" Padding="2,2,2,2" FontWeight="Bold" />
                 </Border>
 
             </Grid>
